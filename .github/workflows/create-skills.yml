@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths-ignore:
-      - *.md
-      - .github/**
-      - .scripts/**
+      - "*.md"
+      - ".github/**"
+      - ".scripts/**"
 jobs:
   update-skills:
     runs-on: ubuntu-latest
