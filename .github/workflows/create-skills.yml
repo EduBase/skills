@@ -44,6 +44,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.update-skills.outputs.new_tag }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
