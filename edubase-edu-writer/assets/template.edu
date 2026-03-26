@@ -1,0 +1,112 @@
+%------LANGUAGE------%
+%------QUESTION!!------%
+%------ANSWER!!------%
+%------TYPE!!------%
+% [ ] CHOICE
+% [ ] MULTIPLE-CHOICE
+% [ ] TRUE/FALSE
+% [ ] NUMERICAL
+% [ ] EXPRESSION
+% [ ] ORDER
+% [ ] GROUPING
+% [ ] PAIRING
+% [ ] MATRIX
+% [ ] MATRIX:EXPRESSION
+% [ ] SET
+% [ ] SET:TEXT
+% [ ] DATE/TIME
+% [ ] TEXT
+% [ ] FREE-TEXT
+% [ ] FILE
+% [ ] HOTSPOT
+% [ ] READING
+% [ ] GENERIC
+%------SUBJECT!------%
+%------CATEGORY!------%
+%------MAIN_CATEGORY------%
+%------PARAMETERS------%
+%------CONSTRAINTS------%
+%------POINTS------%
+%------SUBSCORING------%
+% [X] PROPORTIONAL
+% [ ] LINEAR_SUBSTRACTED:N
+% [ ] CUSTOM
+% [ ] NONE
+%------SUBPOINTS------%
+%------MANUAL_SCORING------%
+% [X] NO
+% [ ] NOT_CORRECT
+% [ ] ALWAYS
+%------PENALTY_POINTS------%
+%------PENALTY_SCORING------%
+% [X] DEFAULT
+% [ ] PER_ANSWER
+% [ ] PER_QUESTION
+%------OPTIONS------%
+%------NOTE------%
+%------PRIVATE_NOTE------%
+%------EXPLANATION------%
+%------SOLUTION------%
+%------SOLUTION_IMAGE------%
+%------HINT------%
+%------VIDEO------%
+%------DIFFICULTY------%
+%------ANSWER_REQUIRE------%
+%------QUESTION_FORMAT------%
+% [ ] NORMAL
+% [X] LATEX
+% [ ] LONG
+%------ANSWER_FORMAT------%
+%------SOURCE------%
+%------TAG------%
+%------DECIMALS------%
+%------MAXIMUM_CHOICES------%
+%------OPTIONS_FIX------%
+%------ANSWER_ORDER------%
+%------ANSWER_HIDE------%
+%------ANSWER_LABEL------%
+%------ANSWER_INDEFINITE------%
+%------GROUP------%
+%------EXPRESSION_CHECK------%
+%------EXPRESSION_DECIMALS------%
+%------EXPRESSION_RANDOM_TYPE------%
+%------EXPRESSION_RANDOM_TRIES------%
+%------EXPRESSION_RANDOM_RANGE------%
+%------EXPRESSION_RANDOM_INSIDE------%
+%------EXPRESSION_RANDOM_OUTSIDE------%
+%------EXPRESSION_EXPLICIT_GOAL------%
+%------EXPRESSION_EXTENDED------%
+%------EXPRESSION_FUNCTIONS------%
+%------EXPRESSION_VARIABLE------%
+%------IMAGE------%
+%------ATTACHMENT------%
+%------MEDIA_VIDEO------%
+%------MEDIA_AUDIO------%
+%------OPTIONS_ORDER------%
+%------NUMERICAL_RANGE------%
+%------FREETEXT_CHARACTERS------%
+%------FREETEXT_WORDS------%
+%------FREETEXT_RULES------%
+%------TRUEFALSE_THIRD_OPTIONS------%
+%------TRUEFALSE_THIRD_OPTIONS_LABEL------%
+%------DATETIME_PRECISION------%
+%------DATETIME_RANGE------%
+%------GROUPING------%
+%------PARAMETERS_SYNC------%
+%------TOLERANCE------%
+% [ ] ABSOLUTE:N
+% [ ] RELATIVE:N
+% [ ] QUOTIENT
+% [ ] QUOTIENT2
+% [ ] QUOTIENT:SYNCED
+% [ ] QUOTIENT2:SYNCED
+%------GRAPH------%
+%------SOLUTION_PENALTY------%
+%------HINT_PENALTY------%
+%------VIDEO_PENALTY------%
+%------FILE_COUNT------%
+%------FILE_TYPES------%
+%------HOTSPOT_IMAGE------%
+%------HOTSPOT_ZONES------%
+%------TAGS------%
+%------EXTERNAL_ID------%
