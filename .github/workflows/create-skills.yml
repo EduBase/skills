@@ -1,0 +1,52 @@
+---
+name: Update skills
+run-name: Updating skills with changes made by ${{ github.actor }}
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - *.md
+      - .github/**
+      - .scripts/**
+jobs:
+  update-skills:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      exit: ${{ steps.commit-changes.outputs.exit }}
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Generate skill files
+        run: |
+          ./.scripts/generate-skills.sh
+      - name: Commit changes
+        id: commit-changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Update skills"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin ${{ github.ref }}
+          echo "exit=$?" >> "$GITHUB_OUTPUT"
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: update-skills
+    if: needs.update-skills.outputs.exit == '0'
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          working_directory: dist
+          files: |
+            */*.skill
