@@ -1,0 +1,5 @@
+# Code Owners team is responsible for code and repositories in EduBase organization
+* @EduBase/code-owners
+
+# Protect CODEOWNERS
+/.github/CODEOWNERS @EduBase/administrators
