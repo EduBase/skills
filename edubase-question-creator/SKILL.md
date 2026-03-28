@@ -266,3 +266,13 @@ When the user provides raw content to turn into questions, proactively:
 - Choose the best question TYPE for the content
 - Suggest appropriate DIFFICULTY, CATEGORY, and SUBJECT
 - Warn about any content that doesn't fit EduBase's constraints
+
+### Files with MCP servers
+
+When uploading images, audio or other files via MCP, use the `edubase_post_filebin_upload` tool to get a temporary filebin URL, then upload the file or content to this URL using the `edubase_filebin` tool. Provide the obtained filebin external identifier (optionally with "filebin:" prefix) anywhere where an image, audio or file is required. **Prefer the filebin method over base64 or direct URLs, as it is more secure, reliable and efficient**!
+
+If MCP server is running remotely, or the file is not accessible to the server, you can also use curl or similar tools to upload the file without the MCP server. In case of curl, use the following command:
+
+```bash
+curl -s -X POST -F "file=@/path/to/file" -H "Content-Type: multipart/form-data" https://the.filebin.upload.url
+```
