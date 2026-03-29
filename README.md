@@ -47,26 +47,11 @@ You need an AI coding agent that supports the [Agent Skills](https://agentskills
 - [JetBrains Junie](https://junie.jetbrains.com)
 - [Roo Code](https://roocode.com)
 - [OpenHands](https://www.all-hands.dev)
-- …and [many more](https://agentskills.io/home)
+- ...and [many more](https://agentskills.io/home)
 
 ### Installation
 
-#### Option 1 — Download `.skill` files (easiest)
-
-1. Go to the [latest release](https://github.com/EduBase/skills/releases/latest).
-2. Download the `.skill` file(s) you need.
-3. Add them to your agent following its skill installation docs.
-
-For example, in **Claude Code**:
-
-```bash
-# Install a downloaded .skill file
-/skills install path/to/edubase-question-creator.skill
-```
-
-In **Claude.ai**, upload the `.skill` file directly through the Skills interface in your project settings.
-
-#### Option 2 — Clone the repository
+#### Clone the repository
 
 ```bash
 git clone https://github.com/EduBase/skills.git
@@ -88,25 +73,6 @@ If the skill triggers and the agent follows the instructions, you're all set.
 
 ## Repository Structure
 
-```
-.
-├── edubase-mcp-setup/              # MCP server setup skill
-│   └── SKILL.md
-├── edubase-edu-writer/             # EDU file writer skill
-│   ├── SKILL.md
-│   ├── assets/template.edu         # Blank EDU template (74 fields)
-│   └── references/examples.md      # Worked examples per question type
-├── edubase-question-creator/       # Question creator skill
-│   ├── SKILL.md
-│   └── references/fields-reference.md  # MCP API field mapping
-├── .scripts/                       # CI/CD automation
-│   ├── generate-skills.sh          # Packages skill folders into .skill ZIPs
-│   ├── update-readme-skills-table.sh  # Regenerates the skills table in this README
-│   └── commit-changes.sh           # Auto-commits and tags new versions
-└── .github/workflows/
-    └── create-skills.yml           # GitHub Actions: build, tag, release
-```
-
 Each skill folder follows the [Agent Skills specification](https://agentskills.io/specification):
 
 - **`SKILL.md`** — Required. Contains YAML frontmatter (`name`, `description`) and markdown instructions.
@@ -127,25 +93,26 @@ Contributions are welcome! Whether you're fixing a typo, improving an existing s
 
 ### Adding a new skill
 
-1. Create a new folder at the repository root using **kebab-case** (e.g., `edubase-content-importer/`).
-2. Add a `SKILL.md` file with the required frontmatter:
+1. Fork the repository and create a feature branch.
+2. Create a new folder at the repository root using **kebab-case** (e.g., `edubase-new-skill/`).
+3. Add a `SKILL.md` file with the required frontmatter:
 
    ```yaml
    ---
-   name: edubase-content-importer
+   name: edubase-new-skill
    description: >
-     A clear description of what this skill does and when agents should use it.
+     A clear description of what this new skill does and when agents should use it.
      Include specific trigger keywords so agents can discover it reliably.
    ---
    ```
 
-3. Write concise, actionable instructions in the markdown body. Remember:
+4. Write concise, actionable instructions in the markdown body. Remember:
    - Keep `SKILL.md` under **500 lines** — move detailed references to separate files.
    - Use **progressive disclosure**: put the overview in `SKILL.md`, details in `references/`.
    - Write in **third person** (the description is injected into the agent's system prompt).
    - Be specific in the `description` field — it determines whether the skill triggers at all.
-4. Add optional supporting files under `references/` or `assets/` as needed.
-5. Open a pull request. The CI pipeline will automatically generate the `.skill` ZIP file on merge.
+5. Add optional supporting files under `references/` or `assets/` as needed.
+6. Open a pull request. The CI pipeline will automatically generate the `.skill` ZIP file on merge.
 
 ### Style guidelines
 
