@@ -49,15 +49,33 @@ You need an AI coding agent that supports the [Agent Skills](https://agentskills
 - [OpenHands](https://www.all-hands.dev)
 - ...and [many more](https://agentskills.io/home)
 
-### Installation
+### How to Use These Skills
 
-#### Clone the repository
+Pick the option that matches the tool you're using. You can use as many or as few skills as you like.
+
+#### With Claude.ai (web or desktop app)
+
+1. Download the `.skill` file from the [latest release](https://github.com/EduBase/skills/releases/latest).
+2. Go to **Customize > Skills** and upload the `.skill` file.
+
+#### With Claude Code (CLI or IDE)
+
+Copy the skill folders you want into one of these locations:
 
 ```bash
 git clone https://github.com/EduBase/skills.git
+
+# Option A: Add to a specific project (great for teams — everyone gets them automatically)
+cp -r skills/edubase-question-creator your-project/.claude/skills/
+
+# Option B: Add to your personal skills (available across all your projects)
+cp -r skills/edubase-question-creator ~/.claude/skills/
 ```
 
-Then point your agent's skill directory to the cloned repo, or copy the individual skill folders you need.
+
+#### With any other compatible agent
+
+Copy the skill folder into the location your agent expects, or paste the contents of `SKILL.md` directly into your agent's custom instructions. See the [Agent Skills docs](https://agentskills.io) for agent-specific guidance.
 
 ### Verify it works
 
