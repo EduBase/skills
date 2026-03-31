@@ -26,11 +26,11 @@ This repository packages EduBase-specific knowledge into skills that any compati
 
 <!-- SKILLS_TABLE_START -->
 
-| Skill | Description |
-|-------|-------------|
-| **[edubase-edu-writer](edubase-edu-writer/)** | Writes EduBase questions as EDU files — the single-question text format used for one-by-one upload to EduBase Quizzing. |
-| **[edubase-mcp-setup](edubase-mcp-setup/)** | Guides setup and first-use of the EduBase MCP server — the integration that connects Claude to the EduBase e-learning platform. |
-| **[edubase-question-creator](edubase-question-creator/)** | Expert EduBase question creator for the EduBase Quizzing platform. |
+| Skill | Description | Download link|
+|-------|-------------|----------|
+| **[edubase-edu-writer](edubase-edu-writer/)** | Writes EduBase questions as EDU files — the single-question text format used for one-by-one upload to EduBase Quizzing. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-edu-writer/edubase-edu-writer.skill) |
+| **[edubase-mcp-setup](edubase-mcp-setup/)** | Guides setup and first-use of the EduBase MCP server — the integration that connects Claude to the EduBase e-learning platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-mcp-setup/edubase-mcp-setup.skill) |
+| **[edubase-question-creator](edubase-question-creator/)** | Expert EduBase question creator for the EduBase Quizzing platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-creator/edubase-question-creator.skill) |
 
 <!-- SKILLS_TABLE_END -->
 

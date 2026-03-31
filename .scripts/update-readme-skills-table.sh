@@ -18,9 +18,12 @@ fi
 TABLE_FILE=$(mktemp)
 trap 'rm -f "$TABLE_FILE" "$README.tmp"' EXIT
 
-# Write table header
-echo "| Skill | Description |" > "$TABLE_FILE"
-echo "|-------|-------------|" >> "$TABLE_FILE"
+# GitHub base URL for raw file downloads
+GITHUB_RAW_BASE="https://github.com/EduBase/skills/raw/main"
+
+# Write table header (with download column)
+echo "| Skill | Description | Download link|" > "$TABLE_FILE"
+echo "|-------|-------------|----------|" >> "$TABLE_FILE"
 
 # Find all SKILL.md files, extract name and description, and append a row per skill
 find "$REPO_ROOT" -maxdepth 2 -name "SKILL.md" -not -path '*/\.*' | sort | while read -r skill_md; do
@@ -63,7 +66,9 @@ find "$REPO_ROOT" -maxdepth 2 -name "SKILL.md" -not -path '*/\.*' | sort | while
     }
   ' "$skill_md")"
 
-  echo "| **[$name]($folder/)** | $description |" >> "$TABLE_FILE"
+  # Build download link to the .skill file
+  download_link="$GITHUB_RAW_BASE/$folder/$folder.skill"
+  echo "| **[$name]($folder/)** | $description | [⬇ .skill]($download_link) |" >> "$TABLE_FILE"
 done
 
 # Rebuild README: keep everything outside the markers, insert the table between them
