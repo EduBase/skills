@@ -49,14 +49,32 @@ You need an AI coding agent that supports the [Agent Skills](https://agentskills
 - [OpenHands](https://www.all-hands.dev)
 - ...and [many more](https://agentskills.io/home)
 
+### Download All Skills at Once
+
+If you'd rather grab everything in one go instead of downloading skills individually:
+
+1. Head to the [**Releases page**](https://github.com/EduBase/skills/releases/latest).
+2. Under **Assets**, you'll find every `.skill` file listed individually — plus a `.zip` archive containing all of them.
+3. Download the `.zip`, extract it, and you'll have every skill ready to install.
+
+> **Tip:** The Releases page is also the easiest place to browse previous versions if you ever need an older release.
+
 ### How to Use These Skills
 
 Pick the option that matches the tool you're using. You can use as many or as few skills as you like.
 
 #### With Claude.ai (web or desktop app)
 
-1. Download the `.skill` file from the [latest release](https://github.com/EduBase/skills/releases/latest).
-2. Go to **Customize > Skills** and upload the `.skill` file.
+1. Download the `.skill` file(s) you need — either from the table above or from the [Releases page](https://github.com/EduBase/skills/releases/latest).
+2. Open Claude and go to **Customize** (left sidebar) **> Skills**.
+3. Click the **+** button, then choose **Upload a skill**.
+4. Drag and drop the `.skill` file into the upload area — or click to browse and select it from your computer.
+5. Done! The skill is now active for all your conversations.
+
+![Find where to upload skills](assets/claude-customize-skills-path.png)
+![Drag and drop a .skill file into Claude](assets/claude-skill-upload.png)
+
+> **New to this?** A `.skill` file is just a small package that teaches Claude how to do something new. Think of it like installing a plugin — once uploaded, Claude automatically knows when to use it.
 
 #### With Claude Code (CLI or IDE)
 
