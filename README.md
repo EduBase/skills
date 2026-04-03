@@ -67,12 +67,25 @@ Pick the option that matches the tool you're using. You can use as many or as fe
 
 1. Download the `.skill` file(s) you need — either from the table above or from the [Releases page](https://github.com/EduBase/skills/releases/latest).
 2. Open Claude and go to **Customize** (left sidebar) **> Skills**.
+
+   <details>
+   <summary>See where to find it</summary>
+
+   ![Find where to upload skills](assets/claude-customize-skills-path.png)
+
+   </details>
+
 3. Click the **+** button, then choose **Upload a skill**.
+
+   <details>
+   <summary>See how it looks</summary>
+
+   ![Drag and drop a .skill file into Claude](assets/claude-skill-upload.png)
+
+   </details>
+
 4. Drag and drop the `.skill` file into the upload area — or click to browse and select it from your computer.
 5. Done! The skill is now active for all your conversations.
-
-![Find where to upload skills](assets/claude-customize-skills-path.png)
-![Drag and drop a .skill file into Claude](assets/claude-skill-upload.png)
 
 > **New to this?** A `.skill` file is just a small package that teaches Claude how to do something new. Think of it like installing a plugin — once uploaded, Claude automatically knows when to use it.
 
