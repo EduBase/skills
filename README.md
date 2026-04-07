@@ -26,9 +26,11 @@ This repository packages EduBase-specific knowledge into skills that any compati
 
 | Skill | Description | Download link|
 |-------|-------------|----------|
+| **[edubase-content-to-question-generator](edubase-content-to-question-generator/)** | Generates EduBase quiz questions from educational source materials — textbooks, lecture notes, slides, study guides, or any document containing teachable content. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-content-to-question-generator/edubase-content-to-question-generator.skill) |
 | **[edubase-edu-writer](edubase-edu-writer/)** | Writes EduBase questions as EDU files — the single-question text format used for one-by-one upload to EduBase Quizzing. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-edu-writer/edubase-edu-writer.skill) |
 | **[edubase-mcp-setup](edubase-mcp-setup/)** | Guides setup and first-use of the EduBase MCP server — the integration that connects Claude to the EduBase e-learning platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-mcp-setup/edubase-mcp-setup.skill) |
 | **[edubase-question-creator](edubase-question-creator/)** | Expert EduBase question creator for the EduBase Quizzing platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-creator/edubase-question-creator.skill) |
+| **[edubase-question-extractor](edubase-question-extractor/)** | Extracts existing questions from documents into EduBase format — faithfully converting past papers, printed exams, question banks, worksheets, or any document that ALREADY CONTAINS questions into properly structured EduBase questions. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-extractor/edubase-question-extractor.skill) |
 
 <!-- SKILLS_TABLE_END -->
 
