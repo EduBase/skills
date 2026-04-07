@@ -33,6 +33,9 @@ jobs:
       - name: Generate skill files
         run: |
           ./.scripts/generate-skills.sh
+      - name: Update README skills table
+        run: |
+          ./.scripts/update-readme-skills-table.sh
       - name: Commit changes
         id: commit-changes
         run: |
