@@ -55,7 +55,7 @@ Present the extraction results as a verification table:
 | # | Original Question (truncated)        | Detected Type    | Answer Found? | Confidence |
 |---|--------------------------------------|------------------|---------------|------------|
 | 1 | "What is the capital of France?"     | CHOICE           | Yes (Paris)   | High       |
-| 2 | "Calculate the area of..."           | NUMERIC          | Yes (42 m^2)  | High       |
+| 2 | "Calculate the area of..."           | NUMERICAL        | Yes (42 m^2)  | High       |
 | 3 | "Explain why photosynthesis..."      | FREE-TEXT         | No            | Medium     |
 | 4 | [illegible section]                  | ???              | ???           | Low        |
 ```
@@ -71,13 +71,17 @@ Medium/Low confidence. Should I proceed?"
 
 Convert each verified question into EduBase format. **Preservation rules:**
 
+If available in the workspace, you can use the `edubase-question-writer` skill as an
+execution helper, while keeping `edubase-question-creator` as the authoritative guide
+for EduBase field semantics and type behavior.
+
 1. **Question text**: Use the original wording. Only modify for:
    - Formatting adaptation (apply EduTags / LaTeX where the original uses bold, math, etc.)
    - Fixing obvious typos IF the user approves
    - Never rephrase, simplify, or "improve" the question
 2. **Answers**: Transcribe exactly as given in the source
    - If the source says "approximately 4.17", use `4.17` with appropriate TOLERANCE
-   - If the source provides a formula as the answer, decide: NUMERIC vs EXPRESSION
+   - If the source provides a formula as the answer, decide: NUMERICAL vs EXPRESSION
    - If the source shows multiple acceptable answers, use `&&&` separator
 3. **Options/choices**: Preserve all options in their original form
    - Keep the original order information (use OPTIONS_FIX if order was meaningful)
@@ -97,7 +101,7 @@ Convert each verified question into EduBase format. **Preservation rules:**
 - Blanks requiring exact notation (chemical formulas, codes) → GENERIC
 - If multiple blanks in one question → multiple answers with `&&&`, add ANSWER_LABEL
 
-**Calculation / numeric answer in source → NUMERIC**
+**Calculation / numeric answer in source → NUMERICAL**
 - Transcribe the numeric answer
 - If the source gives units, include unit guidance in NOTE or in ANSWER_LABEL
 - If the source shows a formula, consider parameterizing (ask user first)
@@ -182,7 +186,7 @@ Same output options as the content-to-question generator:
 
 ### Source has questions in multiple formats on one page
 - Handle each question independently — detect the type per question
-- A single exam can yield CHOICE, NUMERIC, FREE-TEXT, and TRUE/FALSE questions
+- A single exam can yield CHOICE, NUMERICAL, FREE-TEXT, and TRUE/FALSE questions
 
 ### Source quality is poor (bad scan, handwriting)
 - Show what you can parse, mark uncertain text with `[unclear: best guess]`

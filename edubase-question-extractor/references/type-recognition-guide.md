@@ -95,7 +95,7 @@ or
 Solve: 3x + 7 = 22. What is x?
 ```
 
-**Maps to:** NUMERIC
+**Maps to:** NUMERICAL
 - ANSWER = the numeric value
 - Set DECIMALS based on expected precision
 - If the source accepts a range → NUMERICAL_RANGE=+
@@ -292,7 +292,7 @@ Is it multiple choice with options listed?
   NO  → Does it expect a number?
     YES → Is it a formula/expression?
       YES → EXPRESSION
-      NO  → NUMERIC
+      NO  → NUMERICAL
     NO  → Does it expect a date?
       YES → DATE/TIME
       NO  → Is it fill-in-the-blank (short)?
