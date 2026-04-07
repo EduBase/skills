@@ -23,7 +23,7 @@ selecting question types, and guiding generation.
 ### User preferences override defaults
 
 Everything in this skill is **default guidance**. When the user states **explicit constraints**
-— e.g. "10 simple CHOICE questions", only NUMERIC items, skip the plan, a fixed count, or a
+- e.g. "10 simple CHOICE questions", only NUMERICAL items, skip the plan, a fixed count, or a
 specific output format — **follow their instructions**.
 
 You **may** add a **short, optional note** when the material would also support other approaches
@@ -64,9 +64,9 @@ Otherwise:
 2. Present the plan as a table:
 
 ```
-| # | Source Section        | Proposed Question              | Type           | Parameterize? |
-|---|----------------------|--------------------------------|----------------|---------------|
-| 1 | Ch.3 — Newton's laws | Calculate force from mass/accel | NUMERIC        | Yes (m, a)    |
+| # | Source Section       | Proposed Question               | Type           | Parameterize? |
+|---|----------------------|---------------------------------|----------------|---------------|
+| 1 | Ch.3 — Newton's laws | Calculate force from mass/accel | NUMERICAL      | Yes (m, a)    |
 | 2 | Ch.3 — Newton's laws | Match law to description        | PAIRING        | No            |
 | 3 | Ch.4 — Taxonomy      | Classify organisms into groups  | GROUPING       | No            |
 ```
@@ -83,6 +83,10 @@ Otherwise:
 
 Generate questions in batches grouped by section/topic. For each question:
 
+If installed in the workspace, you can use the `edubase-question-writer` skill as an
+implementation helper, while keeping `edubase-question-creator` as the source of truth
+for field semantics and type rules.
+
 1. **Write the QUESTION text** — use source material as the authority
    - Never inject facts not present in the source
    - Preserve technical terminology exactly as the source uses it
@@ -98,7 +102,7 @@ For better traceability, populate the SOURCE field properly.
 
 #### Parameterization (high-value differentiator)
 
-For NUMERIC and EXPRESSION questions, actively look for parameterization opportunities:
+For NUMERICAL and EXPRESSION questions, actively look for parameterization opportunities:
 
 - **Pattern**: The source says "a 5kg block accelerates at 3 m/s^2" →
   Replace with `{m; INTEGER; 2; 20}` and `{a; INTEGER; 1; 10}`, answer = `{m}*{a}`
@@ -145,7 +149,7 @@ For MCP publishing:
    Remember: QUESTION + ANSWER + TYPE + SUBJECT + CATEGORY = unique identifier in EduBase.
 
 3. **Type diversity**: Use the full range of question types. A physics chapter should yield
-   NUMERIC (calculations), CHOICE (conceptual), TRUE/FALSE (misconceptions), ORDER (processes),
+   NUMERICAL (calculations), CHOICE (conceptual), TRUE/FALSE (misconceptions), ORDER (processes),
    not just CHOICE for everything.
 
 4. **Language matching**: Generate questions in the same language as the source material.

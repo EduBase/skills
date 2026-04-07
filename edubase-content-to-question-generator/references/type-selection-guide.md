@@ -20,11 +20,11 @@ source content. Use it during Phase 2 (Question Opportunity Plan) of the content
 
 | Content Pattern | Best Type | Why | Parameterize? |
 |----------------|-----------|-----|---------------|
-| Solve for a numeric value | NUMERIC | Precise numeric evaluation | Yes — replace given values with INTEGER/FLOAT params |
+| Solve for a numeric value | NUMERICAL | Precise numeric evaluation | Yes — replace given values with INTEGER/FLOAT params |
 | Evaluate an expression / formula | EXPRESSION | Symbolic evaluation | Yes — use EXPRESSION_VARIABLE |
 | Matrix/vector computation | MATRIX | Native matrix support | Sometimes — depends on problem |
 | Find a set of values (order irrelevant) | SET | Unordered numeric elements | Rarely |
-| Range/interval answer | NUMERIC + NUMERICAL_RANGE | Supports interval notation | Yes |
+| Range/interval answer | NUMERICAL + NUMERICAL_RANGE | Supports interval notation | Yes |
 
 **Parameterization rules for calculations:**
 - Replace 1-2 concrete values with INTEGER or FLOAT parameters
@@ -79,7 +79,7 @@ For a single source section, aim for type diversity. Example for a physics chapt
 | Question | Type | Tests |
 |----------|------|-------|
 | "What is Newton's Second Law?" | TEXT | Recall |
-| "Calculate force given mass and acceleration" | NUMERIC (parameterized) | Application |
+| "Calculate force given mass and acceleration" | NUMERICAL (parameterized) | Application |
 | "Which of these is NOT a contact force?" | CHOICE | Conceptual understanding |
 | "Classify forces as contact or non-contact" | GROUPING | Categorization |
 | "True or false: gravity only acts on heavy objects" | TRUE/FALSE | Misconception correction |
@@ -107,12 +107,12 @@ Ask yourself for each question:
 **Static version**:
 - QUESTION: A car traveling at 60 km/h brakes and stops in 4 seconds. What is the deceleration in m/s^2?
 - ANSWER: 4.17
-- TYPE: NUMERIC
+- TYPE: NUMERICAL
 
 **Parameterized version**:
 - QUESTION: A car traveling at {v} km/h brakes and stops in {t} seconds. What is the deceleration in m/s^2?
 - ANSWER: ~~~{v}/3.6/{t}~~~
-- TYPE: NUMERIC
+- TYPE: NUMERICAL
 - PARAMETERS: {v; INTEGER; 30; 120} &&& {t; INTEGER; 2; 10}
 - CONSTRAINTS: {v}/3.6/{t}<20
 - DECIMALS: 2
@@ -130,4 +130,4 @@ This single question now generates hundreds of unique variants.
 | Only 2 options exist | CHOICE | TRUE/FALSE | 50% guess rate with CHOICE; T/F handles binary naturally |
 | Ordering with >8 items | ORDER | GROUPING or break into parts | Too many items = frustrating drag-and-drop |
 | Image required but unavailable | HOTSPOT | CHOICE or TEXT describing the image | Can't do HOTSPOT without an image file |
-| Complex multi-step problem | NUMERIC alone | NUMERIC + READING (show steps) | Use READING type to present context, then NUMERIC to test |
+| Complex multi-step problem | NUMERICAL alone | NUMERICAL + READING (show steps) | Use READING type to present context, then NUMERICAL to test |
