@@ -8,7 +8,7 @@ field that isn't fully covered in SKILL.md.
 2. [ANSWER variants by type](#answer-variants-by-type)
 3. [OPTIONS and ordering](#options-and-ordering)
 4. [HOTSPOT zones](#hotspot-zones)
-5. [NUMERIC and intervals](#numeric-and-intervals)
+5. [NUMERICAL and intervals](#numerical-and-intervals)
 6. [DATE/TIME formats](#datetime-formats)
 7. [EXPRESSION evaluation modes](#expression-evaluation-modes)
 8. [MATRIX and SET](#matrix-and-set)
@@ -106,7 +106,7 @@ ANSWER: Item1 >>> Target1 &&& Item2 >>> Target2
 - All statements shown in random order
 - Third option: TRUEFALSE_THIRD_OPTIONS=+ or list custom texts with `&&&`
 
-### NUMERIC
+### NUMERICAL
 - Single value: `42` or `3.14` or `22/7`
 - Constants: `pi`, `e`
 - Interval: `{2.5}-{7.5}` or with notation: `[2.5;7.5]`, `]2.5;7.5[`, `(2.5;7.5)`, `[2.5;7.5[`
@@ -208,7 +208,7 @@ ANSWER:        Zone1 &&& Zone2
 
 ---
 
-## NUMERIC and Intervals
+## NUMERICAL and Intervals
 
 ### NUMERICAL_RANGE
 Set `NUMERICAL_RANGE=+` to accept a range answer:
@@ -216,7 +216,7 @@ Set `NUMERICAL_RANGE=+` to accept a range answer:
 
 ### DECIMALS
 - Default: 2 decimal places
-- Applies to NUMERIC, EXPRESSION, MATRIX, MATRIX:EXPRESSION, SET
+- Applies to NUMERICAL, EXPRESSION, MATRIX, MATRIX:EXPRESSION, SET
 - Use `.` as decimal separator (commas also handled)
 
 ### TOLERANCE Methods
@@ -388,7 +388,7 @@ If no answer → no penalty.
 
 ## TOLERANCE Methods
 
-For NUMERIC, EXPRESSION, MATRIX, MATRIX:EXPRESSION, SET:
+For NUMERICAL, EXPRESSION, MATRIX, MATRIX:EXPRESSION, SET:
 
 ```
 TOLERANCE: ABSOLUTE:10          — max absolute difference
