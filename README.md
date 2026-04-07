@@ -2,15 +2,15 @@
   <img src="https://static.edubase.net/media/brand/title/color.png" alt="EduBase logo" height="150" />
 </p>
 
-<h1 align="center">EduBase Skills</h1>
+# EduBase Skills
 
-<p align="center">
+<p align="left">
   <a href="https://github.com/EduBase/skills/releases/latest"><img src="https://img.shields.io/github/v/tag/EduBase/skills?label=version" alt="Latest version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/EduBase/skills" alt="MIT License" /></a>
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/format-Agent%20Skills-blue" alt="Agent Skills format" /></a>
 </p>
 
-<p align="center">
+<p align="left">
   A collection of <a href="https://agentskills.io">Agent Skills</a> that teach AI coding agents how to work with the <a href="https://www.edubase.net">EduBase</a> e-learning platform.
 </p>
 
