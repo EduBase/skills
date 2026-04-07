@@ -31,6 +31,7 @@ This repository packages EduBase-specific knowledge into skills that any compati
 | **[edubase-mcp-setup](edubase-mcp-setup/)** | Guides setup and first-use of the EduBase MCP server — the integration that connects Claude to the EduBase e-learning platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-mcp-setup/edubase-mcp-setup.skill) |
 | **[edubase-question-creator](edubase-question-creator/)** | Expert EduBase question creator for the EduBase Quizzing platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-creator/edubase-question-creator.skill) |
 | **[edubase-question-extractor](edubase-question-extractor/)** | Extracts existing questions from documents into EduBase format — faithfully converting past papers, printed exams, question banks, worksheets, or any document that ALREADY CONTAINS questions into properly structured EduBase questions. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-extractor/edubase-question-extractor.skill) |
+| **[edubase-quiz-exam-builder](edubase-quiz-and-exam-builder/)** | Builds, assembles, and manages EduBase Quiz sets and Exams end-to-end — from grouping questions into Quiz sets, to creating time-boxed Exams, assigning users, and configuring branding. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-quiz-and-exam-builder/edubase-quiz-and-exam-builder.skill) |
 
 <!-- SKILLS_TABLE_END -->
 
