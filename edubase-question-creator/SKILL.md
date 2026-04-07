@@ -37,8 +37,8 @@ For XLSX: one row = one question. After 3 blank rows, upload stops. No Excel for
 | CHOICE | ⊙ | Single correct answer from options; randomized order |
 | MULTIPLE-CHOICE | ☑ | Multiple correct answers |
 | ORDER | | Correct ordering of options |
-| GROUPING | | Assign items to groups |
-| PAIRING | | Pair items together |
+| GROUPING | | Assign items to groups, use when multiple items share the same target |
+| PAIRING | | Pair items together, use when there is a 1:1 unique mapping between items|
 | TRUE/FALSE | | True/false statements; can add 3rd option |
 | NUMERIC | # | Numerical values; supports intervals, fractions, pi/e |
 | DATE/TIME | 📅 | Calendar dates; many formats; BC/AD support |
