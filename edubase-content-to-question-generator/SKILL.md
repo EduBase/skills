@@ -83,9 +83,8 @@ Otherwise:
 
 Generate questions in batches grouped by section/topic. For each question:
 
-If installed in the workspace, you can use the `edubase-question-writer` skill as an
-implementation helper, while keeping `edubase-question-creator` as the source of truth
-for field semantics and type rules.
+If installed, you can use the `edubase-question-creator` skill as an
+implementation helper.
 
 1. **Write the QUESTION text** — use source material as the authority
    - Never inject facts not present in the source

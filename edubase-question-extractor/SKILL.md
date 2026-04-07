@@ -71,9 +71,8 @@ Medium/Low confidence. Should I proceed?"
 
 Convert each verified question into EduBase format. **Preservation rules:**
 
-If available in the workspace, you can use the `edubase-question-writer` skill as an
-execution helper, while keeping `edubase-question-creator` as the authoritative guide
-for EduBase field semantics and type behavior.
+If installed, you can use the `edubase-question-creator` skill as an
+implementation helper.
 
 1. **Question text**: Use the original wording. Only modify for:
    - Formatting adaptation (apply EduTags / LaTeX where the original uses bold, math, etc.)
