@@ -1,16 +1,14 @@
-<p align="center">
-  <img src="https://static.edubase.net/media/brand/title/color.png" alt="EduBase logo" height="150" />
-</p>
+<img src="https://static.edubase.net/media/brand/title/color.png" alt="EduBase logo" height="150" />
 
 # EduBase Skills
 
-<p align="left">
+<p>
   <a href="https://github.com/EduBase/skills/releases/latest"><img src="https://img.shields.io/github/v/tag/EduBase/skills?label=version" alt="Latest version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/EduBase/skills" alt="MIT License" /></a>
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/format-Agent%20Skills-blue" alt="Agent Skills format" /></a>
 </p>
 
-<p align="left">
+<p>
   A collection of <a href="https://agentskills.io">Agent Skills</a> that teach AI coding agents how to work with the <a href="https://www.edubase.net">EduBase</a> e-learning platform.
 </p>
 
@@ -103,7 +101,6 @@ cp -r skills/edubase-question-creator your-project/.claude/skills/
 cp -r skills/edubase-question-creator ~/.claude/skills/
 ```
 
-
 #### With any other compatible agent
 
 Copy the skill folder into the location your agent expects, or paste the contents of `SKILL.md` directly into your agent's custom instructions. See the [Agent Skills docs](https://agentskills.io) for agent-specific guidance.
@@ -185,6 +182,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-<p align="center">
-  Built for the <a href="https://www.edubase.net">EduBase</a> e-learning platform
-</p>
+Built for the <a href="https://www.edubase.net">EduBase</a> e-learning platform
