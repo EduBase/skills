@@ -21,7 +21,7 @@ repos:
     hooks:
       - id: check-useless-excludes
   - repo: https://github.com/markdownlint/markdownlint
-    rev: v0.15.0
+    rev: v0.17.0
     hooks:
       - id: markdownlint
         args: ['--style=.markdown-style.rb', '--no-warnings']
