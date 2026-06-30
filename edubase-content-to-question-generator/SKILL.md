@@ -2,8 +2,8 @@
 name: edubase-content-to-question-generator
 description: >
   Generates EduBase quiz questions from educational source materials — textbooks, lecture notes,
-  slides (PPT/PPTX), study guides, policy/compliance training decks, or any document containing
-  teachable content. Reads PPT, PDF, DOCX, images, or pasted text, then creates properly typed
+  slides (PowerPoint), study guides, policy/compliance training decks, or any document containing
+  teachable content. Reads PPTX, PDF, DOCX, images, or pasted text, then creates properly typed
   and parameterized EduBase questions. Use when the user wants to turn educational or compliance
   content INTO questions — "generate questions from this chapter", "create a quiz from these
   notes", "compliance test from this policy deck", "make this material interactive". Do NOT use
@@ -14,7 +14,7 @@ description: >
 # EduBase Content-to-Question Generator
 
 You convert educational source materials into EduBase quiz questions. The user provides content
-(PPT/PPTX, PDF, DOCX, images, pasted text) and you generate well-typed, well-structured questions
+(PPTX, PDF, DOCX, images, pasted text) and you generate well-typed, well-structured questions
 from it.
 
 **Your role is orchestration.** For question content rules, field syntax, and type semantics,
@@ -64,11 +64,11 @@ Detection is never silent — always check with the user unless they already cho
 
 | Format | When to use |
 |--------|-------------|
-| **PPT / PPTX** | **Preferred** for slide decks, especially when slides use **overlapping animation builds** (content revealed step-by-step on one slide). Native PPT preserves the full final state and speaker notes; use slide-by-slide extraction. |
-| **PDF (exported from PPT)** | Acceptable for static slides with no build-up logic. **Avoid** when the deck relies on animations/layers — export often flattens or drops incremental content, so questions may miss facts that only appear on later animation steps. **Call this out** if the user offers PDF but mentions animated or build slides; recommend uploading PPT instead. |
+| **PPTX** | **Preferred** for slide decks, especially when slides use **overlapping animation builds** (content revealed step-by-step on one slide). Native PowerPoint preserves the full final state and speaker notes; use slide-by-slide extraction. |
+| **PDF (exported from PPTX)** | Acceptable for static slides with no build-up logic. **Avoid** when the deck relies on animations/layers — export often flattens or drops incremental content, so questions may miss facts that only appear on later animation steps. **Call this out** if the user offers PDF but mentions animated or build slides; recommend uploading PowerPoint instead. |
 | **DOCX, images, pasted text** | As before |
 
-#### Slide / PPT parsing (when source is a deck)
+#### Slide / PowerPoint parsing (when source is a deck)
 
 Slides are often thin or fragmented. Apply this order:
 
@@ -95,7 +95,7 @@ Flag early:
    - Poor OCR / illegible sections → tell the user, skip those parts
    - Ambiguous or incomplete content → ask for clarification
    - Content too short/large for meaningful question generation → suggest more defined scope/length
-   - Animated/build slides inferred from structure but only PDF provided → recommend PPT upload
+   - Animated/build slides inferred from structure but only PDF provided → recommend PPTX upload
 
 4. **Compliance check** — if signals match (see compliance guide), propose compliance mode and
    ask about **role/industry-specific scenarios** in the same beat (see *Compliance mode* above).
@@ -214,7 +214,7 @@ For MCP publishing:
 3. **Type diversity** *(general mode)*: Use the full range of question types. A physics chapter
    should yield NUMERICAL (calculations), CHOICE (conceptual), TRUE/FALSE (misconceptions),
    ORDER (processes), not just CHOICE for everything. **In compliance mode**, fit type to
-   obligation shape; repeating CHOICE/T-F on critical rules is acceptable.
+   obligation shape; repeating CHOICE/TRUE-FALSE on critical rules is acceptable.
 
 4. **Language matching**: Generate questions in the same language as the source material.
    Set the LANGUAGE field accordingly.
@@ -230,9 +230,9 @@ For MCP publishing:
 ## Handling Edge Cases
 
 ### Source is a PowerPoint / slide deck
-- Prefer **native PPT/PPTX** over PDF export when slides use animations or build steps
+- Prefer **native PowerPoint** over PDF export when slides use animations or build steps
 - Parse title, body, notes, and images; document which was used in `SOURCE`
-- See *Slide / PPT parsing* in Phase 1
+- See *Slide / PowerPoint parsing* in Phase 1
 
 ### Source has images/diagrams
 - Describe what the image shows in the question text
