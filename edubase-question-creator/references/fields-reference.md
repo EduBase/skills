@@ -14,8 +14,9 @@ field that isn't fully covered in SKILL.md.
 8. [MATRIX and SET](#matrix-and-set)
 9. [Parameterization deep-dive](#parameterization-deep-dive)
 10. [Scoring columns](#scoring-columns)
-11. [TOLERANCE methods](#tolerance-methods)
-12. [GRAPH column](#graph-column)
+11. [SKILLS column](#skills-column)
+12. [TOLERANCE methods](#tolerance-methods)
+13. [GRAPH column](#graph-column)
 
 ---
 
@@ -375,6 +376,8 @@ Allowed: `<`, `<=`, `=`, `>=`, `>`, `<>`
 | SUBSCORING | `PROPORTIONAL` / `LINEAR_SUBTRACTED:N` / `CUSTOM` / `NONE` |
 | SUBPOINTS | Percentages per answer, `&&&` separated (required with CUSTOM) |
 | MANUAL_SCORING | `NO` / `NOT_CORRECT` / `ALWAYS` |
+| RUBRIC_CRITERIA | `{criterion; points}` entries, `&&&` separated |
+| SKILLS | `{identifier; points}` entries, `&&&` separated (see [SKILLS column](#skills-column)) |
 | PENALTY_SCORING | `DEFAULT` / `PER_ANSWER` / `PER_QUESTION` |
 | PENALTY_POINTS | Numeric penalty for wrong answer |
 | HINT_PENALTY | `NONE` / `ONCE:20%` / `ONCE:0.2` / `PER-HELP:10%` |
@@ -383,6 +386,60 @@ Allowed: `<`, `<=`, `=`, `>=`, `>`, `<>`
 
 Penalty logic: if partially correct → subpoints instead of penalty.
 If no answer → no penalty.
+
+### RUBRIC_CRITERIA
+
+Rubric criteria for manual or semi-automatic scoring:
+- Applicable for FILE and FREE-TEXT questions, or after enabling MANUAL_SCORING
+- Notation: `{criterion; points}` — `criterion` is a short name, `points` is the achievable
+  score **in percentage** for that criterion
+- Multiple criteria separated by `&&&`
+
+```
+RUBRIC_CRITERIA: {Structure; 40} &&& {Argumentation; 40} &&& {Grammar; 20}
+```
+
+---
+
+## SKILLS
+
+Sets how the question alters the scoring of **skills defined in the Quiz set**. Skills are
+named competences (defined at the Quiz set level) that accumulate their own score alongside
+the regular question score. Exams inherit the skills of their backing Quiz set.
+
+### Simple notation
+```
+SKILLS: {reading; 2}
+```
+Format: `{identifier; points}`
+- `identifier`: the unique identifier of the skill defined in the Quiz set
+- `points`: points that can be earned, awarded **proportionally** to the score achieved on
+  the question
+
+### Extended notation
+```
+SKILLS: {reading; 0; 2; -2; 0}
+```
+Format: `{identifier; points; correct; incorrect; fix}`
+- `correct`: points awarded for a correct answer
+- `incorrect`: points awarded for an incorrect answer (negative = penalty)
+- `fix`: points always awarded
+
+### Per-selection notation (CHOICE / MULTIPLE-CHOICE only)
+```
+SKILLS: {reading; 0; 0; 0; 1; (answer:1:2; option:2:-3; option:3:-1)}
+```
+Format: `{identifier; points; correct; incorrect; fix; (per selection)}`
+- The per-selection part is a `;`-separated list of `type:index:points` entries:
+  - `type`: `answer` (a correct answer) or `option` (a wrong option)
+  - `index`: index number of the specified answer or option
+  - `points`: points awarded when that answer/option is selected
+
+### Rules
+- Multiple skills separated by `&&&`: `{reading; 2} &&& {comprehension; 1}`
+- Only affects skills **defined in the Quiz set** — unknown identifiers are ignored
+- Via MCP: the `skills` field of `edubase_post_question`; list defined skills with
+  `edubase_get_quiz_skills(quiz)` or `edubase_get_exam_skills(exam)`
 
 ---
 
@@ -402,7 +459,7 @@ TOLERANCE: QUOTIENT2:SYNCED
 
 ---
 
-## GRAPH Column
+## GRAPH
 
 Display a function graph under the question:
 ```

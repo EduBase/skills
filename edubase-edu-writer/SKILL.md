@@ -89,6 +89,7 @@ POINTS
 SUBSCORING
 SUBPOINTS
 MANUAL_SCORING
+RUBRIC_CRITERIA
 PENALTY_POINTS
 PENALTY_SCORING
 OPTIONS
@@ -129,6 +130,7 @@ ATTACHMENT
 MEDIA_VIDEO
 MEDIA_AUDIO
 OPTIONS_ORDER
+SKILLS
 NUMERICAL_RANGE
 FREETEXT_CHARACTERS
 FREETEXT_WORDS
@@ -167,6 +169,19 @@ The EDU format uses slightly different names than the XLSX column names in a few
 | `EXPRESSION_RANDOM_GOAL` | `EXPRESSION_EXPLICIT_GOAL` | Different name in EDU! |
 
 Always use the EDU section names listed in the Complete Section Order above.
+
+---
+
+## Newer Sections — RUBRIC_CRITERIA and SKILLS
+
+Two plain-value sections (no checkboxes, empty by default):
+
+- `RUBRIC_CRITERIA` — rubric criteria for manual/semi-automatic scoring, `{criterion; points}`
+  entries separated by `&&&`. Sits right after `MANUAL_SCORING`.
+- `SKILLS` — skill scoring for skills defined in the target Quiz set, `{identifier; points}`
+  (or extended notation) entries separated by `&&&`. Sits right after `OPTIONS_ORDER`.
+
+For the semantics and full notation of both fields, see the `edubase-question-creator` skill.
 
 ---
 
@@ -249,7 +264,7 @@ Note: `LINEAR_SUBSTRACTED` (with D) — this is the spelling in the EDU format.
 ### When writing a single EDU file:
 1. Output the complete EDU content in a code block (for preview)
 2. Write it to a `.edu` file and present it for download
-3. Include ALL 74 sections — even empty ones — to match the template exactly
+3. Include ALL 76 sections — even empty ones — to match the template exactly
 
 ### When writing multiple questions:
 - Each question = one separate `.edu` file

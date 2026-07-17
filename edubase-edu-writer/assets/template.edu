@@ -37,6 +37,7 @@
 % [X] NO
 % [ ] NOT_CORRECT
 % [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
 %------PENALTY_POINTS------%
 %------PENALTY_SCORING------%
 % [X] DEFAULT
@@ -83,6 +84,7 @@
 %------MEDIA_VIDEO------%
 %------MEDIA_AUDIO------%
 %------OPTIONS_ORDER------%
+%------SKILLS------%
 %------NUMERICAL_RANGE------%
 %------FREETEXT_CHARACTERS------%
 %------FREETEXT_WORDS------%

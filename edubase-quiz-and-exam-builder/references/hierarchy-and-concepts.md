@@ -4,13 +4,22 @@ This reference codifies the three-layer architecture of EduBase Quiz.
 Source: https://help.edubase.net/#quick-overview-of-edubase-quiz
 
 ## Table of Contents
-1. [The Three Layers](#the-three-layers)
-2. [Relationships Between Layers](#relationships-between-layers)
-3. [Question Groups Within Quiz Sets](#question-groups-within-quiz-sets)
-4. [Exam Types Deep Dive](#exam-types-deep-dive)
-5. [Exam Lifecycle and Statuses](#exam-lifecycle-and-statuses)
-6. [Quiz Set Types vs Exam Types](#quiz-set-types-vs-exam-types)
-7. [Common Misconceptions](#common-misconceptions)
+- [EduBase Quiz Hierarchy \& Concepts](#edubase-quiz-hierarchy--concepts)
+  - [Table of Contents](#table-of-contents)
+  - [The Three Layers](#the-three-layers)
+    - [Key architectural consequence](#key-architectural-consequence)
+  - [Relationships Between Layers](#relationships-between-layers)
+  - [Question Groups Within Quiz Sets](#question-groups-within-quiz-sets)
+    - [How groups work via MCP](#how-groups-work-via-mcp)
+    - [Inspecting groups](#inspecting-groups)
+  - [Skills Within Quiz Sets](#skills-within-quiz-sets)
+    - [How the pieces fit together](#how-the-pieces-fit-together)
+  - [Exam Types Deep Dive](#exam-types-deep-dive)
+    - [When to recommend each type](#when-to-recommend-each-type)
+    - [Type is immutable](#type-is-immutable)
+  - [Exam Lifecycle and Statuses](#exam-lifecycle-and-statuses)
+  - [Quiz Set Types vs Exam Types](#quiz-set-types-vs-exam-types)
+  - [Common Misconceptions](#common-misconceptions)
 
 ---
 
@@ -114,6 +123,36 @@ edubase_delete_quiz_questions(quiz="qz_123", questions="q2", group="Algebra")
 
 `edubase_get_quiz_questions(quiz="qz_123")` returns all questions with their group
 assignments.
+
+---
+
+## Skills Within Quiz Sets
+
+A Quiz set can define **skills** — named competences (e.g. "reading", "problem solving")
+that are scored separately from the regular quiz score. This enables competence-based
+reporting: a single quiz produces one overall score plus a per-skill breakdown.
+
+### How the pieces fit together
+
+```
+QUIZ SET   defines the skills (identifier + name + optional description)
+    │
+QUESTIONS  opt in via their SKILLS field — each question declares which
+    │      skills it affects and how many points it contributes
+    │      (proportional, correct/incorrect/fix, or per-selection scoring)
+    │
+EXAMS      inherit the skills of their backing Quiz set automatically
+```
+
+- Skills are **defined at the Quiz set level** (currently in the web UI, not via MCP).
+- Questions reference skills by **identifier** in their `SKILLS` field. The same question
+  can affect different skills in different Quiz sets — but only identifiers defined in the
+  containing Quiz set take effect; unknown identifiers are silently ignored.
+- Discover defined skills via `edubase_get_quiz_skills(quiz=...)` or
+  `edubase_get_exam_skills(exam=...)` — both return `identifier`, `name`, and optional
+  `description` per skill.
+
+For the `SKILLS` field notation on questions, see the `edubase-question-creator` skill.
 
 ---
 

@@ -161,7 +161,7 @@ edubase_get_user_me          → returns the EduBase account details for the con
 If `edubase_get_user_me` returns a name/account → the integration is live and working.
 
 **In Claude Desktop UI:** After restart, the tool count should increase significantly
-(the EduBase MCP adds ~124 tools). Click the tools icon to verify EduBase tools are listed.
+(the EduBase MCP adds ~90 tools). Click the tools icon to verify EduBase tools are listed.
 
 ---
 

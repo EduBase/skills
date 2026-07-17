@@ -169,6 +169,9 @@ Duplicate = skipped (enables safe re-uploading of same file).
 | `SOLUTION` | Step-by-step solution; multiple via `&&&` |
 | `SOLUTION_IMAGE` | Image shown with solution |
 | `SUBSCORING` | `PROPORTIONAL` / `LINEAR_SUBTRACTED:N` / `CUSTOM` / `NONE` |
+| `MANUAL_SCORING` | `NO` / `NOT_CORRECT` / `ALWAYS` |
+| `RUBRIC_CRITERIA` | `{criterion; points%}` entries via `&&&`; for FILE/FREE-TEXT or with MANUAL_SCORING |
+| `SKILLS` | Skill scoring: `{identifier; points}` entries via `&&&` (see Skill Scoring below) |
 | `PENALTY_SCORING` | `DEFAULT` / `PER_ANSWER` / `PER_QUESTION` |
 | `PENALTY_POINTS` | Points deducted for wrong answer |
 | `HINT_PENALTY` | `NONE` / `ONCE:20%` / `PER-HELP:10%` |
@@ -176,6 +179,35 @@ Duplicate = skipped (enables safe re-uploading of same file).
 | `EXTERNAL_ID` | For updating existing questions on re-upload |
 | `TAGS` | Tag IDs/codes; multiple via `&&&` |
 | `GROUP` | Question group name in Quiz set |
+
+---
+
+## Skill Scoring (SKILLS column)
+
+Quiz sets (and the Exams built on them) can define **skills** — named competences that get
+their own score alongside the regular question score. The `SKILLS` column sets how a question
+alters the scoring of those skills.
+
+**Notations** (multiple skills separated by `&&&`):
+
+| Notation | Syntax | Behavior |
+|----------|--------|----------|
+| Simple | `{identifier; points}` | Points earned proportionally to the score achieved on the question |
+| Extended | `{identifier; points; correct; incorrect; fix}` | `correct`: points for a correct answer; `incorrect`: points for an incorrect answer; `fix`: points always awarded |
+| Per-selection | `{identifier; points; correct; incorrect; fix; (per selection)}` | CHOICE / MULTIPLE-CHOICE only: score specific selections |
+
+**Examples:**
+- `{reading; 2}` — up to 2 points, proportional to the question score
+- `{reading; 0; 2; -2; 0}` — +2 if correct, −2 if incorrect
+- `{reading; 0; 0; 0; 1; (answer:1:2; option:2:-3; option:3:-1)}` — per-selection scoring:
+  each entry is `type:index:points` (`;`-separated), where `type` is `answer` or `option` and
+  `index` is the index of that answer/option
+
+**Rules:**
+- `identifier` is the unique identifier of a skill **defined in the Quiz set** — skills not
+  defined there are ignored. Look them up with `edubase_get_quiz_skills` (or
+  `edubase_get_exam_skills` for an Exam) when working via MCP.
+- Negative points are allowed (see extended notation) to penalize a skill on wrong answers.
 
 ---
 
@@ -246,7 +278,7 @@ LaTeX: `$$inline$$` and `$$$$block$$$$` (only when QUESTION_FORMAT=LATEX)
 When using `edubase_post_question`, the fields map directly to the columns above.
 Key fields: `content` (normally `question`), `answer`, `type`, `subject`, `category`, `main_category`, `language`,
 `hotspot_image`, `hotspot_zones`, `options`, `parameters`, `constraints`, `difficulty`, `points`,
-`explanation`, `hint`, `solution`, `note`, `tags`, `id` (normally `external_id`), `grouping`.
+`explanation`, `hint`, `solution`, `note`, `tags`, `skills`, `id` (normally `external_id`), `grouping`.
 
 For detailed field-by-field reference, see `references/fields-reference.md`.
 

@@ -200,7 +200,8 @@ Discuss the advantages and disadvantages of nuclear energy. (10 marks)
 
 **Maps to:** FREE-TEXT
 - FREETEXT_WORDS or FREETEXT_CHARACTERS if length is specified
-- If rubric/marking criteria exist → encode as FREETEXT_RULES
+- If keyword-based auto-checks make sense → encode as FREETEXT_RULES
+- If rubric/marking criteria exist → encode as RUBRIC_CRITERIA (`{criterion; points%}` via `&&&`)
 - Put model answer (if available) in SOLUTION, not ANSWER
 - MANUAL_SCORING = ALWAYS or NOT_CORRECT (needs human moderator)
 

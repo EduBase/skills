@@ -91,6 +91,11 @@ Every build operation has a dependency chain. Walk it **bottom-up**:
    - If the user mentions people by name/email → look them up via `edubase_get_user_search`.
    - If they mention a class → get members via `edubase_get_class_members`.
 
+4. **Skills must be defined in the Quiz set** before question-level skill scoring
+   (the `SKILLS` field) has any effect.
+   - List the defined skills via `edubase_get_quiz_skills` (or `edubase_get_exam_skills`
+     for an Exam) and use their exact identifiers — unknown identifiers are silently ignored.
+
 Present a brief dependency summary only when prerequisites are missing. If everything is in
 place, skip straight to execution.
 
@@ -148,6 +153,30 @@ edubase_delete_quiz_questions
 
 This only detaches the questions from the Quiz set. The questions themselves remain in the
 user's QuestionBase.
+
+#### Working with Quiz Set Skills
+
+A Quiz set can define **skills** — named competences (e.g. "reading", "problem solving")
+that accumulate their own score alongside the regular quiz score. Questions opt into skill
+scoring through their `SKILLS` field (see `edubase-question-creator` for the notation).
+
+```
+edubase_get_quiz_skills
+  quiz — Quiz identification string
+→ returns the defined skills: identifier, name, optional description
+
+edubase_get_exam_skills
+  exam — exam identification string
+→ same, for the Quiz set backing the Exam
+```
+
+Workflow when the user wants skill-based scoring:
+1. Fetch the defined skills with `edubase_get_quiz_skills` (skills are defined at the Quiz
+   set level — currently in the web UI, not via MCP).
+2. When creating or updating questions for that Quiz set, pass the exact skill identifiers
+   in the question's `skills` field. Identifiers not defined in the Quiz set are ignored.
+3. Exams inherit the skills of their backing Quiz set — nothing extra to configure at the
+   Exam layer.
 
 #### Creating an Exam
 

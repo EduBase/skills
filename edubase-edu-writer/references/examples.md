@@ -53,6 +53,7 @@ European capitals
 % [X] NO
 % [ ] NOT_CORRECT
 % [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
 %------PENALTY_POINTS------%
 %------PENALTY_SCORING------%
 % [X] DEFAULT
@@ -102,6 +103,7 @@ Paris has been the capital of France since the 10th century.
 %------MEDIA_VIDEO------%
 %------MEDIA_AUDIO------%
 %------OPTIONS_ORDER------%
+%------SKILLS------%
 %------NUMERICAL_RANGE------%
 %------FREETEXT_CHARACTERS------%
 %------FREETEXT_WORDS------%
@@ -182,6 +184,7 @@ Geometry
 % [X] NO
 % [ ] NOT_CORRECT
 % [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
 %------PENALTY_POINTS------%
 %------PENALTY_SCORING------%
 % [X] DEFAULT
@@ -233,6 +236,7 @@ Recall: Area of rectangle = base × height
 %------MEDIA_VIDEO------%
 %------MEDIA_AUDIO------%
 %------OPTIONS_ORDER------%
+%------SKILLS------%
 %------NUMERICAL_RANGE------%
 %------FREETEXT_CHARACTERS------%
 %------FREETEXT_WORDS------%
@@ -313,6 +317,7 @@ Animal classification
 % [X] NO
 % [ ] NOT_CORRECT
 % [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
 %------PENALTY_POINTS------%
 %------PENALTY_SCORING------%
 % [X] DEFAULT
@@ -360,6 +365,7 @@ Animal classification
 %------MEDIA_VIDEO------%
 %------MEDIA_AUDIO------%
 %------OPTIONS_ORDER------%
+%------SKILLS------%
 %------NUMERICAL_RANGE------%
 %------FREETEXT_CHARACTERS------%
 %------FREETEXT_WORDS------%
@@ -439,6 +445,7 @@ Human anatomy
 % [X] NO
 % [ ] NOT_CORRECT
 % [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
 %------PENALTY_POINTS------%
 %------PENALTY_SCORING------%
 % [X] DEFAULT
@@ -486,6 +493,7 @@ Human anatomy
 %------MEDIA_VIDEO------%
 %------MEDIA_AUDIO------%
 %------OPTIONS_ORDER------%
+%------SKILLS------%
 %------NUMERICAL_RANGE------%
 %------FREETEXT_CHARACTERS------%
 %------FREETEXT_WORDS------%
@@ -551,11 +559,34 @@ Not sure
 
 ---
 
+## SKILLS — Skill scoring snippet
+
+When the question should contribute to skills defined in the target Quiz set, fill the
+`SKILLS` section (right after `OPTIONS_ORDER`):
+
+```
+%------SKILLS------%
+{reading; 2}
+```
+
+Extended notation and multiple skills:
+
+```
+%------SKILLS------%
+{reading; 0; 2; -2; 0} &&& {comprehension; 1}
+```
+
+See the `edubase-question-creator` skill for the full notation (simple / extended / per-selection).
+Skill identifiers not defined in the Quiz set are ignored.
+
+---
+
 ## Key Reminders
 
 - TYPE in EDU uses `NUMERICAL` not `NUMERIC`
 - `EXPRESSION_EXPLICIT_GOAL` in EDU = `EXPRESSION_RANDOM_GOAL` in XLSX
 - Template defaults `QUESTION_FORMAT` to `LATEX` — change to `NORMAL` when no math
 - `SUBSCORING` spells it `LINEAR_SUBSTRACTED` (with D, not C)  
-- ALL 74 section headers must appear in every file, even if content is empty
+- ALL 76 section headers must appear in every file, even if content is empty
+  (including the newer `RUBRIC_CRITERIA` and `SKILLS` sections)
 - Section order must exactly match the template order

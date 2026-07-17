@@ -56,6 +56,19 @@ required.
 |-----------|----------|----------------------------|
 | `quiz`    | [!]      | Quiz identification string |
 
+### Get skills defined in a Quiz set
+**Tool:** `edubase_get_quiz_skills`
+
+| Parameter | Required | Notes                      |
+|-----------|----------|----------------------------|
+| `quiz`    | [!]      | Quiz identification string |
+
+**Returns:** list of skills, each with `identifier`, `name`, and optional `description`.
+
+Skills are defined at the Quiz set level (in the web UI). Questions reference these
+identifiers in their `skills` field to alter skill scoring — identifiers not defined in
+the Quiz set are ignored.
+
 ---
 
 ## Quiz Set Question Management
@@ -138,6 +151,17 @@ ACTIVE/PAUSED/REVIEW/EXPIRED), start/end times.
 | `exam`    | [!]      | Exam identification string |
 
 ⚠️ **Destructive.** Results associated with this exam may be lost. Always confirm with user.
+
+### Get skills for an Exam
+**Tool:** `edubase_get_exam_skills`
+
+| Parameter | Required | Notes                      |
+|-----------|----------|----------------------------|
+| `exam`    | [!]      | Exam identification string |
+
+**Returns:** the skills defined in the Quiz set backing the Exam, each with `identifier`,
+`name`, and optional `description`. (Exams inherit skills from their Quiz set — there is
+no Exam-level skill configuration.)
 
 ---
 

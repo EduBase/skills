@@ -125,7 +125,9 @@ implementation helper.
 
 **Essay / long answer in source → FREE-TEXT**
 - Set FREETEXT_CHARACTERS or FREETEXT_WORDS if the source specifies length
-- If the source has a rubric/keywords, encode as FREETEXT_RULES
+- If the source has automatic keyword checks, encode as FREETEXT_RULES
+- If the source has a grading rubric (criteria with weights), encode as RUBRIC_CRITERIA
+  (`{criterion; points%}` entries via `&&&`)
 - If an answer key exists, put it in SOLUTION (not ANSWER — FREE-TEXT answers are moderated)
 
 **Diagram-based in source → HOTSPOT or CHOICE/TEXT**
