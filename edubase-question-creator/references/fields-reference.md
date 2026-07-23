@@ -404,7 +404,7 @@ RUBRIC_CRITERIA: {Structure; 40} &&& {Argumentation; 40} &&& {Grammar; 20}
 ## SKILLS
 
 Sets how the question alters the scoring of **skills defined in the Quiz set**. Skills are
-named competences (defined at the Quiz set level) that accumulate their own score alongside
+named competencies (defined at the Quiz set level) that accumulate their own score alongside
 the regular question score. Exams inherit the skills of their backing Quiz set.
 
 ### Simple notation

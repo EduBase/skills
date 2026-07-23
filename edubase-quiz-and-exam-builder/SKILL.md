@@ -156,7 +156,7 @@ user's QuestionBase.
 
 #### Working with Quiz Set Skills
 
-A Quiz set can define **skills** — named competences (e.g. "reading", "problem solving")
+A Quiz set can define **skills** — named competencies (e.g. "reading", "problem solving")
 that accumulate their own score alongside the regular quiz score. Questions opt into skill
 scoring through their `SKILLS` field (see `edubase-question-creator` for the notation).
 

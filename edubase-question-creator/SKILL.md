@@ -184,7 +184,7 @@ Duplicate = skipped (enables safe re-uploading of same file).
 
 ## Skill Scoring (SKILLS column)
 
-Quiz sets (and the Exams built on them) can define **skills** — named competences that get
+Quiz sets (and the Exams built on them) can define **skills** — named competencies that get
 their own score alongside the regular question score. The `SKILLS` column sets how a question
 alters the scoring of those skills.
 

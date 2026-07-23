@@ -128,8 +128,8 @@ assignments.
 
 ## Skills Within Quiz Sets
 
-A Quiz set can define **skills** — named competences (e.g. "reading", "problem solving")
-that are scored separately from the regular quiz score. This enables competence-based
+A Quiz set can define **skills** — named competencies (e.g. "reading", "problem solving")
+that are scored separately from the regular quiz score. This enables competency-based
 reporting: a single quiz produces one overall score plus a per-skill breakdown.
 
 ### How the pieces fit together
