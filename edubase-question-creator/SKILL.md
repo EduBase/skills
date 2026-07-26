@@ -201,7 +201,7 @@ alters the scoring of those skills.
 - `{reading; 0; 2; -2; 0}` — +2 if correct, −2 if incorrect
 - `{reading; 0; 0; 0; 1; (answer:1:2; option:2:-3; option:3:-1)}` — per-selection scoring:
   each entry is `type:index:points` (`;`-separated), where `type` is `answer` or `option` and
-  `index` is the index of that answer/option
+  `index` is the index of that answer/option (1-based). In this example, selecting answer 1 gives +2 points, option 2 gives −3 points, and option 3 gives −1 point.
 
 **Rules:**
 - `identifier` is the unique identifier of a skill **defined in the Quiz set** — skills not
