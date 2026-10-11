@@ -2,7 +2,7 @@
 
 This reference helps you recognize what EduBase question type an existing question maps to,
 based on how it appears in the source document. Use it during Phase 2 (Recognition & Mapping)
-of the content digitizer workflow.
+of the question extractor workflow.
 
 ---
 
@@ -61,7 +61,8 @@ Mark each statement as True or False:
 **Maps to:** TRUE/FALSE
 - ANSWER = true statements, `&&&` separated
 - OPTIONS = false statements, `&&&` separated
-- If there's a "Not sure" / "Cannot determine" option → TRUEFALSE_THIRD_OPTIONS
+- If there's a third category ("Not stated" / "Cannot determine") → list the statements that
+  belong to it in TRUEFALSE_THIRD_OPTIONS and name it in TRUEFALSE_THIRD_OPTIONS_LABEL
 
 ---
 
@@ -202,8 +203,8 @@ Discuss the advantages and disadvantages of nuclear energy. (10 marks)
 - FREETEXT_WORDS or FREETEXT_CHARACTERS if length is specified
 - If keyword-based auto-checks make sense → encode as FREETEXT_RULES
 - If rubric/marking criteria exist → encode as RUBRIC_CRITERIA (`{criterion; points%}` via `&&&`)
-- Put model answer (if available) in SOLUTION, not ANSWER
-- MANUAL_SCORING = ALWAYS or NOT_CORRECT (needs human moderator)
+- ANSWER is mandatory: use the model answer / answer key (scored semi-automatically, not by exact match)
+- Do not set MANUAL_SCORING — it does not apply to FREE-TEXT (moderation is built in)
 
 ---
 
@@ -277,7 +278,8 @@ Read the following passage carefully, then answer questions 5-8 below.
 **Maps to:** READING (for the passage itself)
 - READING type = non-assessed display
 - Followed by actual questions (CHOICE, TEXT, etc.) that reference the passage
-- Group them using the GROUPING column
+- Keep them together in one question group of the Quiz set (`GROUP` column or the `group`
+  parameter of `edubase_post_quiz_questions`) — not the `GROUPING` column
 
 ---
 

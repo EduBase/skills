@@ -14,9 +14,11 @@ field that isn't fully covered in SKILL.md.
 8. [MATRIX and SET](#matrix-and-set)
 9. [Parameterization deep-dive](#parameterization-deep-dive)
 10. [Scoring columns](#scoring-columns)
-11. [SKILLS column](#skills-column)
+11. [SKILLS](#skills)
 12. [TOLERANCE methods](#tolerance-methods)
-13. [GRAPH column](#graph-column)
+13. [GRAPH](#graph)
+14. [FREETEXT_RULES](#freetext_rules)
+15. [FILE limits](#file-limits)
 
 ---
 
@@ -105,13 +107,21 @@ ANSWER: Item1 >>> Target1 &&& Item2 >>> Target2
 - ANSWER = true statements (separated by `&&&`)
 - OPTIONS = false statements (separated by `&&&`)
 - All statements shown in random order
-- Third option: TRUEFALSE_THIRD_OPTIONS=+ or list custom texts with `&&&`
+- Third category: `TRUEFALSE_THIRD_OPTIONS=+` to just show it, or list the statements that belong to it
+  with `&&&`; name it with `TRUEFALSE_THIRD_OPTIONS_LABEL` (default: "none")
+```
+ANSWER:                        The Earth orbits the Sun.
+OPTIONS:                       The Sun orbits the Earth.
+TRUEFALSE_THIRD_OPTIONS:       There is life on Europa.
+TRUEFALSE_THIRD_OPTIONS_LABEL: Unknown
+```
 
 ### NUMERICAL
 - Single value: `42` or `3.14` or `22/7`
 - Constants: `pi`, `e`
 - Interval: `{2.5}-{7.5}` or with notation: `[2.5;7.5]`, `]2.5;7.5[`, `(2.5;7.5)`, `[2.5;7.5[`
 - Multiple answers: `3 &&& -3` (both ±3 accepted)
+- With parameters: `{a}+{b}` (evaluated per student), or a FORMULA parameter: `{sum}`
 - Use `DECIMALS` column for precision (default: 2)
 
 ### DATE/TIME
@@ -142,6 +152,21 @@ ANSWER: Item1 >>> Target1 &&& Item2 >>> Target2
 - SET: numeric values
 - SET:TEXT: text values
 - Repetitions and order don't matter
+
+### ANSWER_INDEFINITE
+- `ANSWER_INDEFINITE=+` lets the test taker add or remove input fields with + and − buttons,
+  so they can enter any number of answers (default: `-`, a fixed number of fields)
+- Answer labels are not shown when enabled
+- Ignored for CHOICE, MULTIPLE-CHOICE, TRUE/FALSE, ORDER, GROUPING and PAIRING
+- Full points are given once enough correct answers are entered, even if incorrect ones are added too;
+  combine with `ANSWER_REQUIRE` when only some of the correct answers are needed:
+```
+TYPE:              TEXT
+QUESTION:          Name at least three noble gases.
+ANSWER:            helium &&& neon &&& argon &&& krypton &&& xenon &&& radon
+ANSWER_INDEFINITE: +
+ANSWER_REQUIRE:    3
+```
 
 ---
 
@@ -261,6 +286,7 @@ EXPRESSION_RANDOM_OUTSIDE: [0-1] ||| [9-10]        (AND between intervals)
 ```
 EXPRESSION_RANDOM_GOAL: [0;1] &&& [3;8.89] &&& [9;16]
 ```
+(Named `EXPRESSION_EXPLICIT_GOAL` in EDU files and `expression_explicit_goal` via MCP.)
 Format: `[x;f(x)]` or `[x;y;z;f(xyz)]` for multiple variables.
 
 ### EXPRESSION_VARIABLE
@@ -280,6 +306,12 @@ gcd(a;b), lcm(a;b), number2base(n;b), base2number(n;b), combinations(n;k),
 combinations_repetition(n;k), variations(n;k), variations_repetition(n;k)`
 
 Extended (EXPRESSION_EXTENDED=+): `logN(x)` e.g. `log2(4)`, factorials `5!`
+
+### EXPRESSION_FUNCTIONS
+- `+` (default): the test taker may use the functions above in their answer
+- `-`: functions are not accepted in the answer, e.g. when asked for the value of `sin(pi)`,
+  typing `sin(pi)` is not accepted, the value has to be entered
+- Applies to EXPRESSION and MATRIX:EXPRESSION
 
 ---
 
@@ -377,7 +409,7 @@ Allowed: `<`, `<=`, `=`, `>=`, `>`, `<>`
 | SUBPOINTS | Percentages per answer, `&&&` separated (required with CUSTOM) |
 | MANUAL_SCORING | `NO` / `NOT_CORRECT` / `ALWAYS` |
 | RUBRIC_CRITERIA | `{criterion; points}` entries, `&&&` separated |
-| SKILLS | `{identifier; points}` entries, `&&&` separated (see [SKILLS column](#skills-column)) |
+| SKILLS | `{identifier; points}` entries, `&&&` separated (see [SKILLS](#skills)) |
 | PENALTY_SCORING | `DEFAULT` / `PER_ANSWER` / `PER_QUESTION` |
 | PENALTY_POINTS | Numeric penalty for wrong answer |
 | HINT_PENALTY | `NONE` / `ONCE:20%` / `ONCE:0.2` / `PER-HELP:10%` |
@@ -486,3 +518,17 @@ FREETEXT_RULES: {4; missing}         — wrong if none of these present
 - type 2: keywords present → wrong
 - type 3: none present → correct
 - type 4: none present → wrong
+
+---
+
+## FILE Limits
+
+For FILE questions (the test taker uploads files, scored manually or with `RUBRIC_CRITERIA`):
+```
+FILE_COUNT: 3                    — at most 3 files (1-25, default: 1)
+FILE_TYPES: pdf, docx, odt       — allowed extensions, comma-separated
+```
+- `FILE_TYPES` takes **commas**, not `&&&`; a leading dot is optional (`.pdf` = `pdf`)
+- Leave `FILE_TYPES` empty to accept any file type
+- Both are ignored for other question types
+- Via MCP: the `file_count` and `file_types` fields of `edubase_post_question`

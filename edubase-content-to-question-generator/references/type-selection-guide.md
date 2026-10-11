@@ -1,7 +1,7 @@
 # Type Selection Guide — Content to Question Type Mapping
 
 This reference helps you choose the best EduBase question type for a given piece of
-source content. Use it during Phase 2 (Question Opportunity Plan) of the content importer workflow.
+source content. Use it during Phase 2 (Question Opportunity Plan) of the content-to-question generator workflow.
 
 ---
 
@@ -111,7 +111,7 @@ Ask yourself for each question:
 
 **Parameterized version**:
 - QUESTION: A car traveling at {v} km/h brakes and stops in {t} seconds. What is the deceleration in m/s^2?
-- ANSWER: ~~~{v}/3.6/{t}~~~
+- ANSWER: {v}/3.6/{t}
 - TYPE: NUMERICAL
 - PARAMETERS: {v; INTEGER; 30; 120} &&& {t; INTEGER; 2; 10}
 - CONSTRAINTS: {v}/3.6/{t}<20

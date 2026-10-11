@@ -22,7 +22,7 @@ rely on the `edubase-question-creator` skill. For EDU file output, rely on the
 `edubase-edu-writer` skill. This skill handles the **conversion workflow**: analyzing content,
 selecting question types, and guiding generation.
 
-### User preferences override defaults
+## User preferences override defaults
 
 Everything in this skill is **default guidance**. When the user states **explicit constraints**
 - e.g. "10 simple CHOICE questions", only NUMERICAL items, skip the plan, a fixed count, or a
@@ -34,7 +34,7 @@ pitch: the user may simply not know what EduBase allows. **Do not** push them to
 repeat the same suggestion if they decline, or treat defaults as mandatory when they have been
 clear.
 
-### Compliance mode (detect → confirm → apply)
+## Compliance mode (detect → confirm → apply)
 
 When source material appears **compliance- or policy-related** (filename, vocabulary, regulatory
 references, mandatory-training structure — see `references/compliance-guide.md`), **propose**
@@ -66,7 +66,7 @@ Detection is never silent — always check with the user unless they already cho
 |--------|-------------|
 | **PPTX** | **Preferred** for slide decks, especially when slides use **overlapping animation builds** (content revealed step-by-step on one slide). Native PowerPoint preserves the full final state and speaker notes; use slide-by-slide extraction. |
 | **PDF (exported from PPTX)** | Acceptable for static slides with no build-up logic. **Avoid** when the deck relies on animations/layers — export often flattens or drops incremental content, so questions may miss facts that only appear on later animation steps. **Call this out** if the user offers PDF but mentions animated or build slides; recommend uploading PowerPoint instead. |
-| **DOCX, images, pasted text** | As before |
+| **DOCX, images, pasted text** | Fully supported; for scans/images, check OCR quality before planning questions |
 
 #### Slide / PowerPoint parsing (when source is a deck)
 
@@ -196,8 +196,11 @@ Ask the user which output format they prefer:
 
 For MCP publishing:
 - Upload images first via `edubase_post_filebin_upload` → `edubase_filebin`
-- Then create questions via `edubase_post_question`
+- Then create questions via `edubase_post_question` — `id` (a stable external identifier, e.g.
+  `<deck>-q01`) and `ai` (your model name) are required; re-posting the same `id` updates the question
 - Report success/failure per question
+- If the questions should become a Quiz set or Exam, hand over to the `edubase-quiz-and-exam-builder`
+  skill with the returned question identification strings
 
 ---
 

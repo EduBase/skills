@@ -1,5 +1,5 @@
 ---
-name: edubase-quiz-exam-builder
+name: edubase-quiz-and-exam-builder
 description: >
   Builds, assembles, and manages EduBase Quiz sets and Exams end-to-end — from grouping questions
   into Quiz sets, to creating time-boxed Exams, assigning users, and configuring branding.
@@ -81,15 +81,18 @@ Every build operation has a dependency chain. Walk it **bottom-up**:
 1. **Questions must exist** before they can be added to a Quiz set.
    - If the user provides question content inline → delegate to `edubase-question-creator` to
      create them first, collect the returned question identification strings.
-   - If the user references existing questions → verify they exist via `edubase_get_question`.
+   - If the user references existing questions → verify they exist via `edubase_get_question`
+     (takes the external `id`; `edubase_get_question_id` maps an identification string to it).
 
 2. **A Quiz set must exist** before an Exam can reference it.
    - If the user wants an Exam but has no Quiz set yet → create one first.
    - If they reference an existing Quiz set → verify via `edubase_get_quiz`.
 
 3. **Users must exist** before they can be assigned to an Exam.
-   - If the user mentions people by name/email → look them up via `edubase_get_user_search`.
+   - If the user mentions people by email/username → look them up via `edubase_get_user_search(query=...)`.
    - If they mention a class → get members via `edubase_get_class_members`.
+   - If examinees have no EduBase accounts → generate exam accounts with
+     `edubase_post_exam_users_generate` (after the Exam exists).
 
 4. **Skills must be defined in the Quiz set** before question-level skill scoring
    (the `SKILLS` field) has any effect.
@@ -109,7 +112,7 @@ Execute the operations in the correct order. See the MCP Tool Reference in
 ```
 edubase_post_quiz
   title       — descriptive name
-  type        — "set" (practice), "exam" (assessment), or "private" (testing)
+  type        — "set" (practice), "final" (course exam), "exam" (assessment), or "private" (testing)
   mode        — "TEST" (all questions at once) or "TURNS" (one-by-one)
   language    — ISO 639-1 code
   description — optional short blurb
@@ -118,6 +121,7 @@ edubase_post_quiz
 
 **Choosing `type`:**
 - `set` → the Quiz set appears in practice mode; students can replay freely.
+- `final` → the Quiz set is the final exam of a course.
 - `exam` → the Quiz set is intended to back Exams; stricter by convention.
 - `private` → invisible to students; use for internal testing before going live.
 
@@ -129,6 +133,11 @@ edubase_post_quiz
 
 After creation, the returned `quiz` identification string is the handle for all subsequent
 operations.
+
+**Quiz set settings** (shuffle, time limits, grading) are separate from creation:
+`edubase_get_quiz_settings` / `edubase_post_quiz_settings` (`shuffle`, `timelimit` in seconds,
+`roundtime` for TURNS mode, `grading` preset from `edubase_get_quiz_grading_presets`).
+Rename or re-describe with `edubase_patch_quiz`.
 
 #### Populating a Quiz Set with Questions
 
@@ -186,33 +195,42 @@ An Exam is always built **on top of** an existing Quiz set.
 edubase_post_exam
   title     — exam title (shown to students)
   quiz      — Quiz set identification string (the source of questions)
-  open      — start time, "YYYY-MM-DD HH:ii:ss" in UTC
-  close     — end time, "YYYY-MM-DD HH:ii:ss" in UTC
-  type      — "exam" | "homework" | "survey" | "championship"
+  start     — start time, "YYYY-MM-DD HH:ii:ss" in UTC
+  end       — end time, "YYYY-MM-DD HH:ii:ss" in UTC
+  type      — "exam" (default) | "homework" | "survey" | "championship"
   language  — optional ISO 639-1 code
   id        — optional external identifier
-  copy_settings — optional: exam ID to clone settings from
+  copy_settings — optional: exam identification string to clone settings from
 ```
+
+`title`, `quiz`, `start` and `end` are required. Change details later with `edubase_patch_exam`
+(title, dates, `deadline` = latest allowed start; `start` only until the first result arrives).
+All of these date-times are UTC as well.
 
 **Exam types explained:**
 
 | Type           | Behavior                                                         |
 |----------------|------------------------------------------------------------------|
-| `exam`         | Standard timed assessment. Once started, must be completed.      |
-| `homework`     | Can be paused and resumed within the open/close window.          |
-| `survey`       | No grading. Optionally anonymous. For feedback collection.       |
+| `exam`         | Standard timed assessment. Not pausable unless enabled in settings. |
+| `homework`     | Always pausable; can be resumed within the start/end window.     |
+| `survey`       | Never graded; results cannot be viewed later. For feedback.      |
 | `championship` | Competitive mode with leaderboard and championship features.     |
 
-**Exam statuses** (read-only, determined by time and admin actions):
-- `INACTIVE` → before `open` time
-- `ACTIVE` → between `open` and `close`, accepting new attempts
-- `PAUSED` → admin-paused, no new attempts but existing ones may continue
-- `REVIEW` → in review period (after main window, before full close)
-- `EXPIRED` → after `close` time
+**Exam statuses** (reported by `edubase_get_exam`, determined by time and admin actions):
+- `INACTIVE` → before `start` time
+- `ACTIVE` → between `start` and `end`, accepting new attempts
+- `PAUSED` → new attempts disabled (`edubase_post_exam_status(status=false)`), running ones continue
+- `REVIEW` → in the results viewing period (`view_results_start` setting, UTC)
+- `EXPIRED` → after `end` time
 
 **Cloning settings:** Use `copy_settings` to replicate configuration (time limits, retake
 policies, display options) from a previous exam. Add `keep_certificate_settings: true` if you
-also want to copy certificate templates.
+also want to copy certificate templates. For an existing exam, `edubase_put_exam_settings`
+replaces all settings from a source exam and `edubase_patch_exam_settings` copies only the unset ones.
+
+**Individual exam settings:** `edubase_get_exam_settings` / `edubase_post_exam_settings` —
+e.g. `timelimit` (seconds), `pausable`, `view_results` (when results are visible), `grading`,
+`hide_points`, and results-export options.
 
 #### Assigning Users to an Exam
 
@@ -223,8 +241,11 @@ edubase_post_exam_users
 ```
 
 To enroll an entire class, first retrieve its members, then assign them:
-1. `edubase_get_class_members(class=...)` → get list of user IDs
+1. `edubase_get_class_members(class=...)` → get list of user IDs (skip inactive memberships)
 2. `edubase_post_exam_users(exam=..., users=<comma-separated IDs>)`
+
+To create dedicated exam accounts instead (e.g. external candidates), use
+`edubase_post_exam_users_generate` with `names` or `count` and username/password patterns.
 
 To remove users:
 ```
@@ -236,23 +257,22 @@ edubase_delete_exam_users
 #### Configuring Exam Branding
 
 ```
-edubase_post_exam_branding (if available via MCP)
+edubase_post_exam_branding
   exam  — exam identification string
-  type  — "foreground" (logo) or "background" (cover image)
   image — base64-encoded image or URL (PNG/JPEG/WebP)
   color — "branding" | "red" | "blue" | "yellow" | "green" | "purple" | "gray"
+  type  — optional: "foreground" (logo, default) or "background" (cover image)
 ```
-
-If the branding tool is not available via MCP, inform the user they can configure branding
-in the EduBase web UI under the exam's settings.
 
 #### Tagging and Permissions
 
-Tags and permissions use the standard EduBase content operations:
-- `edubase_post_exam_tag` / `edubase_delete_exam_tag` — attach/detach tags
-- `edubase_post_exam_permission` / `edubase_delete_exam_permission` — grant/revoke user access
-- `edubase_post_quiz_tag` / `edubase_delete_quiz_tag` — same for Quiz sets
-- `edubase_post_quiz_permission` / `edubase_delete_quiz_permission` — same for Quiz sets
+Tags, permissions and ownership transfer use the generic content tools, with
+`type="exam"` or `type="quiz"` and `content=<identification string>`:
+- `edubase_post_content_tag` / `edubase_delete_content_tag` / `edubase_get_content_tags` —
+  attach/detach/list tags (find tag identification strings with `edubase_get_tags`)
+- `edubase_post_content_permission` / `edubase_delete_content_permission` /
+  `edubase_get_content_permission` — grant/revoke/check a user's access
+- `edubase_post_content_transfer` — transfer ownership (irreversible, confirm first)
 
 Permission levels: `view` / `report` / `control` / `modify` / `grant` / `admin`
 
@@ -267,7 +287,7 @@ After building, confirm the result back to the user with a summary:
 
 ✓ Exam "LA Midterm — Section A" created (ID: ex_def456)
   → Based on: qz_abc123
-  → Window: 2026-04-15 09:00 - 2026-04-15 11:00 UTC
+  → Window: 2026-04-15 09:00–11:00 CEST (07:00–09:00 UTC)
   → Type: exam
   → 42 students assigned
 ```
@@ -293,9 +313,12 @@ These are frequent multi-step requests. Handle them as a single fluid operation.
 ### "Duplicate last semester's exam with new dates"
 
 1. Get the old exam → `edubase_get_exam` to find its Quiz set
-2. Create new exam → `edubase_post_exam` with `copy_settings` pointing to the old exam
-3. Adjust open/close times
-4. Re-assign users (or assign a new class)
+2. Create new exam → `edubase_post_exam` with the new `start`/`end` and `copy_settings`
+   pointing to the old exam
+3. Re-assign users (or assign a new class)
+
+(To re-run the *same* exam for a new group instead, `edubase_post_exam_round` starts a new
+round — it detaches previous results from the exam accounts, so confirm first.)
 
 ### "Turn a practice quiz into a graded exam"
 
@@ -308,11 +331,14 @@ These are frequent multi-step requests. Handle them as a single fluid operation.
 
 ## Guardrails
 
-1. **Never delete an Exam that has results** without explicit user confirmation. Results
-   are permanently lost when an exam is archived.
+1. **Confirm irreversible actions first:** deleting/archiving a Quiz set or Exam (results may be
+   lost), transferring ownership, and starting a new exam round.
 
-2. **Time zones matter.** The API uses UTC. If the user gives local times, convert them.
-   Ask for their timezone if not obvious from context.
+2. **All API date-times are UTC.** Every date-time the tools accept (`start`, `end`, `deadline`,
+   `view_results_start`, class membership `expires`, …) and every date-time they return is UTC.
+   Convert the user's local times to UTC before sending (ask for their timezone if not obvious
+   from context), and convert returned times back to local time when reporting. When echoing
+   times, show both, e.g. `09:00 CEST (07:00 UTC)`.
 
 3. **Exam types are immutable after creation.** You cannot change an exam from `exam` to
    `homework` after the fact. Get it right at creation time. If the user wants to change

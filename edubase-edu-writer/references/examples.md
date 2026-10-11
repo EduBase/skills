@@ -45,7 +45,7 @@ European capitals
 1
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 %------SUBPOINTS------%
@@ -135,7 +135,7 @@ Paris has been the capital of France since the 10th century.
 
 ---
 
-## NUMERICAL — With parameterization and LaTeX
+## NUMERICAL — With parameterization
 
 ```
 %------LANGUAGE------%
@@ -170,13 +170,13 @@ Mathematics
 Geometry
 %------MAIN_CATEGORY------%
 %------PARAMETERS------%
-{w; INTEGER; 2; 20} &&& {h; INTEGER; 2; 20}
+{w; INTEGER; 2; 20} &&& {h; INTEGER; 2; 20} &&& {area; FORMULA; {w}*{h}}
 %------CONSTRAINTS------%
 %------POINTS------%
 1
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 %------SUBPOINTS------%
@@ -195,7 +195,7 @@ Geometry
 Give your answer in square units.
 %------PRIVATE_NOTE------%
 %------EXPLANATION------%
-Area = width × height = {w} × {h} = {w}*{h}
+Area = width × height = {w} × {h} = {area}
 %------SOLUTION------%
 %------SOLUTION_IMAGE------%
 %------HINT------%
@@ -205,8 +205,8 @@ Recall: Area of rectangle = base × height
 2
 %------ANSWER_REQUIRE------%
 %------QUESTION_FORMAT------%
-% [ ] NORMAL
-% [X] LATEX
+% [X] NORMAL
+% [ ] LATEX
 % [ ] LONG
 %------ANSWER_FORMAT------%
 %------SOURCE------%
@@ -309,7 +309,7 @@ Animal classification
 4
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 %------SUBPOINTS------%
@@ -437,7 +437,7 @@ Human anatomy
 1
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 %------SUBPOINTS------%
@@ -529,6 +529,9 @@ anatomy-diagram.png
 
 ## TRUE/FALSE — With third option
 
+The third category holds statements that are neither true nor false in the given context;
+`TRUEFALSE_THIRD_OPTIONS` lists those statements, `TRUEFALSE_THIRD_OPTIONS_LABEL` names the category.
+
 ```
 %------LANGUAGE------%
 en
@@ -541,20 +544,119 @@ Plants absorb CO2 during photosynthesis. &&& Sunlight is required for photosynth
 % [ ] MULTIPLE-CHOICE
 % [X] TRUE/FALSE
 % [ ] NUMERICAL
-...rest of type checkboxes as [ ]...
+% [ ] EXPRESSION
+% [ ] ORDER
+% [ ] GROUPING
+% [ ] PAIRING
+% [ ] MATRIX
+% [ ] MATRIX:EXPRESSION
+% [ ] SET
+% [ ] SET:TEXT
+% [ ] DATE/TIME
+% [ ] TEXT
+% [ ] FREE-TEXT
+% [ ] FILE
+% [ ] HOTSPOT
+% [ ] READING
+% [ ] GENERIC
 %------SUBJECT!------%
 Biology
 %------CATEGORY!------%
 Photosynthesis
 %------MAIN_CATEGORY------%
+%------PARAMETERS------%
+%------CONSTRAINTS------%
+%------POINTS------%
+3
+%------SUBSCORING------%
+% [X] PROPORTIONAL
+% [ ] LINEAR_SUBTRACTED:N
+% [ ] CUSTOM
+% [ ] NONE
+%------SUBPOINTS------%
+%------MANUAL_SCORING------%
+% [X] NO
+% [ ] NOT_CORRECT
+% [ ] ALWAYS
+%------RUBRIC_CRITERIA------%
+%------PENALTY_POINTS------%
+%------PENALTY_SCORING------%
+% [X] DEFAULT
+% [ ] PER_ANSWER
+% [ ] PER_QUESTION
 %------OPTIONS------%
 Plants release CO2 during photosynthesis. &&& Photosynthesis occurs in animal cells.
-...remaining sections blank...
+%------NOTE------%
+%------PRIVATE_NOTE------%
+%------EXPLANATION------%
+%------SOLUTION------%
+%------SOLUTION_IMAGE------%
+%------HINT------%
+%------VIDEO------%
+%------DIFFICULTY------%
+1
+%------ANSWER_REQUIRE------%
+%------QUESTION_FORMAT------%
+% [X] NORMAL
+% [ ] LATEX
+% [ ] LONG
+%------ANSWER_FORMAT------%
+%------SOURCE------%
+%------TAG------%
+%------DECIMALS------%
+%------MAXIMUM_CHOICES------%
+%------OPTIONS_FIX------%
+%------ANSWER_ORDER------%
+%------ANSWER_HIDE------%
+%------ANSWER_LABEL------%
+%------ANSWER_INDEFINITE------%
+%------GROUP------%
+%------EXPRESSION_CHECK------%
+%------EXPRESSION_DECIMALS------%
+%------EXPRESSION_RANDOM_TYPE------%
+%------EXPRESSION_RANDOM_TRIES------%
+%------EXPRESSION_RANDOM_RANGE------%
+%------EXPRESSION_RANDOM_INSIDE------%
+%------EXPRESSION_RANDOM_OUTSIDE------%
+%------EXPRESSION_EXPLICIT_GOAL------%
+%------EXPRESSION_EXTENDED------%
+%------EXPRESSION_FUNCTIONS------%
+%------EXPRESSION_VARIABLE------%
+%------IMAGE------%
+%------ATTACHMENT------%
+%------MEDIA_VIDEO------%
+%------MEDIA_AUDIO------%
+%------OPTIONS_ORDER------%
+%------SKILLS------%
+%------NUMERICAL_RANGE------%
+%------FREETEXT_CHARACTERS------%
+%------FREETEXT_WORDS------%
+%------FREETEXT_RULES------%
 %------TRUEFALSE_THIRD_OPTIONS------%
-I don't know
+Photosynthesis first evolved in cyanobacteria.
 %------TRUEFALSE_THIRD_OPTIONS_LABEL------%
-Not sure
-...remaining sections blank...
+Not covered in the lesson
+%------DATETIME_PRECISION------%
+%------DATETIME_RANGE------%
+%------GROUPING------%
+%------PARAMETERS_SYNC------%
+%------TOLERANCE------%
+% [ ] ABSOLUTE:N
+% [ ] RELATIVE:N
+% [ ] QUOTIENT
+% [ ] QUOTIENT2
+% [ ] QUOTIENT:SYNCED
+% [ ] QUOTIENT2:SYNCED
+%------GRAPH------%
+%------SOLUTION_PENALTY------%
+%------HINT_PENALTY------%
+%------VIDEO_PENALTY------%
+%------FILE_COUNT------%
+%------FILE_TYPES------%
+%------HOTSPOT_IMAGE------%
+%------HOTSPOT_ZONES------%
+%------TAGS------%
+%------EXTERNAL_ID------%
 ```
 
 ---
@@ -583,10 +685,10 @@ Skill identifiers not defined in the Quiz set are ignored.
 
 ## Key Reminders
 
-- TYPE in EDU uses `NUMERICAL` not `NUMERIC`
+- TYPE is `NUMERICAL`, never `NUMERIC`
 - `EXPRESSION_EXPLICIT_GOAL` in EDU = `EXPRESSION_RANDOM_GOAL` in XLSX
 - Template defaults `QUESTION_FORMAT` to `LATEX` — change to `NORMAL` when no math
-- `SUBSCORING` spells it `LINEAR_SUBSTRACTED` (with D, not C)  
+- `SUBSCORING` is spelled `LINEAR_SUBTRACTED` (not the legacy `LINEAR_SUBSTRACTED`)
 - ALL 76 section headers must appear in every file, even if content is empty
   (including the newer `RUBRIC_CRITERIA` and `SKILLS` sections)
 - Section order must exactly match the template order

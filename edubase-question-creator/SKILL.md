@@ -4,7 +4,7 @@ description: >
   Expert EduBase question creator for the EduBase Quizzing platform. Use this skill whenever the user wants
   to create, design, prepare, or upload questions to EduBase — including via XLSX spreadsheet, EDU files,
   ZIP archives, or the MCP API. Triggers on: creating quiz questions, building exam content, preparing
-  EduBase uploads, writing XLSX rows for EduBase, designing CHOICE/GROUPING/HOTSPOT/NUMERIC/PAIRING/TRUE-FALSE
+  EduBase uploads, writing XLSX rows for EduBase, designing CHOICE/GROUPING/HOTSPOT/NUMERICAL/PAIRING/TRUE-FALSE
   questions, setting up parameters or constraints, or any mention of EduBase question types or fields (ANSWER,
   OPTIONS, HOTSPOT_ZONES, PARAMETERS, etc.). Also use when the user asks for help formatting answers,
   structuring categories, or checking question correctness for EduBase.
@@ -40,7 +40,7 @@ For XLSX: one row = one question. After 3 blank rows, upload stops. No Excel for
 | GROUPING | | Assign items to groups, use when multiple items share the same target |
 | PAIRING | | Pair items together, use when there is a 1:1 unique mapping between items|
 | TRUE/FALSE | | True/false statements; can add 3rd option |
-| NUMERIC | # | Numerical values; supports intervals, fractions, pi/e |
+| NUMERICAL | # | Numerical values; supports intervals, fractions, pi/e |
 | DATE/TIME | 📅 | Calendar dates; many formats; BC/AD support |
 | EXPRESSION | ƒ | Formula evaluation |
 | MATRIX | [ ] | Matrix/vector evaluation |
@@ -111,7 +111,7 @@ Duplicate = skipped (enables safe re-uploading of same file).
 - `MAXIMUM_CHOICES`: limit selections (MULTIPLE-CHOICE only)
 - Options can be dynamically sourced from same group/category if not specified
 
-### NUMERIC
+### NUMERICAL
 - Supports: integers, floats, fractions (`a/b`), constants (`pi`, `e`)
 - Intervals: `{from}-{to}`
 - Open/closed: `[a;b]`, `]a;b[`, `(a;b)`, etc.
@@ -121,8 +121,9 @@ Duplicate = skipped (enables safe re-uploading of same file).
 ### TRUE/FALSE
 - `ANSWER`: true statements
 - `OPTIONS`: false statements
-- `TRUEFALSE_THIRD_OPTIONS`: add third option (+ or custom text)
-- `TRUEFALSE_THIRD_OPTIONS_LABEL`: label for third option
+- `TRUEFALSE_THIRD_OPTIONS`: enable a third category — `+` to just show it, or the statements that belong to it
+  (separated by `&&&`, enables it automatically)
+- `TRUEFALSE_THIRD_OPTIONS_LABEL`: label of the third category (default: "none"), e.g. `Cannot be determined`
 
 ### DATE/TIME
 - Precision: `YEAR`, `MONTH`, `DAY`
@@ -132,16 +133,25 @@ Duplicate = skipped (enables safe re-uploading of same file).
 - BC/AD supported
 
 ### FREE-TEXT
+- `ANSWER`: still mandatory — use the model answer / answer key (scoring is semi-automatic via
+  `FREETEXT_RULES` or a moderator, not exact matching)
 - `ANSWER_FORMAT`: `normal` or `code:language` (e.g. `code:python`)
 - `FREETEXT_CHARACTERS`: `min-max` (e.g. `-3000`, `100-`, `200-800`)
 - `FREETEXT_WORDS`: same format
 - `FREETEXT_RULES`: `{type; keyword1, keyword2}` — type 1-4 for include/exclude logic
+
+### FILE
+- `ANSWER`: still mandatory — describe what a correct submission contains (scoring is manual,
+  use `RUBRIC_CRITERIA` for the criteria)
+- `FILE_COUNT`: maximum number of uploaded files, 1-25 (default: 1)
+- `FILE_TYPES`: allowed file extensions, **comma-separated** (e.g. `pdf, docx, odt`); leave empty to allow any type
 
 ### EXPRESSION
 - Variables default to `x`; customize with `EXPRESSION_VARIABLE`
 - Check method: `EXPRESSION_CHECK` = `RANDOM` (default) / `EXPLICIT` / `COMPARE`
 - `EXPRESSION_RANDOM_RANGE`: `[min-max]` per variable, separated by `&&&`
 - `EXPRESSION_EXTENDED=+` for logN, factorial support
+- `EXPRESSION_FUNCTIONS=-` forbids functions in the test taker's input (default `+`), e.g. to make them evaluate `sin(pi)` instead of typing it
 - Use as few built-in functions as possible (they slow evaluation)
 
 ---
@@ -156,20 +166,21 @@ Duplicate = skipped (enables safe re-uploading of same file).
 | `ATTACHMENT` | Downloadable file from ZIP (not available to all users) |
 | `MEDIA_VIDEO` | VideoBase video code |
 | `MEDIA_AUDIO` | Audio filename from ZIP |
-| `GROUPING` | 0 = none; 1-255 = group number for question bonding |
-| `DIFFICULTY` | 0 (unclassified) to 5 (hardest) |
+| `GROUPING` | CHOICE/MULTIPLE-CHOICE only: number (1-255) shared by questions whose wrong options are pooled; ≠ TYPE=GROUPING, ≠ `GROUP` |
+| `DIFFICULTY` | 1 (very easy) to 5 (very difficult); 0 = not classified |
 | `POINTS` | Max score; missing answers reduce proportionally |
 | `ANSWER_ORDER` | `+` if order matters |
 | `ANSWER_LABEL` | Input field labels; auto-enables ANSWER_ORDER |
 | `ANSWER_REQUIRE` | How many answers needed for full score |
 | `ANSWER_HIDE` | `+` to hide correct answers on results page |
+| `ANSWER_INDEFINITE` | `+` lets test takers add any number of input fields (+/− buttons); answer labels are hidden; not for CHOICE, MULTIPLE-CHOICE, TRUE/FALSE, ORDER, GROUPING, PAIRING |
 | `NOTE` | Instruction shown below question |
 | `EXPLANATION` | Shown on results page with answer |
 | `HINT` | Guiding hints (not solutions); multiple via `&&&` |
 | `SOLUTION` | Step-by-step solution; multiple via `&&&` |
 | `SOLUTION_IMAGE` | Image shown with solution |
-| `SUBSCORING` | `PROPORTIONAL` / `LINEAR_SUBTRACTED:N` / `CUSTOM` / `NONE` |
-| `MANUAL_SCORING` | `NO` / `NOT_CORRECT` / `ALWAYS` |
+| `SUBSCORING` | `PROPORTIONAL` / `LINEAR_SUBTRACTED:N` / `CUSTOM` / `NONE`; not for CHOICE, READING, FREE-TEXT |
+| `MANUAL_SCORING` | `NO` / `NOT_CORRECT` / `ALWAYS`; not for READING, FREE-TEXT |
 | `RUBRIC_CRITERIA` | `{criterion; points%}` entries via `&&&`; for FILE/FREE-TEXT or with MANUAL_SCORING |
 | `SKILLS` | Skill scoring: `{identifier; points}` entries via `&&&` (see Skill Scoring below) |
 | `PENALTY_SCORING` | `DEFAULT` / `PER_ANSWER` / `PER_QUESTION` |
@@ -177,8 +188,10 @@ Duplicate = skipped (enables safe re-uploading of same file).
 | `HINT_PENALTY` | `NONE` / `ONCE:20%` / `PER-HELP:10%` |
 | `SOLUTION_PENALTY` | Same as HINT_PENALTY |
 | `EXTERNAL_ID` | For updating existing questions on re-upload |
+| `SOURCE` | Origin of the content (not shown to test takers) |
+| `PRIVATE_NOTE` | Internal note (not shown to test takers) |
 | `TAGS` | Tag IDs/codes; multiple via `&&&` |
-| `GROUP` | Question group name in Quiz set |
+| `GROUP` | Question group name in a Quiz set (only when uploading directly into a Quiz set) |
 
 ---
 
@@ -275,10 +288,20 @@ LaTeX: `$$inline$$` and `$$$$block$$$$` (only when QUESTION_FORMAT=LATEX)
 
 ## MCP API Field Mapping
 
-When using `edubase_post_question`, the fields map directly to the columns above.
-Key fields: `content` (normally `question`), `answer`, `type`, `subject`, `category`, `main_category`, `language`,
-`hotspot_image`, `hotspot_zones`, `options`, `parameters`, `constraints`, `difficulty`, `points`,
-`explanation`, `hint`, `solution`, `note`, `tags`, `skills`, `id` (normally `external_id`), `grouping`.
+When using `edubase_post_question`, the fields map to the columns above in lowercase
+(`hotspot_zones`, `answer_label`, `freetext_rules`, …), with a few differences:
+
+| Column | MCP field | Note |
+|--------|-----------|------|
+| `QUESTION` | `content` | |
+| `EXTERNAL_ID` | `id` | **Required** — external unique identifier (max 64 chars); re-posting the same `id` updates the question |
+| — | `ai` | **Required** — marks the question as AI-generated; set it to your model name |
+| `TYPE` | `type` | Lowercase: `choice`, `numerical`, `true/false`, `matrix:expression`, … |
+| `IMAGE`, `ATTACHMENT`, `MEDIA_AUDIO`, `HOTSPOT_IMAGE`, `SOLUTION_IMAGE` | same, lowercase | `filename=data`, where data is a filebin identifier (preferred), base64 or URL |
+| — | `path`, `organization` | Optional: QuestionBase folder and owning organization |
+
+`content`, `answer`, `type`, `id` and `ai` are the required fields. Look up an existing question
+with `edubase_get_question(id=...)`; get its full content with `edubase_post_question_export`.
 
 For detailed field-by-field reference, see `references/fields-reference.md`.
 

@@ -37,7 +37,7 @@ LAYER 3 — EXAMS (the event)
   ┌───────────────────────────────────────────────────┐
   │  Exam #1: "Midterm — Mon 9am"                     │
   │  → Questions from: Quiz set "Calculus Pool"       │
-  │  → Open: 2026-04-15 09:00   Close: 11:00          │
+  │  → Start: 2026-04-15 09:00   End: 11:00 (UTC)     │
   │  → Assigned: 42 students                          │
   └───────────────────────────────────────────────────┘
 
@@ -160,10 +160,12 @@ For the `SKILLS` field notation on questions, see the `edubase-question-creator`
 
 | Type           | Use case                      | Pause/resume? | Graded? | Leaderboard? |
 |----------------|-------------------------------|---------------|---------|--------------|
-| `exam`         | Formal assessment             | No            | Yes     | No           |
-| `homework`     | Take-home assignments         | Yes           | Yes     | No           |
+| `exam`         | Formal assessment             | Optional*     | Yes     | No           |
+| `homework`     | Take-home assignments         | Always        | Yes     | No           |
 | `survey`       | Feedback, course evaluations  | No            | No      | No           |
 | `championship` | Competitions, gamified tests  | No            | Yes     | Yes          |
+
+\* Only when the `pausable` exam setting is enabled (requires a non-blocking exam).
 
 ### When to recommend each type
 
@@ -171,8 +173,8 @@ For the `SKILLS` field notation on questions, see the `edubase-question-creator`
   timed. Most common for midterms, finals, certifications.
 - **homework**: The user wants students to work at their own pace over days/weeks. Students
   can pause and return. Best for problem sets, weekly assignments.
-- **survey**: The user wants to collect opinions or feedback, not test knowledge. Can be
-  anonymous. Best for course evaluations, exit surveys, needs assessments.
+- **survey**: The user wants to collect opinions or feedback, not test knowledge. Never
+  graded. Best for course evaluations, exit surveys, needs assessments.
 - **championship**: The user wants competitive elements — rankings, fastest-time boards,
   point accumulation. Best for quiz bowls, training competitions, gamified learning.
 
@@ -189,7 +191,7 @@ to preserve configuration).
 An Exam moves through these statuses based on time and admin actions:
 
 ```
-         open time                           close time
+         start time                          end time
             │                                     │
   INACTIVE  │  ACTIVE ──(admin pause)─→ PAUSED    │  EXPIRED
   ──────────┼─────────────────────────────────────┼──────────
@@ -198,17 +200,17 @@ An Exam moves through these statuses based on time and admin actions:
             │                  (optional window)  │
 ```
 
-- **INACTIVE**: Created but `open` hasn't arrived yet. Students see it listed but can't start.
+- **INACTIVE**: Created but `start` hasn't arrived yet. Students see it listed but can't start.
 - **ACTIVE**: Within the time window. Students can begin and complete attempts.
-- **PAUSED**: Admin has temporarily halted new attempts (existing in-progress attempts may
-  continue depending on settings). Useful for emergencies.
+- **PAUSED**: New attempts are disabled (`edubase_post_exam_status(status=false)`); tests
+  already running continue. Useful for emergencies. Re-enable with `status=true`.
 - **REVIEW**: A configured review period after the main window. Students can view their
   results but not start new attempts.
-- **EXPIRED**: Past `close` time. No further attempts possible.
+- **EXPIRED**: Past `end` time. No further attempts possible.
 
-These are read-only from the API — they're computed from the `open`/`close` times and any
-admin actions. The agent cannot directly set a status, only influence it by setting times
-or (in the case of pause) through the web UI.
+Statuses are computed from the `start`/`end` times (UTC, like every API date-time), the results viewing period and the
+new-attempt switch. The agent influences them through `edubase_patch_exam` (times),
+`edubase_post_exam_settings` (`view_results_start`) and `edubase_post_exam_status`.
 
 ---
 
@@ -218,6 +220,7 @@ This is a frequent source of confusion. They are **independent** settings at dif
 
 **Quiz set `type`** (set at Quiz creation):
 - `set` → Appears in practice mode. Students can access freely and replay.
+- `final` → The final exam of a course.
 - `exam` → Intended to back Exams. By convention, may be hidden from practice.
 - `private` → Hidden. For internal testing.
 

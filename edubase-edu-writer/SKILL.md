@@ -162,11 +162,11 @@ The EDU format uses slightly different names than the XLSX column names in a few
 
 | XLSX column name | EDU section name | Note |
 |-----------------|-----------------|------|
-| `NUMERIC` | `NUMERICAL` | TYPE checkbox says `NUMERICAL` |
-| `NUMERICAL_RANGE` | `NUMERICAL_RANGE` | Same |
-| `TAGS` | `TAGS` | End of file (org/user tags by ID) |
-| `TAG` | `TAG` | Earlier in file (legacy label field) |
 | `EXPRESSION_RANDOM_GOAL` | `EXPRESSION_EXPLICIT_GOAL` | Different name in EDU! |
+| `TAGS` | `TAGS` | End of file (org/user tags by ID) |
+| `TAG` | `TAG` | Earlier in file (legacy label field) — not the same as `TAGS` |
+
+The numeric question type is `NUMERICAL` everywhere (never `NUMERIC`).
 
 Always use the EDU section names listed in the Complete Section Order above.
 
@@ -215,11 +215,12 @@ For the semantics and full notation of both fields, see the `edubase-question-cr
 ```
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 ```
-Note: `LINEAR_SUBSTRACTED` (with D) — this is the spelling in the EDU format.
+Replace `N` with the points subtracted per error and mark it, e.g. `% [X] LINEAR_SUBTRACTED:1`.
+Older templates and docs spell it `LINEAR_SUBSTRACTED` — always write `LINEAR_SUBTRACTED`.
 
 ### MANUAL_SCORING (default: NO)
 ```
@@ -247,6 +248,7 @@ Note: `LINEAR_SUBSTRACTED` (with D) — this is the spelling in the EDU format.
 ⚠️ The template defaults to LATEX — change to NORMAL if the question has no math.
 
 ### TOLERANCE (mark one, or leave all unchecked if not applicable)
+Replace `N` in the checked line with the value, e.g. `% [X] RELATIVE:5%` or `% [X] ABSOLUTE:0.1`.
 ```
 %------TOLERANCE------%
 % [ ] ABSOLUTE:N
@@ -280,25 +282,28 @@ Still include all section headers.
 ## Full Template
 
 The complete blank template is in `assets/template.edu`.
-Load it with `view /path/to/skill/assets/template.edu` when you need the exact blank structure.
+Read it when you need the exact blank structure.
 
 When generating output, reproduce the full template structure, substituting values into the
 appropriate sections. Do not omit any section headers, even if the content is empty.
 
 ---
 
-## Example — CHOICE question
+## Example — CHOICE question (beginning of file)
 
 ```
 %------LANGUAGE------%
 hu
 %------QUESTION!!------%
-Mi a főváros neve?
+Mi Magyarország fővárosa?
 %------ANSWER!!------%
 Budapest
 %------TYPE!!------%
-% [ ] CHOICE
-% [X] ...
+% [X] CHOICE
+% [ ] MULTIPLE-CHOICE
+...remaining TYPE options unchecked, then every other section in template order...
+%------OPTIONS------%
+Debrecen &&& Szeged &&& Pécs
 ```
 
 → See `references/examples.md` for complete worked examples for each major question type.

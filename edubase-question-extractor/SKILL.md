@@ -128,7 +128,8 @@ implementation helper.
 - If the source has automatic keyword checks, encode as FREETEXT_RULES
 - If the source has a grading rubric (criteria with weights), encode as RUBRIC_CRITERIA
   (`{criterion; points%}` entries via `&&&`)
-- If an answer key exists, put it in SOLUTION (not ANSWER — FREE-TEXT answers are moderated)
+- ANSWER is mandatory: put the model answer / answer key there (FREE-TEXT is scored
+  semi-automatically via FREETEXT_RULES or a moderator, not by exact matching)
 
 **Diagram-based in source → HOTSPOT or CHOICE/TEXT**
 - If the original requires pointing at an image → HOTSPOT
@@ -145,6 +146,14 @@ Same output options as the content-to-question generator:
 | **XLSX batch** | Large batches (10+ questions) | Generate spreadsheet with proper column headers |
 | **MCP API** | Direct publish to EduBase | Use `edubase_post_question` per question |
 | **Preview only** | Review before committing | Show structured table of all fields |
+
+For MCP publishing:
+- Upload images first via `edubase_post_filebin_upload` → `edubase_filebin`
+- Then create questions via `edubase_post_question` — `id` (a stable external identifier, e.g.
+  `<paper>-q01`) and `ai` (your model name) are required; re-posting the same `id` updates the question
+- Report success/failure per question
+- If the questions should become a Quiz set or Exam, hand over to the `edubase-quiz-and-exam-builder`
+  skill with the returned question identification strings
 
 ---
 
@@ -173,7 +182,9 @@ Same output options as the content-to-question generator:
 
 ### Source has questions but no clear answer key
 - Extract all questions with type mapping
-- Leave ANSWER blank for questions you can't determine
+- Leave ANSWER blank for questions you can't determine — but such questions **cannot be uploaded**
+  (EDU files with an empty ANSWER are skipped, and the MCP API requires `answer`), so keep them
+  out of the final output until the user supplies the answers
 - Present to user: "These N questions have no answer key. Would you like me to:
   (a) Leave answers blank for you to fill in, or (b) attempt to derive answers from
   the question context?"
@@ -197,5 +208,7 @@ Same output options as the content-to-question generator:
 ### Source has sub-questions (a, b, c under one stem)
 - Each sub-question becomes its own EduBase question
 - Copy the stem to each question (or use READING type for the stem + separate questions)
-- Maintain grouping via the GROUPING column (same group number)
+- Keep them together with the same question group: the `GROUP` column (only when uploading
+  directly into a Quiz set) or the `group` parameter of `edubase_post_quiz_questions`.
+  Do NOT use the `GROUPING` column — that pools wrong options between CHOICE questions
 - Prefix sub-questions: "Part (a): ...", "Part (b): ..."

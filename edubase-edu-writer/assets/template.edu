@@ -29,7 +29,7 @@
 %------POINTS------%
 %------SUBSCORING------%
 % [X] PROPORTIONAL
-% [ ] LINEAR_SUBSTRACTED:N
+% [ ] LINEAR_SUBTRACTED:N
 % [ ] CUSTOM
 % [ ] NONE
 %------SUBPOINTS------%

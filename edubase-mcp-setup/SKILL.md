@@ -29,7 +29,7 @@ The user needs an **App ID** and **Secret Key** from their EduBase account:
 
 1. Log in to EduBase → **Profile → Dashboard → Integrations**
    (Integrations may appear under *Additional elements*)
-2. Click **"Add integration"** → choose type **"EduBase API, MCP"**
+2. Click **"Add integration"** → choose type **"EduBase API"** (may be labelled *"EduBase API, MCP"*)
 3. Name it anything (e.g. *"Claude MCP"*)
 4. Click **Add** → the credentials appear:
    - **Application ID** (= `EDUBASE_API_APP`)
@@ -37,7 +37,7 @@ The user needs an **App ID** and **Secret Key** from their EduBase account:
    - **API URL** (= `EDUBASE_API_URL`, shown on the page)
 5. Copy both values immediately — the Secret Key is not shown again
 
-> **No "EduBase API, MCP" option?** Enter promo code `MCPGITHUB` or `MCPEduBaseBlog`
+> **No "EduBase API" option?** Enter promo code `MCPGITHUB` or `MCPEduBaseBlog`
 > on the integrations page, or contact info@edubase.net to request access.
 
 The API URL format is `https://<subdomain>.edubase.net/api`.
@@ -47,9 +47,11 @@ For the default public instance it is `https://www.edubase.net/api`.
 
 ## Step 2 — Install the MCP server
 
-Three installation methods. Pick whichever fits the user's environment.
+Several installation methods. Pick whichever fits the user's environment. If the user's
+EduBase instance hosts a remote MCP server with OAuth (Option D), that is the simplest — no
+credentials or local install needed.
 
-### Option A — Node.js
+### Option A — Node.js (npx)
 
 Prerequisites: Node.js installed (https://nodejs.org)
 
@@ -57,7 +59,7 @@ Prerequisites: Node.js installed (https://nodejs.org)
 {
   "mcpServers": {
     "edubase": {
-      "command": "node",
+      "command": "npx",
       "args": [
         "-y",
         "@edubase/mcp"
@@ -109,6 +111,11 @@ This handles everything automatically. Run it, then restart Claude Desktop.
 
 If the EduBase instance exposes `/mcp` (e.g. `https://domain.edubase.net/mcp`):
 
+- **With OAuth support:** add the URL directly as a custom connector in the client
+  (Claude: *Settings → Connectors → Add custom connector*) and approve the EduBase consent
+  screen. No App ID / Secret needed.
+- **Otherwise:** send the credentials as a Bearer token, e.g. via `mcp-remote`:
+
 ```json
 {
   "mcpServers": {
@@ -127,15 +134,23 @@ If the EduBase instance exposes `/mcp` (e.g. `https://domain.edubase.net/mcp`):
 
 Bearer token = base64 of `APP_ID:SECRET_KEY` (colon-separated).
 
+### Option E — Claude Code
+
+```bash
+claude mcp add edubase -e EDUBASE_API_URL=https://www.edubase.net/api -e EDUBASE_API_APP=<YOUR_APP_ID> -e EDUBASE_API_KEY=<YOUR_SECRET_KEY> -- npx -y @edubase/mcp
+```
+
+Or, for a remote server with OAuth: `claude mcp add --transport http edubase https://domain.edubase.net/mcp`.
+
 ---
 
-## Step 3 — Configure the claude_desktop_config.json
+## Step 3 — Configure the claude_desktop_config.json (Options A, B, D)
 
 Config file location:
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
-In Claude Desktop: **Files → Settings → Developer → Edit Config**
+In Claude Desktop: **Settings → Developer → Edit Config**
 
 If the file already has other MCP servers, **merge** the `"edubase"` block into the existing
 `"mcpServers"` object — do not replace the whole file.
@@ -150,7 +165,7 @@ Once Claude Desktop is running with the config, the agent can verify immediately
 
 **Quick check — call the debug tools:**
 ```
-edubase_mcp_server_version   → should return a version string (e.g. "1.1.2")
+edubase_mcp_server_version   → should return the server version string
 ```
 
 **Account check — call:**
@@ -160,8 +175,9 @@ edubase_get_user_me          → returns the EduBase account details for the con
 
 If `edubase_get_user_me` returns a name/account → the integration is live and working.
 
-**In Claude Desktop UI:** After restart, the tool count should increase significantly
-(the EduBase MCP adds ~90 tools). Click the tools icon to verify EduBase tools are listed.
+**In Claude Desktop UI:** After restart, the EduBase tools (named `edubase_*`) should be
+listed under the tools / connectors menu. Fewer tools than expected usually means
+`EDUBASE_TOOLSETS` or `EDUBASE_READONLY` is limiting them (see below).
 
 ---
 
@@ -174,6 +190,8 @@ If `edubase_get_user_me` returns a name/account → the integration is live and 
 | API URL error | Wrong URL format | Must be `https://domain.edubase.net/api` (with `/api`) |
 | Docker: server not found | Docker not running | Start Docker Desktop first |
 | "Option not available" | No MCP access on account | Use promo code `MCPGITHUB` on Integrations page |
+| `node: bad option: -y` | Config uses `node` instead of `npx` | Set `"command": "npx"` (Option A) |
+| Some tools missing (e.g. no create/delete) | Toolset or read-only filter | Check `EDUBASE_TOOLSETS` / `EDUBASE_READONLY` |
 
 ---
 
@@ -187,8 +205,15 @@ If `edubase_get_user_me` returns a name/account → the integration is live and 
 | `EDUBASE_SSE_MODE` | No | Set `true` to use SSE HTTP transport |
 | `EDUBASE_STREAMABLE_HTTP_MODE` | No | Set `true` to use streamable HTTP transport |
 | `EDUBASE_HTTP_PORT` | No | HTTP port when using SSE/streamable mode (default: 3000) |
+| `EDUBASE_TOOLSETS` | No | Comma-separated toolsets to expose (default: `all`) |
+| `EDUBASE_READONLY` | No | Set `true` to expose only read-only tools |
+| `EDUBASE_DYNAMIC_TOOLSETS` | No | Set `true` to start with file tools only and let the model enable toolsets on demand |
 
-*Not required when using remote MCP server with Bearer token auth.
+*Not required when connecting to a remote MCP server (OAuth or Bearer token).
+
+**Toolsets:** `files` (always on), `questions`, `quizzes`, `exams`, `results`, `users`,
+`classes`, `organizations`, `integrations`, `tags`, `permissions`, `metrics`. For a
+question-authoring-only setup, e.g. `EDUBASE_TOOLSETS=questions,quizzes`.
 
 ---
 
@@ -201,6 +226,12 @@ The EduBase hierarchy for reference:
 - **Questions** → lowest level, the actual quiz items
 - **Quiz sets** → named collections of questions
 - **Exams** → highest level, built from quiz sets, assigned to users/classes
+
+All date-times sent to or returned by the EduBase API (and therefore the MCP tools) are in
+**UTC** — convert from/to the user's local time zone.
+
+Related skills: `edubase-question-creator` (questions), `edubase-quiz-and-exam-builder`
+(Quiz sets and Exams).
 
 The agent can create, read, and manage all of these, plus users, classes, organizations, tags,
 results, certificates, and more — all through the tools exposed by the connected MCP server.
