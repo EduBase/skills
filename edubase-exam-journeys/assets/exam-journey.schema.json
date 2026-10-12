@@ -1,0 +1,918 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://www.edubase.net/download:view/exam:journey:schema",
+    "title": "EduBase exam journey",
+    "description": "Portable format of the exam journeys (export and import in the journey editor and the /exam:journey:graph API endpoint)",
+    "type": "object",
+    "required": [
+        "nodes"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1,
+            "description": "Version of the format"
+        },
+        "exam": {
+            "type": "string",
+            "description": "Code of the starting exam (informative in files, it selects the exam in the API)"
+        },
+        "journey": {
+            "$ref": "#/$defs/readonly"
+        },
+        "active": {
+            "$ref": "#/$defs/readonly"
+        },
+        "version": {
+            "$ref": "#/$defs/readonly"
+        },
+        "published": {
+            "$ref": "#/$defs/readonly"
+        },
+        "graph": {
+            "$ref": "#/$defs/readonly"
+        },
+        "unpublished_changes": {
+            "$ref": "#/$defs/readonly"
+        },
+        "settings": {
+            "$ref": "#/$defs/settings"
+        },
+        "nodes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 200,
+            "items": {
+                "$ref": "#/$defs/node"
+            },
+            "contains": {
+                "properties": {
+                    "type": {
+                        "const": "start"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "minContains": 0,
+            "maxContains": 1,
+            "description": "Nodes of the journey, at most one start node (it is required for publishing)"
+        },
+        "issues": {
+            "$ref": "#/$defs/readonly"
+        },
+        "publishable": {
+            "$ref": "#/$defs/readonly"
+        }
+    },
+    "$defs": {
+        "key": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,32}$"
+        },
+        "code": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "description": "Code of the content (an exam, class or Quiz set code), null when not selected yet"
+        },
+        "readonly": {
+            "readOnly": true,
+            "description": "Informative only, ignored by the import"
+        },
+        "rule": {
+            "type": "object",
+            "required": [
+                "field",
+                "operator"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "field": {
+                    "enum": [
+                        "step.result",
+                        "step.successful",
+                        "step.grade",
+                        "step.attempts",
+                        "step.time_spent",
+                        "step.visits",
+                        "step.skill",
+                        "node.result",
+                        "node.successful",
+                        "node.grade",
+                        "node.time_spent",
+                        "node.completed",
+                        "node.visits",
+                        "node.skill",
+                        "exam.custom",
+                        "user.gender",
+                        "user.customer_field",
+                        "user.department",
+                        "user.team",
+                        "user.generated",
+                        "journey.flag",
+                        "journey.days",
+                        "journey.steps",
+                        "date.weekday",
+                        "date.hour",
+                        "date.date",
+                        "date.datetime"
+                    ],
+                    "description": "Compared value. Results are percentages (0-100). Fields needing a param: step.skill, node.result, node.successful, node.grade, node.time_spent, node.completed, node.visits, node.skill, exam.custom, user.customer_field, journey.flag. node.* params are node keys (node.skill: node key:skill identifier), exam.custom: exam code:field hash or label, user.department values are department titles, user.team values are team codes"
+                },
+                "param": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "maxLength": 64
+                },
+                "operator": {
+                    "enum": [
+                        "eq",
+                        "neq",
+                        "gt",
+                        "gte",
+                        "lt",
+                        "lte",
+                        "between",
+                        "in",
+                        "not_in",
+                        "contains",
+                        "empty",
+                        "not_empty",
+                        "is_true",
+                        "is_false"
+                    ],
+                    "description": "Unary operators (empty, not_empty, is_true, is_false) need no value, between needs [minimum, maximum] (inclusive, both dates or both date and time values), in and not_in need a list"
+                },
+                "value": {
+                    "description": "Value to compare with (number, text, boolean or list, see operator); dates are YYYY-MM-DD calendar days (never converted, date.date is the current day of the user), date and time values are YYYY-MM-DD HH:MM in UTC (exam.custom), date.hour and date.datetime are in the timezone of the rule, date.weekday is the day of the user without a time and in the timezone of the rule with one"
+                },
+                "aggregate": {
+                    "enum": [
+                        "last",
+                        "first",
+                        "best",
+                        "worst",
+                        "average"
+                    ],
+                    "description": "Which completion of the node is compared (node.* fields except node.completed and node.visits)"
+                },
+                "measure": {
+                    "enum": [
+                        "points",
+                        "percent"
+                    ],
+                    "description": "Collected points or percentage of the maximum (skill fields)"
+                },
+                "time": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                    "description": "Optional HH:MM of the date.weekday field, the rule matches on the listed days from that time on"
+                },
+                "timezone": {
+                    "type": "string",
+                    "description": "Timezone of the date.hour, date.datetime fields and of date.weekday with a time (IANA name like Europe/Budapest, UTC when missing)"
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "operator": {
+                                "const": "between"
+                            }
+                        },
+                        "required": [
+                            "operator"
+                        ]
+                    },
+                    "then": {
+                        "required": [
+                            "value"
+                        ],
+                        "properties": {
+                            "value": {
+                                "type": "array",
+                                "minItems": 2,
+                                "maxItems": 2
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "operator": {
+                                "enum": [
+                                    "in",
+                                    "not_in"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "operator"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "value": {
+                                "type": [
+                                    "array",
+                                    "string",
+                                    "number"
+                                ],
+                                "maxItems": 64
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "branch_condition": {
+            "type": "object",
+            "required": [
+                "key"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/key",
+                    "not": {
+                        "enum": [
+                            "else",
+                            "done",
+                            "next"
+                        ]
+                    },
+                    "description": "Key of the branch, unique within the node, used as its output in next"
+                },
+                "label": {
+                    "type": "string",
+                    "maxLength": 64
+                },
+                "match": {
+                    "enum": [
+                        "all",
+                        "any"
+                    ],
+                    "description": "Every rule or any rule has to match (a branch without rules always matches)"
+                },
+                "rules": {
+                    "type": "array",
+                    "maxItems": 16,
+                    "items": {
+                        "$ref": "#/$defs/rule"
+                    }
+                }
+            }
+        },
+        "branch_split": {
+            "type": "object",
+            "required": [
+                "key"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "key": {
+                    "$ref": "#/$defs/key",
+                    "not": {
+                        "enum": [
+                            "else",
+                            "done",
+                            "next"
+                        ]
+                    },
+                    "description": "Key of the branch, unique within the node, used as its output in next"
+                },
+                "label": {
+                    "type": "string",
+                    "maxLength": 64
+                },
+                "weight": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "description": "Relative share of the users taking the branch"
+                }
+            }
+        },
+        "config_start": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "complete_on": {
+                    "enum": [
+                        "finish",
+                        "success",
+                        "final"
+                    ],
+                    "description": "The step is completed when the exam is finished, finished successfully, or its result is final (graded)"
+                }
+            }
+        },
+        "config_exam": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "exam": {
+                    "$ref": "#/$defs/code"
+                },
+                "complete_on": {
+                    "enum": [
+                        "finish",
+                        "success",
+                        "final"
+                    ],
+                    "description": "The step is completed when the exam is finished, finished successfully, or its result is final (graded)"
+                },
+                "retake": {
+                    "type": "boolean",
+                    "description": "Revisiting the step grants a retake"
+                },
+                "reuse": {
+                    "type": "boolean",
+                    "description": "Results achieved before entering the step complete it"
+                }
+            }
+        },
+        "config_class": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "class": {
+                    "$ref": "#/$defs/code"
+                },
+                "reuse": {
+                    "type": "boolean",
+                    "description": "An earlier completion of the class completes the step on every visit, else its repeatable tasks have to be done again"
+                }
+            }
+        },
+        "config_quiz": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "quiz": {
+                    "$ref": "#/$defs/code"
+                },
+                "min_result": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Minimum result (percentage) of a play completing the step"
+                },
+                "min_plays": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                }
+            }
+        },
+        "config_condition": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "branches": {
+                    "type": "array",
+                    "maxItems": 16,
+                    "items": {
+                        "$ref": "#/$defs/branch_condition"
+                    },
+                    "description": "Evaluated in order, the first matching branch is taken, else otherwise"
+                },
+                "else_label": {
+                    "type": "string",
+                    "maxLength": 64
+                }
+            }
+        },
+        "config_split": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "branches": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 16,
+                    "items": {
+                        "$ref": "#/$defs/branch_split"
+                    }
+                }
+            }
+        },
+        "config_wait": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mode": {
+                    "enum": [
+                        "duration",
+                        "date",
+                        "weekday"
+                    ]
+                },
+                "minutes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 525600
+                },
+                "date": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{2}:[0-9]{2})?$",
+                    "description": "YYYY-MM-DD HH:MM in the timezone of the node, the same moment for every user, or YYYY-MM-DD, the start of that day in the timezone of each user (date mode)"
+                },
+                "weekday": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 7,
+                    "description": "1: Monday, 7: Sunday (weekday mode)"
+                },
+                "time": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                    "description": "Optional HH:MM in the timezone of the node (weekday mode), without it the waiting ends at the start of the day of the user"
+                },
+                "timezone": {
+                    "type": "string",
+                    "description": "Timezone of the date and time or the weekday time (IANA name like Europe/Budapest, UTC when missing)"
+                }
+            }
+        },
+        "config_notify": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "target": {
+                    "enum": [
+                        "user",
+                        "educators"
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "maxLength": 500
+                }
+            }
+        },
+        "config_flag": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "$ref": "#/$defs/key"
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 64
+                }
+            }
+        },
+        "config_mark": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mode": {
+                    "enum": [
+                        "mark",
+                        "unmark"
+                    ]
+                }
+            }
+        },
+        "config_end": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "outcome": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "description": "Outcome of the finished journey (built-in: completed, failed, or any custom text)"
+                }
+            }
+        },
+        "node": {
+            "type": "object",
+            "required": [
+                "node",
+                "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "node": {
+                    "$ref": "#/$defs/key",
+                    "description": "Stable key of the node, unique within the journey"
+                },
+                "type": {
+                    "enum": [
+                        "start",
+                        "exam",
+                        "class",
+                        "quiz",
+                        "condition",
+                        "split",
+                        "wait",
+                        "notify",
+                        "flag",
+                        "mark",
+                        "end"
+                    ],
+                    "description": "Steps: start, exam, class, quiz (exactly one start, it is the starting exam), decisions and actions (passed instantly): condition, split, notify, flag, mark, wait waits, end finishes the journey"
+                },
+                "label": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "maxLength": 64,
+                    "description": "Custom title of the node"
+                },
+                "position": {
+                    "type": "object",
+                    "required": [
+                        "x",
+                        "y"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "x": {
+                            "type": "number",
+                            "minimum": -100000,
+                            "maximum": 100000
+                        },
+                        "y": {
+                            "type": "number",
+                            "minimum": -100000,
+                            "maximum": 100000
+                        }
+                    },
+                    "description": "Position on the canvas, nodes without a position are laid out automatically"
+                },
+                "config": {
+                    "type": "object"
+                },
+                "next": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/$defs/key"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "description": "Node keys by the outputs of this node, an output left out or set to null finishes the journey"
+                },
+                "marker": {
+                    "$ref": "#/$defs/readonly"
+                },
+                "title": {
+                    "$ref": "#/$defs/readonly"
+                },
+                "content": {
+                    "$ref": "#/$defs/readonly"
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "start"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_start"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "done"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "exam"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_exam"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "done"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "class"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_class"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "done"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "quiz"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_quiz"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "done"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "condition"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_condition"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "$ref": "#/$defs/key"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "split"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_split"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "$ref": "#/$defs/key"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "wait"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_wait"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "next"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "notify"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_notify"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "next"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "flag"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_flag"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "next"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "mark"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_mark"
+                            },
+                            "next": {
+                                "propertyNames": {
+                                    "enum": [
+                                        "next"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "end"
+                            }
+                        },
+                        "required": [
+                            "type"
+                        ]
+                    },
+                    "then": {
+                        "properties": {
+                            "config": {
+                                "$ref": "#/$defs/config_end"
+                            },
+                            "next": {
+                                "maxProperties": 0
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "settings": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Settings of the journey (applied immediately by the API, ignored by the editor), every key is optional",
+            "properties": {
+                "title": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "maxLength": 255
+                },
+                "description": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "maxLength": 1024
+                },
+                "max_visits": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 50,
+                    "description": "Maximum visits of a node by a user (loops stop with the loop-limit outcome)"
+                },
+                "restartable": {
+                    "type": "boolean"
+                },
+                "notify_user": {
+                    "type": "boolean"
+                },
+                "educators": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "User codes of the notified educators (the owner or the managers of the starting exam)"
+                }
+            }
+        }
+    }
+}

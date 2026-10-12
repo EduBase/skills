@@ -12,6 +12,8 @@ description: >
   "launch a survey", or references Quiz sets, Exam objects, or the three-layer EduBase hierarchy.
   Do NOT use for creating or editing individual questions — that is the `edubase-question-creator`
   skill. Do NOT use for analyzing results or score reporting — out of scope for this skill.
+  Do NOT use for learning paths that route users between exams, classes, and Quiz sets based on
+  their results (exam journeys) — that is the `edubase-exam-journeys` skill.
 ---
 
 # EduBase Quiz & Exam Builder
