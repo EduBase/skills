@@ -9,11 +9,9 @@ description: >
   list or inspect existing Quizzes or Exams, or perform any assembly step ABOVE the individual
   question level. Also trigger when the user says "set up a test", "schedule an exam",
   "make a quiz from these questions", "assign students to the exam", "create a homework",
-  "launch a survey", or references Quiz sets, Exam objects, or the three-layer EduBase hierarchy.
-  Do NOT use for creating or editing individual questions — that is the `edubase-question-creator`
-  skill. Do NOT use for analyzing results or score reporting — out of scope for this skill.
-  Do NOT use for learning paths that route users between exams, classes, and Quiz sets based on
-  their results (exam journeys) — that is the `edubase-exam-journeys` skill.
+  "launch a survey", or references Quiz sets or Exam objects.
+  Do NOT use for creating or editing individual questions (`edubase-question-creator`), for
+  analyzing results, or for learning paths routing users between exams (`edubase-exam-journeys`).
 ---
 
 # EduBase Quiz & Exam Builder

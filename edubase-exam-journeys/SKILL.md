@@ -2,18 +2,15 @@
 name: edubase-exam-journeys
 description: >
   Designs, builds, publishes, and monitors EduBase exam journeys — adaptive learning paths that
-  start with an exam and route each user through further exams, progressive classes, and practice
-  Quiz sets based on results, skills, user data, and time. Use whenever the user wants to: create a
-  learning path or journey, chain exams ("after the entry test send them to…"), branch on scores
-  or pass/fail, send failing users to remediation and retest them, place users by a placement test,
-  route by skill gaps, department, team, or registration answers, add waiting periods or drip
-  content, A/B split users, notify users or educators along the way, edit or republish an existing
-  journey, export/import journey JSON, or check journey progress ("who is stuck", "how many
-  finished", "where is this user on the path", journey outcomes, journey errors). Also trigger on
-  "exam journey", "learning path", "adaptive path", "follow-up exam", "remediation loop", "next
-  exam", or the /exam:journey API endpoints. Do NOT use for creating questions
-  (`edubase-question-creator`) or for building single Quiz sets and Exams without a path between
-  them (`edubase-quiz-and-exam-builder` — but use it to create the contents a journey needs).
+  route each user from an exam through further exams, classes, and practice Quiz sets based on
+  results, skills, user data, and time. Use whenever the user wants to: create a learning path,
+  chain exams, branch on scores or pass/fail, send failing users to remediation and retest, place
+  users by a placement test, route by skill gaps, department, or registration answers, add waiting
+  periods or drip content, A/B split users, notify users or educators, edit, republish, export, or
+  import a journey, or check journey progress ("who is stuck", outcomes, errors). Also trigger on
+  "exam journey", "learning path", "adaptive path", "remediation loop", or /exam:journey endpoints.
+  Do NOT use for creating questions (`edubase-question-creator`) or for single Quiz sets and Exams
+  without a path between them (`edubase-quiz-and-exam-builder`, which also builds their contents).
 ---
 
 # EduBase Exam Journeys
