@@ -33,6 +33,7 @@ This repository packages EduBase-specific knowledge into skills that any compati
 | **[edubase-question-creator](edubase-question-creator/)** | Expert EduBase question creator for the EduBase Quizzing platform. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-creator/edubase-question-creator.skill) |
 | **[edubase-question-extractor](edubase-question-extractor/)** | Extracts existing questions from documents into EduBase format — faithfully converting past papers, printed exams, question banks, worksheets, or any document that ALREADY CONTAINS questions into properly structured EduBase questions. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-question-extractor/edubase-question-extractor.skill) |
 | **[edubase-quiz-and-exam-builder](edubase-quiz-and-exam-builder/)** | Builds, assembles, and manages EduBase Quiz sets and Exams end-to-end — from grouping questions into Quiz sets, to creating time-boxed Exams, assigning users, and configuring branding. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-quiz-and-exam-builder/edubase-quiz-and-exam-builder.skill) |
+| **[edubase-sales-expert](edubase-sales-expert/)** | Turns the agent into an EduBase sales expert who knows every feature of the EduBase e-learning, assessment and competency management platform, grounded in a snapshot of the official EduBase feature catalog with stable feature IDs. | [⬇ .skill](https://github.com/EduBase/skills/raw/main/edubase-sales-expert/edubase-sales-expert.skill) |
 
 <!-- SKILLS_TABLE_END -->
 
