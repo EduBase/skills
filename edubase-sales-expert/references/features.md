@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: 3cb04bf882082efc751747acdad88639b990bc55
-  catalog_updated: 2026-10-18
-  snapshot_date: 2026-10-18
+  catalog_revision: 140453d7ebdb5230b19abced1ce0bd864598b67d
+  catalog_updated: 2026-10-19
+  snapshot_date: 2026-10-19
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-10-18
+> Catalog last updated: 2026-10-19
 
 ## About EduBase
 
@@ -722,9 +722,14 @@ Points, missions and leaderboards that keep learners coming back.
 
 #### Custom Missions (`LEARN.GAMIFICATION.MISSIONS`)
 
-Define personalized challenges and goals.
+Your own missions and point rules in place of, or on top of, the standard set.
+
+Details:
+- Business only: missions and rules live in the database of the customer's own instance
+- Set up and maintained by the EduBase team; there is no self-service editor yet
 
 - Plans: Business
+- Keywords: challenges goals point rules custom gamification
 
 #### Instance-Level Leaderboard (`LEARN.GAMIFICATION.LEADERBOARD`)
 
