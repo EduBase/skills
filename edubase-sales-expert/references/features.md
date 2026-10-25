@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: 140453d7ebdb5230b19abced1ce0bd864598b67d
-  catalog_updated: 2026-10-19
-  snapshot_date: 2026-10-19
+  catalog_revision: e771e916fb9b
+  catalog_updated: 2026-10-25
+  snapshot_date: 2026-10-25
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-10-19
+> Catalog last updated: 2026-10-25
 
 ## About EduBase
 
@@ -35,8 +35,8 @@ EduBase (https://www.edubase.net) is a web-based e-learning, assessment and comp
 ## Highlights
 
 - **Compliance that closes its own loop** (`COMP`): Versioned documents, competencies, deadlines and evidence in one auditable register, with a department × competency heatmap that shows where you are not compliant. Key points: Exam, class, journey, document and offline requirements; Due → overdue → outdated → expired, tracked automatically; Version-aware required reading.
-- **Learning journeys** (`LEARN.JOURNEYS`): A visual graph editor that routes each person by their own results: remediation loops, placement, spaced refreshers and A/B splits. Key points: 16-way conditions on scores, skills, dates & data; Re-routes when a result is corrected; Live funnel and interventions.
-- **Suspicion Score** (`QUIZ.ANTICHEAT.SUSPICION`): One 0–100 triage number per attempt that shows how likely it is that outside help, especially AI, was used, with the reasons itemized for the reviewer.
+- **Learning journeys** (`LEARN.JOURNEYS`): A visual graph editor that routes each person by their own results: remediation loops, placement, spaced refreshers and A/B splits. Key points: 16-way conditions on scores, skills, dates & data; Re-routes when a result is corrected; Educator approval steps, live funnel and interventions.
+- **Suspicion Score** (`QUIZ.ANTICHEAT.SUSPICION`): One 0–100 triage number per attempt that flags signs of outside help, especially AI, with the reasons itemized for the reviewer. Rule-based, with no AI involved, and it can be switched off per exam.
 - **Official MCP server** (`INTEG.MCP`): Claude and other assistants can run the whole platform in plain language. Every API endpoint is available as a tool.
 - **Parameterized questions & attachments** (`QUIZ.PARAMS`): Every participant gets their own numbers, lists and permutations, even inside the Excel, Word or CSV file they download. Copying a neighbour's answer doesn't work.
 - **Verifiable certificates** (`QUIZ.EXAM.CERTIFICATES`): Serialized PDF/A certificates with QR verification, validity periods, renewal workflows and expiry alerts.
@@ -47,13 +47,23 @@ EduBase (https://www.edubase.net) is a web-based e-learning, assessment and comp
 
 AI-powered tools for content creation, translation and result analysis, built into the platform and model-agnostic.
 
+Details:
+- Sold as an add-on on Pro and Business: a usage-based extra on top of the quote
+- No AI grades, scores or routes people, and there is no emotion recognition, attention tracking or webcam analysis
+- Every AI feature and the way its output is marked is listed on a public AI transparency page
+
 ### EduBase AI Assistant (`AI.ASSISTANT`)
 
-Built-in AI assistant for question generation, translation, conversational assessment and result analysis.
+Built-in AI assistant for question generation, translation, conversational assessment and group-level exam summaries.
 
 #### Chat Interface & Conversational Assessments (`AI.ASSISTANT.CHAT`)
 
 A conversational interface for working with AI. Students can also chat with quiz questions during practice and get personalized support, while educators receive the interaction data.
+
+Details:
+- Always disclosed: the chat window says it is an AI assistant, and every reply carries an AI badge, even under a custom assistant name
+- Educators who join the conversation are labeled as educators
+- An optional fixed point deduction for using the chat on an exam question is the educator's rule, shown in the chat, never decided by the AI
 
 - Plans: Pro, Business
 - Keywords: chatbot tutor conversational assessment
@@ -67,22 +77,10 @@ Translate educational content between languages, including parameterized questio
 
 #### Question Generation (`AI.ASSISTANT.QUESTION-GEN`)
 
-Generate assessment questions from documents, presentations, images and text files. The AI reads the material and drafts relevant questions for review.
+Generate assessment questions from documents, presentations, images and text files. The AI reads the material and drafts relevant questions, marked as AI-generated and unreviewed until an educator checks them.
 
 - Plans: Pro, Business
 - Keywords: generate quiz from pdf pptx slides ai authoring
-
-#### Result Analysis (`AI.ASSISTANT.RESULT-ANALYSIS`)
-
-AI analysis and summaries of exam results based on rich behavioral data.
-
-Details:
-- Time spent per question, navigation order and question-to-question connections
-- Integrity-relevant behaviors (tab switching, copy-paste, screenshot attempts)
-- Hardware or network issues such as repeated reloads and offline events
-- Patterns at individual and cohort level
-
-- Plans: Pro, Business
 
 #### Exam AI Summaries (`AI.ASSISTANT.EXAM-SUMMARY`)
 
@@ -91,9 +89,10 @@ A group-level AI summary of an exam: what the cohort found hardest, where points
 Details:
 - Privacy by construction: attempts are aggregated into group statistics before anything is sent to the model; no names, identifiers or individual rows
 - Covers participation, result distribution, timing and per-question correctness
-- Engagement rates are suppressed for very small cohorts so no individual can be singled out
+- Any figure describing fewer than three people is blurred, merged or left out, and single extremes such as the lowest score are never sent
 - Integrity signals are deliberately excluded; the summary never speculates about cheating
-- Requires a minimum number of results before a summary is produced
+- Needs at least ten results before a summary is produced
+- Always labeled as an AI summary, with a machine-readable flag on the API
 
 - Plans: Pro, Business
 - Keywords: cohort report summary privacy gdpr
@@ -103,17 +102,33 @@ Details:
 EduBase follows current frontier models instead of locking you to one vendor. The provider can be set per instance for data residency, procurement policy or an existing enterprise agreement.
 
 Details:
-- Supports leading providers such as Anthropic Claude, OpenAI GPT and Google Gemini, plus DeepL for translation
+- Supports leading providers such as Anthropic Claude, OpenAI GPT, Google Gemini (in a European data center) and models on Amazon Bedrock (in a European region), plus DeepL for translation
 - Available on dedicated and on-premise Business deployments, with model choice aligned to the customer's policy
 
 - Plans: Pro, Business
-- Keywords: llm provider claude openai gemini data residency
+- Keywords: llm provider claude openai gemini bedrock data residency
+
+#### AI Transparency & Content Marking (`AI.ASSISTANT.TRANSPARENCY`)
+
+Everything AI produces is marked, both machine-readably and visibly, and AI-generated questions carry a human review state. The approach follows the EU AI Act transparency rules and is published on a public AI transparency page.
+
+Details:
+- AI-generated questions are flagged in the editor, the API and the XLSX, EDU and JSON exports, and the flag survives duplication and re-import
+- Questions stay unreviewed until an educator checks them; the review records who and when, and bulk review and an unreviewed filter make it quick
+- Adding unreviewed AI questions to an exam shows a warning
+- Learners see a notice on the start page of a quiz or exam that contains AI questions
+- AI cover images carry IPTC metadata and a visible caption
+- The AI features may not be used for high-risk education or employment decisions without a separate agreement
+
+- Plans: Free, Pro, Business
+- Keywords: ai act eu transparency label marking watermark provenance human review governance
 
 ## Competency Management (`COMP`)
 
 Define, assign and track skills, qualifications and certifications, backed by versioned documents and configurable requirements. Built for EHS, regulatory compliance, onboarding and skills matrices.
 
 Details:
+- Sold as an add-on to Business
 - Supports ISO 9001, ISO 45001, GMP and industry-specific audit evidence
 - Combines digital requirements (exams, classes, journeys, documents) with offline ones (licences, third-party exams, in-person training)
 - CSV exports and scheduled reports for HRIS, EHS and compliance systems
@@ -188,9 +203,10 @@ Create competencies with a name, description and optional external identifier fo
 
 #### Competency Assignment (`COMP.COMPETENCIES.ASSIGNMENT`)
 
-Assign competencies individually, by department or organization-wide. New members inherit them automatically, and department moves carry the right qualifications along.
+Assign competencies individually, by department, by job role or organization-wide. New members inherit them automatically, and department or job role changes carry the right qualifications along.
 
 Details:
+- Job roles cut across departments: 'every forklift operator' is one rule, whichever site they work at
 - Can be driven by HR activity, job or position codes through HR synchronization
 - Sync-made assignments are withdrawn when no longer needed; manual assignments are always kept
 - An incomplete HR data run never withdraws qualifications
@@ -308,6 +324,7 @@ Completion rates and due/overdue/expired/outdated counts per competency, with on
 A department × competency heatmap that answers 'where are we not compliant?', with 'needs attention' and 'completion' views, a problem-departments filter and XLSX export.
 
 Details:
+- Can be limited to one job role, together with its export
 - Department leaders see their own departments without needing a management role
 - Also available as a scheduled organizational report and over the REST API
 
@@ -361,15 +378,15 @@ Configure the certificate an exam issues (texts, fields, serials, validity, rene
 
 - Plans: Pro, Business
 
-#### Department Management over the API (`INTEG.API.ORG-DEPARTMENTS`)
+#### Department & Job Role Management over the API (`INTEG.API.ORG-DEPARTMENTS`)
 
-Manage the department tree, leaders and default permissions using your HR system's own codes, so the org chart is never maintained twice.
+Manage the department tree, leaders, default permissions and job roles using your HR system's own codes, so the org chart is never maintained twice.
 
 - Plans: Pro, Business
 
 #### Competency Reporting over the API (`INTEG.API.COMPETENCY-READ`)
 
-Read competencies, their requirement chains and the department × competency compliance grid into your BI tool, intranet or audit pack.
+Read competencies, their requirement chains and the department × competency compliance grid (optionally for one job role) into your BI tool, intranet or audit pack.
 
 - Plans: Pro, Business
 
@@ -412,6 +429,7 @@ Details:
 - Dedicated instances use their own domain's /mcp address
 - Images, attachments and certificate graphics go through the API file bin: uploaded once, then referenced by ID in any later tool call
 - Self-hosting with Docker or Node.js is possible, with API key or bearer token authentication
+- Questions created over MCP are marked as AI-generated for educator review
 
 #### AI Question Creation (`INTEG.MCP.QUESTION-CREATION`)
 
@@ -473,6 +491,7 @@ Scheduled synchronization of users, departments and competencies with HR, ERP, C
 Details:
 - Provisions, updates and deactivates accounts from the source records
 - Department mapping by external ID
+- Sets members' job roles from the HR system's job classification
 - Maps HR activity or position codes onto competencies
 - Resolves the source system's dictionary codes into readable values
 - Dry-run mode, file-based fallback and notifications
@@ -558,12 +577,18 @@ Details:
 - Every decision is recorded, so any route can be explained afterwards
 - Corrected results follow through: after a re-evaluation or manual scoring, a participant who has not moved on yet is routed again on the corrected result
 - Existing next-exam links convert automatically into an equivalent journey
+- On Pro, adaptive learning is sold as an add-on
 
 #### Journey Editor (`LEARN.JOURNEYS.EDITOR`)
 
-A drag-and-drop graph canvas with exam, class and practice steps plus condition, random split, wait, notify, flag, mark and finish nodes. It has drafts, continuous validation, versioned publishing and JSON import/export.
+A drag-and-drop graph canvas with exam, class and practice steps plus condition, random split, wait, educator approval, notify, flag, mark and finish nodes, and waypoints to keep large graphs tidy. It has drafts, continuous validation, versioned publishing and JSON import/export.
+
+Details:
+- Approval steps hold a participant until an educator approves or declines; a decline can lead to remediation or stop the journey
+- Educators can be notified when someone is waiting, and participants about the decision
 
 - Plans: Pro, Business
+- Keywords: approval sign-off gate manager supervisor
 
 #### Journey Decision Rules (`LEARN.JOURNEYS.RULES`)
 
@@ -578,7 +603,7 @@ Details:
 
 #### Journey Monitoring & Interventions (`LEARN.JOURNEYS.MONITORING`)
 
-A live overview shows how many people are on each node and branch, plus outcomes. Educators can move, stop, resume or restart participants, and stuck participants are detected automatically.
+A live overview shows how many people are on each node and branch, plus outcomes. Educators can move, stop, resume, restart, approve or decline participants, and stuck participants are detected automatically.
 
 Details:
 - Results exports include each participant's journey state and the data collected by every exam along the route, one column per field
@@ -733,7 +758,7 @@ Details:
 
 #### Instance-Level Leaderboard (`LEARN.GAMIFICATION.LEADERBOARD`)
 
-A platform-wide ranking of activities, missions and streaks.
+A platform-wide ranking of activities, missions and streaks. People appear by username, full names only on opt-in, and minors are left off unless they choose to be listed.
 
 - Plans: Free, Pro, Business
 
@@ -910,11 +935,13 @@ Behavior during exams is monitored in real time and combined into a single Suspi
 
 #### Suspicion Score (`QUIZ.ANTICHEAT.SUSPICION`)
 
-A 0–100 indicator of how likely it is that an attempt had outside help, especially from AI. It combines behavior and result patterns, is shown with an itemized explanation and can be filtered and exported.
+A 0–100 indicator of signs that an attempt had outside help, especially from AI. It combines behavior and result patterns, is shown with an itemized explanation and can be filtered and exported.
 
 Details:
 - Uses both how the attempt was played and what result it produced
-- Shown only to reviewers, never to test takers
+- Rule-based with fixed weights: no AI is involved, and neither the score nor the activity log is ever sent to an AI model
+- The score is shown only to reviewers; candidates are told what is recorded, and that there is no camera, microphone or screen recording
+- Can be switched off per exam, and an organizer can permanently delete the score of a single attempt
 - A triage aid, not a verdict: the platform never acts on it automatically
 - An attempt without an activity log gets no score rather than a misleadingly low one
 - Available in results, participant lists, exports and the REST API
@@ -1639,7 +1666,14 @@ Industry-standard data handling with EU data protection built in.
 
 Full EU data protection compliance, including automated deletions and exports.
 
+Details:
+- Cookie consent by category (functional, statistics, marketing), with equal accept and reject buttons, changeable any time in the account settings
+- Gravatar profile pictures only on the user's explicit request
+- Exam start pages name the data controller and link the legal documents
+- Leaderboards show usernames, and full names only on opt-in
+
 - Plans: Free, Pro, Business
+- Keywords: privacy cookie consent data controller
 
 #### Data Retention Policies (`SEC.DATA.RETENTION`)
 
@@ -1737,7 +1771,7 @@ Account tiers that control which features and limits apply to each user.
 
 ### Organizations (`USER.ORG`)
 
-Hierarchical organizations with departments, leaders, permissions, reports and storage control.
+Hierarchical organizations with departments, job roles, leaders, permissions, reports and storage control.
 
 #### Departments (`USER.ORG.DEPARTMENTS`)
 
@@ -1756,6 +1790,18 @@ Nest departments into a real tree (division, unit, team). Visibility follows the
 Record who leads each unit explicitly, separate from what they may do. Leaders get a compliance view of their own subtree.
 
 - Plans: Free, Pro, Business
+
+#### Job Roles (`USER.ORG.JOB-ROLES`)
+
+Record what each member does, next to where they sit. Job roles cut across departments, drive competency assignment and filter the compliance overview.
+
+Details:
+- Set one by one, in bulk, over the API or from an HR synchronization
+- Optional external ID for the HR system's own job codes
+- A job role change brings the new role's competencies and withdraws the ones only the old role required
+
+- Plans: Free, Pro, Business
+- Keywords: job position function role title
 
 #### Organizational Hierarchy (`USER.ORG.HIERARCHY`)
 
@@ -1825,8 +1871,8 @@ Choose channels and events, including a separate notification email address and 
 | `AI.ASSISTANT.EXAM-SUMMARY` | Capability | Exam AI Summaries |
 | `AI.ASSISTANT.MODELS` | Capability | Model-Agnostic AI |
 | `AI.ASSISTANT.QUESTION-GEN` | Capability | Question Generation |
-| `AI.ASSISTANT.RESULT-ANALYSIS` | Capability | Result Analysis |
 | `AI.ASSISTANT.TRANSLATE` | Capability | Content Translation |
+| `AI.ASSISTANT.TRANSPARENCY` | Capability | AI Transparency & Content Marking |
 | `COMP` | Category | Competency Management |
 | `COMP.COMPETENCIES` | Feature | Competencies |
 | `COMP.COMPETENCIES.ASSIGNMENT` | Capability | Competency Assignment |
@@ -1865,7 +1911,7 @@ Choose channels and events, including a separate notification email address and 
 | `INTEG.API.EXAM-LIFECYCLE` | Capability | Exam Lifecycle over the API |
 | `INTEG.API.EXTENDED` | Capability | Extended API |
 | `INTEG.API.JOURNEYS` | Capability | Learning Journeys over the API |
-| `INTEG.API.ORG-DEPARTMENTS` | Capability | Department Management over the API |
+| `INTEG.API.ORG-DEPARTMENTS` | Capability | Department & Job Role Management over the API |
 | `INTEG.API.USER-ENDPOINTS` | Capability | User Management over the API |
 | `INTEG.HR-SYNC` | Feature | HR & Enterprise System Synchronization |
 | `INTEG.LTI` | Feature | LTI Integration |
@@ -2091,6 +2137,7 @@ Choose channels and events, including a separate notification email address and 
 | `USER.ORG.DEPARTMENT-LEADERS` | Capability | Department Leaders |
 | `USER.ORG.DEPARTMENTS` | Capability | Departments |
 | `USER.ORG.HIERARCHY` | Capability | Organizational Hierarchy |
+| `USER.ORG.JOB-ROLES` | Capability | Job Roles |
 | `USER.ORG.PERMISSIONS` | Capability | Permission Management |
 | `USER.ORG.REPORTS` | Capability | Organizational Reports |
 | `USER.ORG.STORAGE` | Capability | Organizational Storage Limits |
