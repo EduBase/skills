@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: e771e916fb9b
-  catalog_updated: 2026-10-25
-  snapshot_date: 2026-10-25
+  catalog_revision: f18e47db48d7
+  catalog_updated: 2026-10-26
+  snapshot_date: 2026-10-26
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-10-25
+> Catalog last updated: 2026-10-26
 
 ## About EduBase
 
@@ -380,7 +380,7 @@ Configure the certificate an exam issues (texts, fields, serials, validity, rene
 
 #### Department & Job Role Management over the API (`INTEG.API.ORG-DEPARTMENTS`)
 
-Manage the department tree, leaders, default permissions and job roles using your HR system's own codes, so the org chart is never maintained twice.
+Manage the department tree, leaders, default permissions and job roles, and members' custom permissions and restrictions, using your HR system's own codes, so the org chart is never maintained twice.
 
 - Plans: Pro, Business
 
@@ -492,6 +492,7 @@ Details:
 - Provisions, updates and deactivates accounts from the source records
 - Department mapping by external ID
 - Sets members' job roles from the HR system's job classification
+- Grants administrator rights to named employees, kept as custom permissions inside their department
 - Maps HR activity or position codes onto competencies
 - Resolves the source system's dictionary codes into readable values
 - Dry-run mode, file-based fallback and notifications
@@ -1775,7 +1776,7 @@ Hierarchical organizations with departments, job roles, leaders, permissions, re
 
 #### Departments (`USER.ORG.DEPARTMENTS`)
 
-Organizational units with default roles, permissions, visibility scope and external IDs. They are also the target of competency assignment.
+Organizational units with default roles, permissions, visibility scope and external IDs. They are also the target of competency assignment, and individual members can hold custom permissions inside them.
 
 - Plans: Free, Pro, Business
 
@@ -1811,9 +1812,17 @@ Multi-level organization structures with subsidiaries.
 
 #### Permission Management (`USER.ORG.PERMISSIONS`)
 
-Fine-grained permissions at organization, department or content level.
+Fine-grained permissions at organization, department or content level. A member can hold custom permissions inside their department, and staff can be barred from managing the document library or competencies.
+
+Details:
+- Custom permissions survive changes to the department's defaults, and can be reset to them in one step
+- Restrictions only take rights away: the restricted area stays fully visible
+- Segregation of duties without a second organization: the person who maintains the documents need not be the one who signs off qualifications
+- Restrictions need Competency Management (Business)
+- Both can be set in bulk and over the API
 
 - Plans: Free, Pro, Business
+- Keywords: override exception least privilege segregation of duties restrict deny
 
 #### Organizational Reports (`USER.ORG.REPORTS`)
 
