@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: f18e47db48d7
-  catalog_updated: 2026-10-26
-  snapshot_date: 2026-10-26
+  catalog_revision: a5b6a527d006
+  catalog_updated: 2026-10-31
+  snapshot_date: 2026-10-31
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-10-26
+> Catalog last updated: 2026-10-31
 
 ## About EduBase
 
@@ -130,7 +130,8 @@ Define, assign and track skills, qualifications and certifications, backed by ve
 Details:
 - Sold as an add-on to Business
 - Supports ISO 9001, ISO 45001, GMP and industry-specific audit evidence
-- Combines digital requirements (exams, classes, journeys, documents) with offline ones (licences, third-party exams, in-person training)
+- Combines digital requirements (exams, classes, journeys, documents) with offline ones (licences, third-party exams, in-person training, signed declarations)
+- Reminds members about due and overdue competencies by itself and escalates overdue ones to their leaders
 - CSV exports and scheduled reports for HRIS, EHS and compliance systems
 
 ### Document Library (`COMP.LIBRARY`)
@@ -184,6 +185,19 @@ Details:
 
 - Plans: Business
 - Keywords: policy acknowledgement read receipt toolbox talk
+
+#### Signed Read Attestation (`COMP.LIBRARY.ATTESTATION`)
+
+Require members to sign a document by name instead of just downloading it. Each signature keeps the exact statement, the document version and a verification code, and a new version asks everyone to sign again.
+
+Details:
+- Default or custom statement, with the document and version as placeholders
+- Signed by typing the full name from the member's profile; case and accents don't matter
+- A SHA-256 verification code over the statement, version, files, name and time reveals any later change
+- Fulfils document requirements built on the document; managers see who signed and when
+
+- Plans: Business
+- Keywords: e-signature sign policy declaration acknowledgement read and understood attest
 
 #### Competency Linkage (`COMP.LIBRARY.LINKAGE`)
 
@@ -243,23 +257,24 @@ Require an adaptive learning journey, optionally only with certain accepted outc
 
 #### Document Requirements (`COMP.REQUIREMENTS.DOCUMENT`)
 
-Require that a member actually read a library document (downloaded every file of the current version). A new version reopens the requirement for everyone.
+Require that a member actually read a library document (downloaded every file of the current version), or signed it where the document asks for a signed attestation. A new version reopens the requirement for everyone.
 
 - Plans: Business
 - Keywords: sop acknowledgement read and understood
 
 #### Non-Digital Milestone Requirements (`COMP.REQUIREMENTS.NON-DIGITAL`)
 
-Record real-world qualifications such as driving licences, forklift certificates, first-aid training, exams taken in a partner's system and in-person training sessions.
+Record real-world qualifications such as driving licences, forklift certificates, first-aid training, exams taken in a partner's system, in-person training sessions and declarations members sign themselves.
 
 Details:
-- Typed completions: plain milestone, personal document (captures an identifier), external exam / certificate (captures result and serial) and in-person training
+- Typed completions: plain milestone, personal document (captures an identifier), external exam / certificate (captures result and serial), in-person training and signed attestation
 - In-person training records up to five named instructors and the training material
+- Signed attestations are signed by the member with their full name and stored with the exact statement and a verification code; managers can review or revoke them
 - Editing a completion keeps the original completion date
 - Completion is a privileged, fully audited action
 
 - Plans: Business
-- Keywords: licence certificate offline training forklift external exam
+- Keywords: licence certificate offline training forklift external exam declaration conflict of interest signature
 
 #### Requirement Validity (`COMP.REQUIREMENTS.VALIDITY`)
 
@@ -281,6 +296,7 @@ Details:
 - Passing a deadline flags the requirement but doesn't lock the member out
 - Re-evaluated daily and immediately on relevant changes
 - Shown in lists, member views, the CSV export and the member's calendar
+- Automatic reminders to members and escalation of overdue members to their leaders
 
 - Plans: Business
 
@@ -331,9 +347,33 @@ Details:
 - Plans: Business
 - Keywords: heatmap dashboard audit skills matrix
 
+#### My Team (`COMP.PROGRESS.TEAM`)
+
+Department leaders see every member of the departments they lead by name, with their competency progress, problem statuses and earliest deadline, without needing a management role.
+
+Details:
+- Filters for 'needs attention' and each problem status, plus search by name or department
+- Read-only drill-down into a member's competencies
+- CSV export of the team or of one member
+
+- Plans: Business
+- Keywords: line manager supervisor team leader direct reports
+
+#### Deadline Reminders & Escalation (`COMP.PROGRESS.REMINDERS`)
+
+Members are reminded when a competency becomes due and again when it is overdue, weekly until it is done. After three days overdue, their department leaders are told.
+
+Details:
+- One message per person listing everything outstanding, not one per competency
+- Escalates to the nearest leaders up the department tree when a unit has none
+- Delivered on every channel the recipient has enabled, and each notification can be switched off
+
+- Plans: Business
+- Keywords: reminder escalation overdue chase nudge manager notification
+
 #### My Competencies Page (`COMP.PROGRESS.MY-COMPETENCIES`)
 
-Self-service view of every assigned competency across all of a member's organizations, with deadlines and direct links to start the exam, open the class or read the document.
+Self-service view of every assigned competency across all of a member's organizations, with deadlines and direct links to start the exam, open the class, read the document or sign a declaration.
 
 - Plans: Business
 
@@ -392,7 +432,7 @@ Read competencies, their requirement chains and the department × competency com
 
 #### Learning Journeys over the API (`INTEG.API.JOURNEYS`)
 
-Read journey progress, and export, import and publish journey graphs as portable JSON (with a public JSON Schema covering every rule operator) for version control.
+Read journey progress, including step deadlines and bundle progress, and export, import and publish journey graphs as portable JSON (with a public JSON Schema covering every rule operator) for version control.
 
 - Plans: Pro, Business
 
@@ -571,7 +611,7 @@ Details:
 
 ### Learning Journeys (`LEARN.JOURNEYS`)
 
-An exam becomes the entry point of an adaptive programme. Each person's results decide what comes next: more exams, classes, practice, waits, messages and finally a named outcome.
+An exam becomes the entry point of an adaptive programme. Each person's results decide what comes next: more exams, classes, practice, a choice of contents, waits, deadlines, messages and finally a named outcome.
 
 Details:
 - Placement & remediation, mastery loops, spaced reinforcement, role-based routing and A/B comparison of training variants
@@ -582,25 +622,30 @@ Details:
 
 #### Journey Editor (`LEARN.JOURNEYS.EDITOR`)
 
-A drag-and-drop graph canvas with exam, class and practice steps plus condition, random split, wait, educator approval, notify, flag, mark and finish nodes, and waypoints to keep large graphs tidy. It has drafts, continuous validation, versioned publishing and JSON import/export.
+A drag-and-drop graph canvas with exam, class, practice and content bundle steps plus condition, random split, wait, educator approval, notify, flag, counter, mark and finish nodes, and waypoints to keep large graphs tidy. It has drafts, continuous validation, versioned publishing and JSON import/export.
 
 Details:
+- Content bundles: up to 10 exams, classes and quiz sets completed in any order, all of them or any N
+- Step deadlines: a duration, a day or a date and time; latecomers leave on a timeout branch, never in the middle of an exam
+- Counters add up results, time, visits or fixed values for later conditions
 - Approval steps hold a participant until an educator approves or declines; a decline can lead to remediation or stop the journey
 - Educators can be notified when someone is waiting, and participants about the decision
+- Validation warns about exams in a loop without a retake and other routes where participants could get stuck
 
 - Plans: Pro, Business
-- Keywords: approval sign-off gate manager supervisor
+- Keywords: approval sign-off gate manager supervisor elective bundle deadline timeout counter
 
 #### Journey Decision Rules (`LEARN.JOURNEYS.RULES`)
 
-Route on results, pass/fail, grade, attempts, time, skills, collected exam data, birth date, department, team, flags, days since start or calendar, with rich operators.
+Route on results, pass/fail, grade, attempts, time, skills, collected exam data, birth date, department, job role, team, competency status, completed classes, another journey's outcome, flags, counters, days since start or calendar, with rich operators.
 
 Details:
 - Time elapsed since any date, in years, months, weeks, days, hours or minutes: age from a birth date, time since hire or since a licence was issued, or days until a due date
 - When a result is corrected, the decision is made again with the corrected result, as long as the participant has not moved on
+- Skip training someone already holds: route on a competency's status or on the outcome of another journey
 
 - Plans: Pro, Business
-- Keywords: age birthday elapsed tenure seniority
+- Keywords: age birthday elapsed tenure seniority competency job role
 
 #### Journey Monitoring & Interventions (`LEARN.JOURNEYS.MONITORING`)
 
@@ -609,6 +654,7 @@ A live overview shows how many people are on each node and branch, plus outcomes
 Details:
 - Results exports include each participant's journey state and the data collected by every exam along the route, one column per field
 - Each node's participant list links to its exam, class or quiz set and their results
+- Shows how many left each step after its deadline, and each participant's bundle progress and counters
 - One-off or automatic refresh, and touch zoom on tablets and phones
 
 - Plans: Pro, Business
@@ -618,6 +664,8 @@ Details:
 A My Journeys page, a journey panel with progress on every exam and class of the route, next-step prompts on results pages, a pinned header indicator and notifications on every channel. Participants never need to understand the graph.
 
 Details:
+- Step deadlines and bundle progress are shown everywhere the next step is
+- Journey cards carry the cover image of the starting exam or its quiz set
 - Returning to an exam step opens a fresh start page instead of the old result sheet
 - Generated exam accounts carry over between the journey's exams without asking for the same details again
 
@@ -801,6 +849,9 @@ Fully web-based and responsive on any device. Nothing to install.
 
 Works in any modern browser on Windows, macOS, Linux, iOS and Android. The responsive interface gives full functionality on mobile without a separate app.
 
+Details:
+- Every list shares the same tools: search with phrases, exclusions and field terms, value and date or number range filters, hideable columns, saved views shareable as a link, and keyboard navigation
+
 - Plans: Free, Pro, Business
 
 ### Branding & Customization (`PLAT.BRANDING`)
@@ -878,7 +929,7 @@ Learners report a wrong answer key, a broken file or an offensive comment, and t
 
 ### Notifications (`PLAT.NOTIFY`)
 
-Multi-channel, schedulable notifications for exams, certificates, classes, assignments, reports and messages, with delivery tracking and external recipients for certificate alerts.
+Multi-channel, schedulable notifications for exams, certificates, classes, assignments, learning journeys, competency deadlines, reports and messages, with delivery tracking and external recipients for certificate alerts.
 
 #### Advanced Notifications (`PLAT.NOTIFY.ADVANCED`)
 
@@ -1330,7 +1381,7 @@ Hide question values during the exam.
 
 #### User Data Collection (`QUIZ.EXAM.CUSTOM-FIELDS`)
 
-Collect employee numbers, sites or any other data before the test, with 14 field types, validation patterns, uniqueness, date ranges and automatic result filters.
+Collect employee numbers, sites or any other data before the test, with 14 field types, validation patterns, uniqueness, date ranges and automatic result filters. Fields can get their own value or range filter on the participant list.
 
 - Plans: Free, Pro, Business
 
@@ -1455,6 +1506,18 @@ Restart a practice quiz with all questions or only the ones answered wrong.
 Aggregated misconception tags show why a cohort is failing, not only that it is.
 
 - Plans: Free, Pro, Business
+
+#### Item Analysis (`QUIZ.RESULTS.ITEM-ANALYSIS`)
+
+Psychometric analysis of an exam's questions: facility, discrimination, answer option use, suggested difficulty, and the test's reliability (Cronbach's alpha / KR-20) and standard error of measurement.
+
+Details:
+- Flags questions that are too easy, too hard, weakly or reversely discriminating, or have an attractive or unused wrong option
+- Switched on per exam and kept up to date in the background from the current round's results
+- Flags appear from 30 results, where conclusions become reliable
+
+- Plans: Free, Pro, Business
+- Keywords: psychometrics item analysis discrimination index point biserial difficulty cronbach alpha kr-20 reliability distractor sem
 
 #### Skill Results (`QUIZ.RESULTS.SKILLS`)
 
@@ -1788,7 +1851,7 @@ Nest departments into a real tree (division, unit, team). Visibility follows the
 
 #### Department Leaders (`USER.ORG.DEPARTMENT-LEADERS`)
 
-Record who leads each unit explicitly, separate from what they may do. Leaders get a compliance view of their own subtree.
+Record who leads each unit explicitly, separate from what they may do. Leaders get a compliance view and a My Team page for their own subtree, and receive escalations about overdue members.
 
 - Plans: Free, Pro, Business
 
@@ -1858,6 +1921,13 @@ Personalize the dashboard layout and widgets.
 
 - Plans: Free, Pro, Business
 
+#### My To-Dos (`USER.SETTINGS.TODOS`)
+
+The dashboard opens with what to do next: the next journey step, exams to take, competencies to complete or renew, and recently visited pages, ordered by urgency.
+
+- Plans: Free, Pro, Business
+- Keywords: dashboard home todo next steps up next deadlines
+
 #### Password Management (`USER.SETTINGS.PASSWORD`)
 
 Change your password.
@@ -1888,6 +1958,7 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.COMPETENCIES.DEFINITION` | Capability | Competency Definition |
 | `COMP.COMPETENCIES.EXPORT` | Capability | Competency Catalog Export |
 | `COMP.LIBRARY` | Feature | Document Library |
+| `COMP.LIBRARY.ATTESTATION` | Capability | Signed Read Attestation |
 | `COMP.LIBRARY.DOC-TYPES` | Capability | Document Types |
 | `COMP.LIBRARY.LINKAGE` | Capability | Competency Linkage |
 | `COMP.LIBRARY.PINNING` | Capability | Document Pinning |
@@ -1898,8 +1969,10 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.PROGRESS` | Feature | Member Progress Tracking |
 | `COMP.PROGRESS.COMPLIANCE` | Capability | Compliance Overview |
 | `COMP.PROGRESS.MY-COMPETENCIES` | Capability | My Competencies Page |
+| `COMP.PROGRESS.REMINDERS` | Capability | Deadline Reminders & Escalation |
 | `COMP.PROGRESS.ROLLUP` | Capability | Competency Status Rollup |
 | `COMP.PROGRESS.STATUSES` | Capability | Competency Status Model |
+| `COMP.PROGRESS.TEAM` | Capability | My Team |
 | `COMP.RECERT` | Feature | Re-certification Workflow |
 | `COMP.REQUIREMENTS` | Feature | Requirements |
 | `COMP.REQUIREMENTS.ATTACHMENTS` | Capability | Requirement Evidence Attachments |
@@ -2073,6 +2146,7 @@ Choose channels and events, including a separate notification email address and 
 | `QUIZ.RESULTS` | Feature | Live Results & Statistics |
 | `QUIZ.RESULTS.ERROR-PATTERNS` | Capability | Error Pattern Analysis |
 | `QUIZ.RESULTS.INSIGHTS` | Capability | Advanced Insights & Analytics |
+| `QUIZ.RESULTS.ITEM-ANALYSIS` | Capability | Item Analysis |
 | `QUIZ.RESULTS.LEADERBOARD` | Capability | Live Leaderboard |
 | `QUIZ.RESULTS.REPORTS` | Capability | Detailed Reports |
 | `QUIZ.RESULTS.RETRY` | Capability | Practice Retry from Results |
@@ -2155,3 +2229,4 @@ Choose channels and events, including a separate notification email address and 
 | `USER.SETTINGS.DASHBOARD` | Capability | Dashboard Customization |
 | `USER.SETTINGS.NOTIFICATIONS` | Capability | Notification Preferences |
 | `USER.SETTINGS.PASSWORD` | Capability | Password Management |
+| `USER.SETTINGS.TODOS` | Capability | My To-Dos |
