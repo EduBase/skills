@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: a5b6a527d006
-  catalog_updated: 2026-10-31
-  snapshot_date: 2026-10-31
+  catalog_revision: 8071063d822a
+  catalog_updated: 2026-11-01
+  snapshot_date: 2026-11-01
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-10-31
+> Catalog last updated: 2026-11-01
 
 ## About EduBase
 
@@ -1905,36 +1905,36 @@ Internal messages between users, optionally including guests.
 
 - Plans: Free, Pro, Business
 
-### Personal Settings (`USER.SETTINGS`)
+### Personal Features (`USER.PERSONAL`)
 
-Account management and personalization.
+Your own account, dashboard, to-dos, password and notifications.
 
-#### Account Details (`USER.SETTINGS.ACCOUNT`)
+#### Account Details (`USER.PERSONAL.ACCOUNT`)
 
 Manage profile and account information.
 
 - Plans: Free, Pro, Business
 
-#### Dashboard Customization (`USER.SETTINGS.DASHBOARD`)
+#### Dashboard Customization (`USER.PERSONAL.DASHBOARD`)
 
 Personalize the dashboard layout and widgets.
 
 - Plans: Free, Pro, Business
 
-#### My To-Dos (`USER.SETTINGS.TODOS`)
+#### My To-Dos (`USER.PERSONAL.TODOS`)
 
 The dashboard opens with what to do next: the next journey step, exams to take, competencies to complete or renew, and recently visited pages, ordered by urgency.
 
 - Plans: Free, Pro, Business
 - Keywords: dashboard home todo next steps up next deadlines
 
-#### Password Management (`USER.SETTINGS.PASSWORD`)
+#### Password Management (`USER.PERSONAL.PASSWORD`)
 
 Change your password.
 
 - Plans: Free, Pro, Business
 
-#### Notification Preferences (`USER.SETTINGS.NOTIFICATIONS`)
+#### Notification Preferences (`USER.PERSONAL.NOTIFICATIONS`)
 
 Choose channels and events, including a separate notification email address and Pushover.
 
@@ -2224,9 +2224,9 @@ Choose channels and events, including a separate notification email address and 
 | `USER.ORG.PERMISSIONS` | Capability | Permission Management |
 | `USER.ORG.REPORTS` | Capability | Organizational Reports |
 | `USER.ORG.STORAGE` | Capability | Organizational Storage Limits |
-| `USER.SETTINGS` | Feature | Personal Settings |
-| `USER.SETTINGS.ACCOUNT` | Capability | Account Details |
-| `USER.SETTINGS.DASHBOARD` | Capability | Dashboard Customization |
-| `USER.SETTINGS.NOTIFICATIONS` | Capability | Notification Preferences |
-| `USER.SETTINGS.PASSWORD` | Capability | Password Management |
-| `USER.SETTINGS.TODOS` | Capability | My To-Dos |
+| `USER.PERSONAL` | Feature | Personal Features |
+| `USER.PERSONAL.ACCOUNT` | Capability | Account Details |
+| `USER.PERSONAL.DASHBOARD` | Capability | Dashboard Customization |
+| `USER.PERSONAL.NOTIFICATIONS` | Capability | Notification Preferences |
+| `USER.PERSONAL.PASSWORD` | Capability | Password Management |
+| `USER.PERSONAL.TODOS` | Capability | My To-Dos |
