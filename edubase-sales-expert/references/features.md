@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: 8071063d822a
-  catalog_updated: 2026-11-01
-  snapshot_date: 2026-11-01
+  catalog_revision: aae3e2d75cd7
+  catalog_updated: 2026-11-03
+  snapshot_date: 2026-11-03
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-01
+> Catalog last updated: 2026-11-03
 
 ## About EduBase
 
@@ -39,7 +39,7 @@ EduBase (https://www.edubase.net) is a web-based e-learning, assessment and comp
 - **Suspicion Score** (`QUIZ.ANTICHEAT.SUSPICION`): One 0–100 triage number per attempt that flags signs of outside help, especially AI, with the reasons itemized for the reviewer. Rule-based, with no AI involved, and it can be switched off per exam.
 - **Official MCP server** (`INTEG.MCP`): Claude and other assistants can run the whole platform in plain language. Every API endpoint is available as a tool.
 - **Parameterized questions & attachments** (`QUIZ.PARAMS`): Every participant gets their own numbers, lists and permutations, even inside the Excel, Word or CSV file they download. Copying a neighbour's answer doesn't work.
-- **Verifiable certificates** (`QUIZ.EXAM.CERTIFICATES`): Serialized PDF/A certificates with QR verification, validity periods, renewal workflows and expiry alerts.
+- **Verifiable certificates** (`QUIZ.EXAM.CERTIFICATES`): Serialized PDF/A certificates whose QR code opens a public verification page, with validity periods, renewal workflows and expiry alerts.
 - **Strict video watching** (`LEARN.VIDEO.STRICT`): Forward seeking is blocked and only measured, near-complete viewing counts, which gives you evidence instead of a checkbox.
 - **Registration-free testing** (`QUIZ.EXAM.NO-REGISTRATION`): QR code, link or PIN access with generated accounts and results looked up by ID. It handles a whole cohort arriving in the same minute.
 
@@ -1167,7 +1167,7 @@ Secure, scheduled exams built on quiz sets, with flexible access (QR, link or PI
 
 #### Exam Certificates (`QUIZ.EXAM.CERTIFICATES`)
 
-Serialized PDF/A certificates issued automatically on success, with QR and barcode verification, digital signing, custom thresholds, fields, signatures and branding.
+Serialized PDF/A certificates issued automatically on success, with a QR code that opens a public verification page, a barcode, digital signing, custom thresholds, fields, signatures and branding.
 
 - Plans: Pro, Business
 - Keywords: certificate pdf diploma verification qr
@@ -1192,9 +1192,22 @@ Renewal windows, optional supervisor approval (or automatic approval), recertifi
 
 #### Account Certificates Page (`QUIZ.EXAM.CERTIFICATE-ACCOUNT`)
 
-Every certificate a learner holds on one page, with a matching admin view.
+Every certificate a learner holds on one page, with serial numbers, links to their verification pages and a matching admin view. Only valid certificates can be downloaded.
 
 - Plans: Pro, Business
+
+#### Certificate Verification Page (`QUIZ.EXAM.CERTIFICATE-VERIFY`)
+
+The QR code on every certificate opens a public page that says whether it is genuine and still valid. Employers and auditors can check it in seconds, without an account.
+
+Details:
+- Valid, not valid (expired or revoked) or not found
+- Shows only what is printed on the certificate, never the results
+- The holder and the exam's supervisors also get the result and the download
+- Holders can add a valid certificate to their LinkedIn profile with the verification page as the credential URL
+
+- Plans: Pro, Business
+- Keywords: verify authenticity credential check qr scan employer auditor linkedin fake
 
 #### Certificate Reporting & Bulk Export (`QUIZ.EXAM.CERTIFICATE-REPORTS`)
 
@@ -1261,6 +1274,18 @@ Retry until passed, retake after passing, require new learning after repeated fa
 A recommended last start time used in reminders and shown in classes.
 
 - Plans: Free, Pro, Business
+
+#### Automatic Exam Reminders (`QUIZ.EXAM.REMINDERS`)
+
+Set it once and EduBase reminds every assigned participant who hasn't started yet, a chosen number of hours before the deadline.
+
+Details:
+- From 1 hour to 30 days before the deadline, or before the exam ends where there is no deadline
+- Once per round and deadline; moving the deadline reminds again
+- Those who already took the exam are not disturbed
+
+- Plans: Free, Pro, Business
+- Keywords: reminder nudge chase deadline automatic email notification not started
 
 #### Exam Start Captcha (`QUIZ.EXAM.CAPTCHA`)
 
@@ -2102,6 +2127,7 @@ Choose channels and events, including a separate notification email address and 
 | `QUIZ.EXAM.CERTIFICATE-PRESETS` | Capability | Certificate Design Presets |
 | `QUIZ.EXAM.CERTIFICATE-RENEWAL` | Capability | Certificate Renewal & Recertification |
 | `QUIZ.EXAM.CERTIFICATE-REPORTS` | Capability | Certificate Reporting & Bulk Export |
+| `QUIZ.EXAM.CERTIFICATE-VERIFY` | Capability | Certificate Verification Page |
 | `QUIZ.EXAM.CERTIFICATES` | Capability | Exam Certificates |
 | `QUIZ.EXAM.CERTIFICATES-ADVANCED` | Capability | Advanced Certificates |
 | `QUIZ.EXAM.CHAINING` | Capability | Next Exam Linking |
@@ -2118,6 +2144,7 @@ Choose channels and events, including a separate notification email address and 
 | `QUIZ.EXAM.POINTS-VISIBILITY` | Capability | Points Visibility |
 | `QUIZ.EXAM.PRINTABLE` | Capability | Printable Test Page |
 | `QUIZ.EXAM.QUESTIONLESS` | Capability | Questionless Tests |
+| `QUIZ.EXAM.REMINDERS` | Capability | Automatic Exam Reminders |
 | `QUIZ.EXAM.REPEAT` | Capability | Exam Repeat & Retry Settings |
 | `QUIZ.EXAM.RESULT-IDENTIFIER` | Capability | Identifier-Based Result Access |
 | `QUIZ.EXAM.RESULT-VISIBILITY` | Capability | Result Visibility Settings |
