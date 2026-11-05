@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: aae3e2d75cd7
-  catalog_updated: 2026-11-03
-  snapshot_date: 2026-11-03
+  catalog_revision: 4c1faaec89b9
+  catalog_updated: 2026-11-05
+  snapshot_date: 2026-11-05
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-03
+> Catalog last updated: 2026-11-05
 
 ## About EduBase
 
@@ -435,6 +435,18 @@ Read competencies, their requirement chains and the department × competency com
 Read journey progress, including step deadlines and bundle progress, and export, import and publish journey graphs as portable JSON (with a public JSON Schema covering every rule operator) for version control.
 
 - Plans: Pro, Business
+
+#### Exam & Quiz Set Reports over the API (`INTEG.API.REPORTS`)
+
+Request any report of an exam or a quiz set from your own system (per-task statistics, current and round-by-round results, the summary PDF) as a one-hour, single-use download link, filtered by collected participant data if needed.
+
+Details:
+- Lists the reports, formats and filters available for the caller
+- Filters by configured values, by the values participants gave, or by a number or date range
+- Respects reporting rights and member visibility, exactly as the report window does
+
+- Plans: Free, Pro, Business
+- Keywords: report download export statistics summary pdf filter
 
 #### Extended API (`INTEG.API.EXTENDED`)
 
@@ -1516,7 +1528,7 @@ In-depth statistical analysis and performance trends.
 
 #### Detailed Reports (`QUIZ.RESULTS.REPORTS`)
 
-Every attempt is retained. Participant exports include certification, integrity and SCORM columns, and there are row-per-answer raw exports, distributions and API export links.
+Every attempt is retained. Participant exports include certification, integrity and SCORM columns, and there are row-per-answer raw exports, distributions and API download links for every report. Reports can be filtered by collected participant data.
 
 - Plans: Free, Pro, Business
 
@@ -2019,6 +2031,7 @@ Choose channels and events, including a separate notification email address and 
 | `INTEG.API.EXTENDED` | Capability | Extended API |
 | `INTEG.API.JOURNEYS` | Capability | Learning Journeys over the API |
 | `INTEG.API.ORG-DEPARTMENTS` | Capability | Department & Job Role Management over the API |
+| `INTEG.API.REPORTS` | Capability | Exam & Quiz Set Reports over the API |
 | `INTEG.API.USER-ENDPOINTS` | Capability | User Management over the API |
 | `INTEG.HR-SYNC` | Feature | HR & Enterprise System Synchronization |
 | `INTEG.LTI` | Feature | LTI Integration |
