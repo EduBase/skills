@@ -1,5 +1,6 @@
 #!/bin/bash
 # Push changes to the repository and create a new tag if there are any changes
+set -e
 
 git config --local user.name "github-actions[bot]"
 git config --local user.email "github-actions[bot]@users.noreply.github.com"
