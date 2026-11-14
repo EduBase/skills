@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: e6e258cfd7eb
-  catalog_updated: 2026-11-06
-  snapshot_date: 2026-11-06
+  catalog_revision: db16d227f791
+  catalog_updated: 2026-11-09
+  snapshot_date: 2026-11-14
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-06
+> Catalog last updated: 2026-11-09
 
 ## About EduBase
 
@@ -241,6 +241,11 @@ The conditions a member must meet to hold a competency, digital and offline, eac
 
 Passing an exam counts toward the competency. When the exam closes or is archived, the requirement is flagged as outdated so a manager can point it at a replacement.
 
+Details:
+- A passed exam counts once the result is published, even before the member downloads the certificate, unless supervisors issue the certificates
+- Certificate validity runs from the day the exam was finished, so putting off the download never extends it
+- When a certificate that was never downloaded expires, renewal opens on schedule
+
 - Plans: Business
 
 #### Class Requirements (`COMP.REQUIREMENTS.CLASS`)
@@ -326,6 +331,10 @@ Per-member and organization-wide views of competency status, with filters for ex
 #### Competency Status Model (`COMP.PROGRESS.STATUSES`)
 
 One consistent status for every member–competency pair: waiting, in progress, due, overdue, outdated, completed or expired. Every report uses the same values.
+
+Details:
+- A lapsed qualification stays expired even when another requirement has been reopened, so it never hides behind 'in progress'
+- Statuses move to expired, due or overdue on the day it happens
 
 - Plans: Business
 
