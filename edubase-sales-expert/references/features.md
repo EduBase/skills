@@ -1,8 +1,8 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: 52327cc432a7
-  catalog_updated: 2026-11-14
+  catalog_revision: 389d6a0c7c14
+  catalog_updated: 2026-11-15
   snapshot_date: 2026-11-15
 -->
 
@@ -10,7 +10,7 @@
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-14
+> Catalog last updated: 2026-11-15
 
 ## About EduBase
 
