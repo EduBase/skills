@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: db16d227f791
-  catalog_updated: 2026-11-09
-  snapshot_date: 2026-11-14
+  catalog_revision: 52327cc432a7
+  catalog_updated: 2026-11-14
+  snapshot_date: 2026-11-15
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-09
+> Catalog last updated: 2026-11-14
 
 ## About EduBase
 
@@ -158,7 +158,10 @@ Every version carries a permanent, human-readable serial (e.g. SOP-safety-2) and
 
 #### Document Types (`COMP.LIBRARY.DOC-TYPES`)
 
-Classify the library by kind of document (policy, work instruction, form, record). The type code becomes part of the document number. Types are set up with the EduBase team during onboarding.
+Classify the library by kind of document (policy, work instruction, form, record). The type code becomes part of the document number. Managers keep the type list themselves, and a type can carry its own approval and review rules.
+
+Details:
+- Types still in use can be archived instead of deleted, so existing documents keep them
 
 - Plans: Business
 
@@ -198,6 +201,20 @@ Details:
 
 - Plans: Business
 - Keywords: e-signature sign policy declaration acknowledgement read and understood attest
+
+#### Document Review & Approval (`COMP.LIBRARY.REVIEW`)
+
+Document control in the library: new versions go through up to five approval stages before members see them, published documents are reviewed periodically, and drafts can be sent out for comments. Every decision is kept in an audit trail.
+
+Details:
+- Reviewers can be named members, whole departments, department leaders or job roles, with an all, any or N-of rule and a deadline per stage
+- Approval can be required for every document, per document type or per document; an approved version can go live on a planned date
+- Uploaders can never approve their own version (four-eyes principle)
+- Periodic reviews start automatically when due and confirm the document or ask for a revision
+- Reminders, escalation of overdue stages, handover to a colleague, and pending reviews on the reviewer's dashboard
+
+- Plans: Business
+- Keywords: document control approval workflow sign-off review cycle periodic review four eyes iso 9001 qms release effective date feedback comments
 
 #### Competency Linkage (`COMP.LIBRARY.LINKAGE`)
 
@@ -781,6 +798,9 @@ EduBase hosting or third-party providers, with signed URLs, live streams with DV
 
 One catalog for every content type, with colored tags and icons, organizational tags, full-text search, smart filters, folders, external IDs and compact display modes.
 
+Details:
+- A search in a folder of questions, quiz sets, exams or files can be extended to all its subfolders with one click, with the results grouped by folder
+
 - Plans: Free, Pro, Business
 
 ### Calendars & Scheduling (`LEARN.CALENDAR`)
@@ -1140,13 +1160,25 @@ Details:
 
 #### Test Modes & Navigation (`QUIZ.SETS.MODES`)
 
-Free navigation with one submission, or one question at a time with per-question time limits. Before submitting, participants see which questions they left unopened, unanswered or half done.
+Free navigation with one submission, one question at a time with per-question time limits, or the mini mode with big answer buttons. Before submitting, participants see which questions they left unopened, unanswered or half done.
 
 Details:
 - Practice attempts can be capped per account or per day
 
 - Plans: Free, Pro, Business
 - Keywords: navigation back button review unanswered warning one question per page
+
+#### Mini Mode (`QUIZ.SETS.MINI`)
+
+Short, fast quizzes made for phones: choice questions one at a time with large, colored answer buttons. Mini quiz sets can also be run as live sessions.
+
+Details:
+- Single and multiple choice questions only
+- Answer buttons labelled with letters, numbers, symbols, icons or colors alone
+- Optional round time per question
+
+- Plans: Pro, Business
+- Keywords: buzzer mobile classroom quiz game audience quick quiz quiz show
 
 #### Mandatory Questions (`QUIZ.SETS.REQUIRED`)
 
@@ -1241,6 +1273,20 @@ Certification status in exports, scheduled ZIP archives of all valid certificate
 Standard exams, projectable championships with a live ranking, pausable homework, and surveys.
 
 - Plans: Free, Pro, Business
+
+#### Live Exam Sessions (`QUIZ.EXAM.LIVE`)
+
+Run a mini quiz as a live session: everyone gets the same question at the same moment, a presenter screen shows it on the projector, and the host steps the group through, with results recorded like any exam.
+
+Details:
+- Stepped by the host, by the round time, or as soon as everyone has answered
+- Answer distribution after each question, an optional leaderboard and an optional speed bonus that never changes the grade
+- Questions can be shown on the projector only, with just the answer buttons on the devices
+- The presenter screen can be opened by link without signing in; only authorized staff can step it
+- Per-question summary of the session on the exam's statistics page
+
+- Plans: Pro, Business
+- Keywords: live quiz projector presenter classroom audience event game show synchronized realtime leaderboard
 
 #### Questionless Tests (`QUIZ.EXAM.QUESTIONLESS`)
 
@@ -1969,7 +2015,7 @@ Personalize the dashboard layout and widgets.
 
 #### My To-Dos (`USER.PERSONAL.TODOS`)
 
-The dashboard opens with what to do next: the next journey step, exams to take, competencies to complete or renew, and recently visited pages, ordered by urgency.
+The dashboard opens with what to do next: the next journey step, exams to take, competencies to complete or renew, document reviews waiting for you, and recently visited pages, ordered by urgency.
 
 - Plans: Free, Pro, Business
 - Keywords: dashboard home todo next steps up next deadlines
@@ -2009,6 +2055,7 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.LIBRARY.LINKAGE` | Capability | Competency Linkage |
 | `COMP.LIBRARY.PINNING` | Capability | Document Pinning |
 | `COMP.LIBRARY.REQUIRED-READING` | Capability | Required Reading |
+| `COMP.LIBRARY.REVIEW` | Capability | Document Review & Approval |
 | `COMP.LIBRARY.TAGGING` | Capability | Document Tagging |
 | `COMP.LIBRARY.VERSION-IDS` | Capability | Version Identifiers |
 | `COMP.LIBRARY.VERSIONING` | Capability | Document Versioning |
@@ -2160,6 +2207,7 @@ Choose channels and events, including a separate notification email address and 
 | `QUIZ.EXAM.GRADING` | Capability | Exam Scoring & Grading |
 | `QUIZ.EXAM.GRADING-VARIABLES` | Capability | Grading Text Variables |
 | `QUIZ.EXAM.LANGUAGE` | Capability | Exam Language Settings |
+| `QUIZ.EXAM.LIVE` | Capability | Live Exam Sessions |
 | `QUIZ.EXAM.LOCKING` | Capability | Exam Locking |
 | `QUIZ.EXAM.NO-REGISTRATION` | Capability | Registration-Free Testing |
 | `QUIZ.EXAM.NOTIFICATIONS` | Capability | Exam Notifications |
@@ -2211,6 +2259,7 @@ Choose channels and events, including a separate notification email address and 
 | `QUIZ.SETS` | Feature | Quiz Sets Management |
 | `QUIZ.SETS.DYNAMIC` | Capability | Dynamic Question Sourcing |
 | `QUIZ.SETS.FEEDBACK` | Capability | Test Feedback Form |
+| `QUIZ.SETS.MINI` | Capability | Mini Mode |
 | `QUIZ.SETS.MODES` | Capability | Test Modes & Navigation |
 | `QUIZ.SETS.REQUIRED` | Capability | Mandatory Questions |
 | `QUIZ.SETS.SCORING-RULES` | Capability | Counted Questions & Starting Score |
