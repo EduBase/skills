@@ -1,16 +1,16 @@
 <!--
   EduBase feature catalog snapshot, maintained by EduBase. Do not edit by hand.
   Source: the complete "Markdown for LLMs" edition of the EduBase feature page.
-  catalog_revision: 389d6a0c7c14
-  catalog_updated: 2026-11-15
-  snapshot_date: 2026-11-15
+  catalog_revision: ec280ead53e5
+  catalog_updated: 2026-11-18
+  snapshot_date: 2026-11-18
 -->
 
 # EduBase Feature Catalog
 
 > Machine-readable edition of the EduBase feature page, written for LLMs and AI agents.
 > Source page: EduBase feature page
-> Catalog last updated: 2026-11-15
+> Catalog last updated: 2026-11-18
 
 ## About EduBase
 
@@ -198,6 +198,7 @@ Details:
 - Signed by typing the full name from the member's profile; case and accents don't matter
 - A SHA-256 verification code over the statement, version, files, name and time reveals any later change
 - Fulfils document requirements built on the document; managers see who signed and when
+- With strict electronic signatures, signing also asks for the password or a two-factor code
 
 - Plans: Business
 - Keywords: e-signature sign policy declaration acknowledgement read and understood attest
@@ -238,15 +239,28 @@ Assign competencies individually, by department, by job role or organization-wid
 
 Details:
 - Job roles cut across departments: 'every forklift operator' is one rule, whichever site they work at
+- Joint conditions: 'this department and this job role' in one rule, combinable with organization-wide and individual assignments
 - Can be driven by HR activity, job or position codes through HR synchronization
 - Sync-made assignments are withdrawn when no longer needed; manual assignments are always kept
 - An incomplete HR data run never withdraws qualifications
 
 - Plans: Business
 
+#### Competency Skill Levels (`COMP.COMPETENCIES.LEVELS`)
+
+Define your own skill level scale (e.g. Basic to Expert), tie requirements to levels, and expect different levels from different departments, job roles or members. A competency is complete once the member reaches the level expected of them.
+
+Details:
+- Up to nine levels per organization
+- Reached and expected level shown to members, managers, in exports and on the training record
+- Requirements above the expected level are optional for that member
+
+- Plans: Business
+- Keywords: skill level proficiency skills matrix grade tier
+
 #### Competency Catalog Export (`COMP.COMPETENCIES.EXPORT`)
 
-Export competencies with assigned members, status, completion, validity and deadline as CSV for audits or HR systems.
+Export competencies with assigned members, status, completion, validity, deadline, training hours and skill levels as CSV for audits or HR systems.
 
 - Plans: Business
 
@@ -289,14 +303,15 @@ Require that a member actually read a library document (downloaded every file of
 Record real-world qualifications such as driving licences, forklift certificates, first-aid training, exams taken in a partner's system, in-person training sessions and declarations members sign themselves.
 
 Details:
-- Typed completions: plain milestone, personal document (captures an identifier), external exam / certificate (captures result and serial), in-person training and signed attestation
+- Typed completions: plain milestone, personal document (captures an identifier), external exam / certificate (captures result and serial), in-person training, practical assessment and signed attestation
 - In-person training records up to five named instructors and the training material
+- Practical assessments are checked off criterion by criterion and pass only when every criterion is met
 - Signed attestations are signed by the member with their full name and stored with the exact statement and a verification code; managers can review or revoke them
 - Editing a completion keeps the original completion date
 - Completion is a privileged, fully audited action
 
 - Plans: Business
-- Keywords: licence certificate offline training forklift external exam declaration conflict of interest signature
+- Keywords: licence certificate offline training forklift external exam declaration conflict of interest signature practical assessment checklist observation
 
 #### Requirement Validity (`COMP.REQUIREMENTS.VALIDITY`)
 
@@ -334,6 +349,24 @@ Add your own staff-only fields (issuing institution, venue, examiner, case numbe
 
 - Plans: Business
 
+#### Off-Platform Completions (`COMP.REQUIREMENTS.OFF-PLATFORM`)
+
+Record an exam or class requirement as completed outside the platform, with its date, result, identifier, validity and evidence, for example when migrating valid certifications from an earlier system.
+
+Details:
+- If the member also completes it on the platform, the completion that stays valid longer counts
+- Members see the result and identifier; the note is for staff only
+
+- Plans: Business
+- Keywords: manual completion migration paper exam prior learning recognition
+
+#### Training Hours (`COMP.REQUIREMENTS.TRAINING-HOURS`)
+
+Credit training hours with every completed requirement, and see them per member, per competency and per year, in exports and on the training record.
+
+- Plans: Business
+- Keywords: cpd continuing education hours credits
+
 ### Re-certification Workflow (`COMP.RECERT`)
 
 When training material changes, add a new exam requirement and everyone who passed the earlier exam is surfaced for re-certification. This is deliberate and configured, not triggered blindly by every document upload.
@@ -367,6 +400,7 @@ A department × competency heatmap that answers 'where are we not compliant?', w
 
 Details:
 - Can be limited to one job role, together with its export
+- Can show the state at the end of any past day
 - Department leaders see their own departments without needing a management role
 - Also available as a scheduled organizational report and over the REST API
 
@@ -379,6 +413,7 @@ Department leaders see every member of the departments they lead by name, with t
 
 Details:
 - Filters for 'needs attention' and each problem status, plus search by name or department
+- Training hours credited to each member this year
 - Read-only drill-down into a member's competencies
 - CSV export of the team or of one member
 
@@ -403,6 +438,32 @@ Self-service view of every assigned competency across all of a member's organiza
 
 - Plans: Business
 
+#### Compliance History (`COMP.PROGRESS.HISTORY`)
+
+Every status change is kept, so the compliance overview, its exports, reports and the API can show the organization as it stood at the end of any past day, including members who have left since.
+
+- Plans: Business
+- Keywords: point in time snapshot audit history as of date incident
+
+#### Training Records and Former Members (`COMP.PROGRESS.TRAINING-RECORD`)
+
+A training record PDF per member, with every competency, requirement, result, signature, hour and status change. When someone leaves, their final record is archived and stays available for audits.
+
+- Plans: Business
+- Keywords: training file transcript leaver audit pdf
+
+### Electronic Signatures (`COMP.SIGNATURES`)
+
+Every attestation, completion, validity change and document approval is entered in one organization-wide signature ledger, with its meaning and how the signer was authenticated, in a hash chain that reveals any later change.
+
+Details:
+- Optional strict mode: the password or a two-factor code at every signature, with a temporary lockout after repeated failures
+- Designed to support FDA 21 CFR Part 11 and EU GMP Annex 11 electronic signature requirements
+- The chain is verified daily, and administrators are notified if it breaks
+
+- Plans: Business
+- Keywords: e-signature part 11 annex 11 gmp gxp audit trail re-authentication tamper evident
+
 ## Integrations (`INTEG`)
 
 REST API, LTI, MCP, OAuth, webhooks and HR synchronization connect EduBase to existing systems and AI assistants.
@@ -422,9 +483,10 @@ Create and manage API applications with credentials. Last-used tracking for API 
 Details:
 - Files (question images, attachments, audio, certificate signatures and logos, cover images) can be sent as a URL, as base64 data, or uploaded once to the API file bin and referenced by ID
 - A file-bin upload can only be used by the account that uploaded it
+- Secrets of API, MCP and LTI integrations can expire after a chosen lifetime; an expired secret stops the integration until it is rotated
 
 - Plans: Pro, Business
-- Keywords: file upload filebin image attachment
+- Keywords: file upload filebin image attachment secret expiry rotation credential lifetime
 
 #### User Management over the API (`INTEG.API.USER-ENDPOINTS`)
 
@@ -452,9 +514,21 @@ Manage the department tree, leaders, default permissions and job roles, and memb
 
 #### Competency Reporting over the API (`INTEG.API.COMPETENCY-READ`)
 
-Read competencies, their requirement chains and the department × competency compliance grid (optionally for one job role) into your BI tool, intranet or audit pack.
+Read competencies, their requirement chains and the department × competency compliance grid (optionally for one department or job role, or as of a past day) into your BI tool, intranet or audit pack.
 
 - Plans: Pro, Business
+
+#### SCIM Provisioning (`INTEG.API.SCIM`)
+
+Let your identity provider add, update and remove organization members over SCIM 2.0, setting their department and job role, and sign leavers out everywhere.
+
+Details:
+- Directory groups can enrol members in classes or set their permissions, set up together with the EduBase team
+- Existing accounts are matched by email; leavers' training records are archived
+- Authenticated with an EduBase API application
+
+- Plans: Business
+- Keywords: scim identity provider directory provisioning deprovisioning joiner mover leaver
 
 #### Learning Journeys over the API (`INTEG.API.JOURNEYS`)
 
@@ -761,9 +835,15 @@ Share documents, with an option to prevent downloads.
 
 #### SCORM Support (`LEARN.HOSTING.SCORM`)
 
-Upload SCORM 1.2 and 2004 packages (ZIP or PIF, up to 1 GB), run them in the browser and share them through classes, exams or public links.
+Upload SCORM 1.2 and 2004, xAPI (Tin Can) and cmi5 packages (ZIP or PIF, up to 1 GB), run them in the browser and share them through classes, exams or public links.
+
+Details:
+- Built-in learning record store for xAPI and cmi5: completion, score, progress and learning time count just like SCORM
+- cmi5 'move on' criteria and mastery score are respected
+- Learners see how far they got in a package before an exam
 
 - Plans: Free, Pro, Business
+- Keywords: xapi tincan tin can cmi5 lrs learning record store elearning package
 
 #### Video Hosting (`LEARN.HOSTING.VIDEO`)
 
@@ -1375,7 +1455,7 @@ An optional, voluntary post-exam question: 'Did you use AI?'. It separates decla
 
 #### Exam Result Archival (`QUIZ.EXAM.ARCHIVAL`)
 
-Move finished results out of the working views while keeping them for audits.
+Move finished results out of the working views while keeping them for audits. Approved and certified results stay protected unless the exam explicitly allows archiving them.
 
 - Plans: Free, Pro, Business
 
@@ -1841,7 +1921,12 @@ Configurable retention, unlimited on Pro and Business.
 
 Complexity rules, password history, automatic lockout and forced change. Managers can issue a full password reset that also clears lockouts.
 
+Details:
+- Optional password expiry, with a warning a week before and a forced change once expired
+- Optional maximum lifetime for integration secrets, ruling out never-expiring credentials
+
 - Plans: Business
+- Keywords: password expiry rotation age
 
 ## User Management (`USER`)
 
@@ -1981,7 +2066,10 @@ Details:
 
 #### Organizational Reports (`USER.ORG.REPORTS`)
 
-One-off or recurring reports (exam results CSV, certificates ZIP, competency progress CSV, compliance XLSX), with status filters and visibility-scoped reports for team leaders.
+One-off or recurring reports (exam results CSV, certificates ZIP, competency progress CSV, compliance XLSX), with status, department and job role filters and visibility-scoped reports for team leaders.
+
+Details:
+- Competency and compliance reports can also show the state at the end of a past day
 
 - Plans: Business
 
@@ -2049,6 +2137,7 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.COMPETENCIES.ASSIGNMENT` | Capability | Competency Assignment |
 | `COMP.COMPETENCIES.DEFINITION` | Capability | Competency Definition |
 | `COMP.COMPETENCIES.EXPORT` | Capability | Competency Catalog Export |
+| `COMP.COMPETENCIES.LEVELS` | Capability | Competency Skill Levels |
 | `COMP.LIBRARY` | Feature | Document Library |
 | `COMP.LIBRARY.ATTESTATION` | Capability | Signed Read Attestation |
 | `COMP.LIBRARY.DOC-TYPES` | Capability | Document Types |
@@ -2061,11 +2150,13 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.LIBRARY.VERSIONING` | Capability | Document Versioning |
 | `COMP.PROGRESS` | Feature | Member Progress Tracking |
 | `COMP.PROGRESS.COMPLIANCE` | Capability | Compliance Overview |
+| `COMP.PROGRESS.HISTORY` | Capability | Compliance History |
 | `COMP.PROGRESS.MY-COMPETENCIES` | Capability | My Competencies Page |
 | `COMP.PROGRESS.REMINDERS` | Capability | Deadline Reminders & Escalation |
 | `COMP.PROGRESS.ROLLUP` | Capability | Competency Status Rollup |
 | `COMP.PROGRESS.STATUSES` | Capability | Competency Status Model |
 | `COMP.PROGRESS.TEAM` | Capability | My Team |
+| `COMP.PROGRESS.TRAINING-RECORD` | Capability | Training Records and Former Members |
 | `COMP.RECERT` | Feature | Re-certification Workflow |
 | `COMP.REQUIREMENTS` | Feature | Requirements |
 | `COMP.REQUIREMENTS.ATTACHMENTS` | Capability | Requirement Evidence Attachments |
@@ -2076,8 +2167,11 @@ Choose channels and events, including a separate notification email address and 
 | `COMP.REQUIREMENTS.EXAM` | Capability | Exam Requirements |
 | `COMP.REQUIREMENTS.JOURNEY` | Capability | Journey Requirements |
 | `COMP.REQUIREMENTS.NON-DIGITAL` | Capability | Non-Digital Milestone Requirements |
+| `COMP.REQUIREMENTS.OFF-PLATFORM` | Capability | Off-Platform Completions |
 | `COMP.REQUIREMENTS.OPTIONAL` | Capability | Optional Requirements |
+| `COMP.REQUIREMENTS.TRAINING-HOURS` | Capability | Training Hours |
 | `COMP.REQUIREMENTS.VALIDITY` | Capability | Requirement Validity |
+| `COMP.SIGNATURES` | Feature | Electronic Signatures |
 | `INTEG` | Category | Integrations |
 | `INTEG.API` | Feature | REST API |
 | `INTEG.API.ACCESS` | Capability | API Access |
@@ -2088,6 +2182,7 @@ Choose channels and events, including a separate notification email address and 
 | `INTEG.API.JOURNEYS` | Capability | Learning Journeys over the API |
 | `INTEG.API.ORG-DEPARTMENTS` | Capability | Department & Job Role Management over the API |
 | `INTEG.API.REPORTS` | Capability | Exam & Quiz Set Reports over the API |
+| `INTEG.API.SCIM` | Capability | SCIM Provisioning |
 | `INTEG.API.USER-ENDPOINTS` | Capability | User Management over the API |
 | `INTEG.HR-SYNC` | Feature | HR & Enterprise System Synchronization |
 | `INTEG.LTI` | Feature | LTI Integration |
